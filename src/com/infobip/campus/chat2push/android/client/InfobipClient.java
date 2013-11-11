@@ -3,8 +3,8 @@ package com.infobip.campus.chat2push.android.client;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.infobip.campus.chat2push.android.models.ChannelMessage;
 import com.infobip.campus.chat2push.android.models.ChannelModel;
+import com.infobip.campus.chat2push.android.models.MessageModel;
 
 public interface InfobipClient {
 	
@@ -14,5 +14,5 @@ public interface InfobipClient {
 	
 	public abstract ArrayList<ChannelModel> fetchAllChannels(String userName);
 	
-	public abstract ArrayList<ChannelMessage> fetchAllMessages(ChannelModel channel, Date startTime, Date endTime);
+	public abstract ArrayList<MessageModel> fetchAllMessages(ChannelModel channel, Date startTime, Date endTime);
 }

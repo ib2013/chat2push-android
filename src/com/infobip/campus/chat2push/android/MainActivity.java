@@ -3,6 +3,9 @@ package com.infobip.campus.chat2push.android;
 //import com.example.helloworld.R;
 //import com.infobip.campus.chat2push.android.R;
 
+import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
+import com.infobip.campus.chat2push.android.client.InfobipClient;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -32,15 +35,12 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View arg0) {
 				
-//				if(Client.login(userNameEditText.getText().toString(),
-//						passwordEditText.getText().toString())) {
-				
-				// ovde ili kasnije za odredjenog usera uzimamo listu kanala
-//					fetchAllChannels(userNameEditText.getText().toString());
-
-				//				}
-				
-//				else {
+				if(DefaultInfobipClient.loginUser(userNameEditText.getText().toString(),
+						passwordEditText.getText().toString())) {
+							Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
+							startActivity(intent);
+					}
+				else {
 				
 				new AlertDialog.Builder(MainActivity.this)
 				.setTitle("Incorrect username/password combination!")
@@ -51,17 +51,13 @@ public class MainActivity extends ActionBarActivity {
 					public void onClick(DialogInterface dialog, int which) {
 						Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
 						startActivity(intent);
-						
 					}
 				})
 				.setPositiveButton("OK", null) // umesto null ide listener i registerUser(userNameEditText.getText().toString(), passwordNameEditText.getText().toString());
 				.show();
-				
-				
-//			}
-			
-			}
-		});
+
+			}	
+			} });
 		
 		Button registerUserButton = (Button) findViewById(R.id.buttonRegisterUser);
 		registerUserButton.setOnClickListener(new View.OnClickListener() {
