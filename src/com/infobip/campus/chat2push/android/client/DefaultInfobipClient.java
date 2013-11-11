@@ -18,9 +18,9 @@ import com.infobip.campus.chat2push.android.configuration.Configuration;
 import com.infobip.campus.chat2push.android.models.ChannelModel;
 import com.infobip.campus.chat2push.android.models.MessageModel;
 
-public class DefaultInfobipClient implements InfobipClient {
+public class DefaultInfobipClient {
 
-	private String getResponseText(HttpResponse response) throws IOException {
+	private static String getResponseText(HttpResponse response) throws IOException {
 		BufferedReader rd = new BufferedReader(new InputStreamReader(response
 				.getEntity().getContent()));
 		String responseText = new String();
@@ -32,8 +32,7 @@ public class DefaultInfobipClient implements InfobipClient {
 		return responseText;
 	}
 
-	@Override
-	public boolean registerUser(String userName, String password) {
+	public static boolean registerUser(String userName, String password) {
 		Gson gson = new Gson();
 
 		try {
@@ -59,8 +58,7 @@ public class DefaultInfobipClient implements InfobipClient {
 		}
 	}
 
-	@Override
-	public boolean loginUser(String userName, String password) {
+	public static boolean loginUser(String userName, String password) {
 		Gson gson = new Gson();
 
 		try {
@@ -86,8 +84,7 @@ public class DefaultInfobipClient implements InfobipClient {
 		}
 	}
 
-	@Override
-	public ArrayList<ChannelModel> fetchAllChannels(String userName) {
+	public static ArrayList<ChannelModel> fetchAllChannels(String userName) {
 		Gson gson = new Gson();
 
 		try {
@@ -97,7 +94,7 @@ public class DefaultInfobipClient implements InfobipClient {
 			
 			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
 			HttpClient client = new DefaultHttpClient();
-			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION + "user/login");
+			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION + "channel/fetch");
 			request.addHeader("content-type", "application/json");
 			request.setEntity(parms);
 			HttpResponse response = client.execute(request);
@@ -110,8 +107,8 @@ public class DefaultInfobipClient implements InfobipClient {
 		return null;
 	}
 
-	@Override
-	public ArrayList<MessageModel> fetchAllMessages(ChannelModel channel, Date startTime, Date endTime) {
+
+	public static ArrayList<MessageModel> fetchAllMessages(ChannelModel channel, Date startTime, Date endTime) {
 		return null;
 	}
 
