@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="4dp"
+    android:orientation="horizontal"
+    android:background="@color/light_gray" >
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="4dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
+    
+    	<TextView
+        	android:id="@+id/textViewMessageAuthor"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_marginRight="4dp"
+       	 	android:text="Author"
+       	 	android:gravity="right"
+        	android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    	<TextView
+        	android:id="@+id/textViewMessageText"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:padding="4dp"
+        	android:background="@color/white"
+        	android:gravity="right"
+        	android:text="MessageText" />
+    	
+    	<TextView
+        	android:id="@+id/textViewMessageTime"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:paddingLeft="4dp"
+        	android:paddingBottom="4dp"
+        	android:background="@color/white"
+        	android:textColor="@color/gray"
+        	android:textAppearance="?android:attr/textAppearanceSmall"
+        	android:text="MessageTime" />
+    
+    </LinearLayout>
+    
+    <ImageView
+        android:id="@+id/imageViewMessageAutorIcon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_weight="0" /> 
+
+</LinearLayout>

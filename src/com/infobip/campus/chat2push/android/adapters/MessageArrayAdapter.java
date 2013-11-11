@@ -43,11 +43,15 @@ public class MessageArrayAdapter extends ArrayAdapter<MessageModel>{
 
 		ViewHolder viewHolder = null;
 		
-		//Log.v("ConvertView", String.valueOf(position));
+		MessageModel currentMessageItem = messageList.get(position);
 
 		if (convertView == null) {
-			LayoutInflater viewInflater = ((Activity) context).getLayoutInflater();;
-			convertView = viewInflater.inflate(R.layout.list_message_item, null);
+			LayoutInflater viewInflater = ((Activity) context).getLayoutInflater();
+			//TODO: u if treba ubaciti ime trenutno logiranog usera!
+			if (currentMessageItem.getAuthor().equals("Druga Ljudina"))
+				convertView = viewInflater.inflate(R.layout.list_message_right_item, null);
+			else
+				convertView = viewInflater.inflate(R.layout.list_message_left_item, null);
 
 			viewHolder = new ViewHolder();
 			viewHolder.textViewAuthor = (TextView) convertView.findViewById(R.id.textViewMessageAuthor);
@@ -60,12 +64,11 @@ public class MessageArrayAdapter extends ArrayAdapter<MessageModel>{
 		}
 
 		// doda konkretne podatke u novi contentView
-		MessageModel messageItem = messageList.get(position);
-		viewHolder.textViewAuthor.setText(messageItem.getAuthor());
-		viewHolder.textViewText.setText(messageItem.getText());
-		viewHolder.textViewTime.setText(messageItem.getDateAsString());
+		viewHolder.textViewAuthor.setText(currentMessageItem.getAuthor());
+		viewHolder.textViewText.setText(currentMessageItem.getText());
+		viewHolder.textViewTime.setText(currentMessageItem.getDateAsString());
 		//TODO: rijesiti ikone usera!
-		viewHolder.imageVIewAuthorIcon.setBackgroundColor(Color.rgb((messageItem.getAuthor().charAt(0)*5)%255, (messageItem.getAuthor().charAt(1)*6)%255, (messageItem.getAuthor().charAt(2)*7)%255));
+		viewHolder.imageVIewAuthorIcon.setBackgroundColor(Color.rgb((currentMessageItem.getAuthor().charAt(0)*5)%200+50, (currentMessageItem.getAuthor().charAt(1)*6)%200+50, (currentMessageItem.getAuthor().charAt(2)*7)%200+50));
 		return convertView;
 	}
 

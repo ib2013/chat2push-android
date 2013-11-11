@@ -23,8 +23,11 @@ public class ChannelActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_channel);
 		
-		messageList.add(new MessageModel("ljudina", "Maaajke mi; ja sam ljud'na!", new Date(System.currentTimeMillis())));
-		messageList.add(new MessageModel("Druga Ljudina", "Maaajke mi; i ja sam!!!", new Date(System.currentTimeMillis())));
+		messageList.add(new MessageModel("Ljudina", "Maaajke mi; ja sam ljud'na! A buduæi da bi chat valjalo testirati na malo veèim stringovima još æu par stvari napisati!", new Date(System.currentTimeMillis())));
+		messageList.add(new MessageModel("Druga Ljudina", "Maaajke mi; i ja sam!!! I još bih samo nadodao da ova Ljudina iznad mene nije ništa veèa ljudima OD mene, pa æu i ja još nešto napisati. I to nešto æe biti veèe od ovoga iznad. Nek se zna.", new Date(System.currentTimeMillis())));
+		messageList.add(new MessageModel("3. Ljudina", "Da.", new Date(System.currentTimeMillis())));
+		messageList.add(new MessageModel("Ljudina", "Maaajke mi; ja sam ljud'na! A buduæi da bi chat valjalo testirati na malo veèim stringovima još æu par stvari napisati!", new Date(System.currentTimeMillis())));
+		messageList.add(new MessageModel("Druga Ljudina", "Maaajke mi; i ja sam!!! I još bih samo nadodao da ova Ljudina iznad mene nije ništa veèa ljudima OD mene, pa æu i ja još nešto napisati. I to nešto æe biti veèe od ovoga iznad. Nek se zna.", new Date(System.currentTimeMillis())));
 		messageList.add(new MessageModel("3. Ljudina", "Da.", new Date(System.currentTimeMillis())));
 		displayListView(messageList);
 		
