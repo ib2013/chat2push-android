@@ -1,6 +1,7 @@
 package com.infobip.campus.chat2push.android;
 
 //import com.example.helloworld.R;
+import com.infobip.campus.chat2push.android.R;
 
 import android.os.Bundle;
 import android.app.Activity;
