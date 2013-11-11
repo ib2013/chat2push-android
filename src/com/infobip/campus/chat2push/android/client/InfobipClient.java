@@ -2,6 +2,7 @@ package com.infobip.campus.chat2push.android.client;
 
 import java.util.ArrayList;
 
+import com.infobip.campus.chat2push.android.models.ChannelMessage;
 import com.infobip.campus.chat2push.android.models.ChannelModel;
 
 public interface InfobipClient {
@@ -12,6 +13,6 @@ public interface InfobipClient {
 	
 	ArrayList<ChannelModel> fetchAllChannels(String userName);
 	
-	
+	ArrayList<ChannelMessage> fetchAllMessages(ChannelModel channel);
 
 }
