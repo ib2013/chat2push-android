@@ -1,8 +1,11 @@
-package com.infobip.campus.chat2push.android;
+package com.infobip.campus.chat2push.android.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.infobip.campus.chat2push.android.R;
+import com.infobip.campus.chat2push.android.R.id;
+import com.infobip.campus.chat2push.android.R.layout;
 import com.infobip.campus.chat2push.android.models.ChannelModel;
 
 import android.app.Activity;
@@ -15,12 +18,12 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-public class MyArrayAdapter extends ArrayAdapter<ChannelModel>{
+public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 
 	private ArrayList<ChannelModel> channelList;
 	private Context context;
 
-	public MyArrayAdapter(Activity context, int davaViewResourceId, List<ChannelModel> data) {
+	public ChannelArrayAdapter(Activity context, int davaViewResourceId, List<ChannelModel> data) {
 		super(context, davaViewResourceId, data);
 		
 		this.context = context;

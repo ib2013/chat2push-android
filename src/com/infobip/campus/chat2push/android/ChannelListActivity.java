@@ -1,5 +1,7 @@
 package com.infobip.campus.chat2push.android;
 
+import com.infobip.campus.chat2push.android.adapters.ChannelArrayAdapter;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
@@ -7,7 +9,7 @@ import android.view.Menu;
 
 public class ChannelListActivity extends ActionBarActivity {
 	
-	MyArrayAdapter listViewAdapter = null;
+	ChannelArrayAdapter listViewAdapter = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

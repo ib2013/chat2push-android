@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/textViewMessageAutor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Username"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageView
+        android:id="@+id/imageViewMessageAutorIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textViewMessageAutor"
+        android:src="@drawable/abc_ab_solid_light_holo" />
+
+    <TextView
+        android:id="@+id/textViewMessageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageViewMessageAutorIcon"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textViewMessageAutor"
+        android:layout_toRightOf="@+id/textViewMessageAutor"
+        android:text="MessageText" />
+
+    <TextView
+        android:id="@+id/textViewMessageTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textViewMessageText"
+        android:layout_alignParentRight="true"
+        android:text="MessageTime" />
+
+</RelativeLayout>
