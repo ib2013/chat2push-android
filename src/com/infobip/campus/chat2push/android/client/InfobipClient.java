@@ -15,5 +15,4 @@ public interface InfobipClient {
 	public abstract ArrayList<ChannelModel> fetchAllChannels(String userName);
 	
 	public abstract ArrayList<ChannelMessage> fetchAllMessages(ChannelModel channel, Date startTime, Date endTime);
-
 }
