@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.View;
@@ -43,9 +45,19 @@ public class MainActivity extends ActionBarActivity {
 				new AlertDialog.Builder(MainActivity.this)
 				.setTitle("Incorrect username/password combination!")
 				.setMessage("Create account as " + userNameEditText.getText().toString() + "?")
-				.setNegativeButton("Close", null)
+				.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
+						startActivity(intent);
+						
+					}
+				})
 				.setPositiveButton("OK", null) // umesto null ide listener i registerUser(userNameEditText.getText().toString(), passwordNameEditText.getText().toString());
-				.show();				
+				.show();
+				
+				
 //			}
 			
 			}
@@ -62,7 +74,15 @@ public class MainActivity extends ActionBarActivity {
 					new AlertDialog.Builder(MainActivity.this)
 					.setTitle("Error!")
 					.setMessage("Username " + userNameEditText.getText().toString() + " already exists in database!")
-					.setNegativeButton("Close", null)
+					.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							Intent intent = new Intent(MainActivity.this, ChannelActivity.class);
+							startActivity(intent);
+							
+						}
+					})
 					.show();
 //				}
 					

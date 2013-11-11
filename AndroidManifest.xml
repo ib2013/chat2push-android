@@ -23,7 +23,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.infobip.campus.chat2push.android.ChannelActivity"
+			android:name="com.infobip.campus.chat2push.android.ChannelListActivity"
+            android:label="@string/title_activity_channel_list" >
+        </activity>
+        <activity
+			android:name="com.infobip.campus.chat2push.android.ChannelActivity"
             android:label="@string/title_activity_channel" >
         </activity>
     </application>

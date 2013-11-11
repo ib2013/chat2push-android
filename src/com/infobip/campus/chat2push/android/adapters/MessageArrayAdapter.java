@@ -10,6 +10,7 @@ import com.infobip.campus.chat2push.android.models.MessageModel;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +35,7 @@ public class MessageArrayAdapter extends ArrayAdapter<MessageModel>{
 	
 	private class ViewHolder {
 		TextView textViewAuthor, textViewText, textViewTime;
-		//ImageView imageVIewAuthorIcon;
+		ImageView imageVIewAuthorIcon;
 	}
 	
 	@Override
@@ -52,6 +53,7 @@ public class MessageArrayAdapter extends ArrayAdapter<MessageModel>{
 			viewHolder.textViewAuthor = (TextView) convertView.findViewById(R.id.textViewMessageAuthor);
 			viewHolder.textViewText = (TextView) convertView.findViewById(R.id.textViewMessageText);
 			viewHolder.textViewTime = (TextView) convertView.findViewById(R.id.textViewMessageTime);
+			viewHolder.imageVIewAuthorIcon = (ImageView) convertView.findViewById(R.id.imageViewMessageAutorIcon);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -61,8 +63,9 @@ public class MessageArrayAdapter extends ArrayAdapter<MessageModel>{
 		MessageModel messageItem = messageList.get(position);
 		viewHolder.textViewAuthor.setText(messageItem.getAuthor());
 		viewHolder.textViewText.setText(messageItem.getText());
-		viewHolder.textViewText.setText(messageItem.getText());
-		
+		viewHolder.textViewTime.setText(messageItem.getDateAsString());
+		//TODO: rijesiti ikone usera!
+		viewHolder.imageVIewAuthorIcon.setBackgroundColor(Color.rgb((messageItem.getAuthor().charAt(0)*5)%255, (messageItem.getAuthor().charAt(1)*6)%255, (messageItem.getAuthor().charAt(2)*7)%255));
 		return convertView;
 	}
 

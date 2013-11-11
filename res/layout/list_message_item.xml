@@ -18,7 +18,7 @@
         android:layout_height="50dp"
         android:layout_alignRight="@+id/textViewMessageAuthor"
         android:layout_below="@+id/textViewMessageAuthor"
-        android:src="@drawable/abc_ab_solid_light_holo" />
+         />
 
     <TextView
         android:id="@+id/textViewMessageTime"
