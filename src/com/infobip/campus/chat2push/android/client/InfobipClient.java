@@ -3,8 +3,8 @@ package com.infobip.campus.chat2push.android.client;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.infobip.campus.chat2push.android.models.MessageModel;
 import com.infobip.campus.chat2push.android.models.ChannelModel;
+import com.infobip.campus.chat2push.android.models.MessageModel;
 
 public interface InfobipClient {
 	
