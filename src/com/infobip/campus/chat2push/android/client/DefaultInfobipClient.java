@@ -15,8 +15,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.infobip.campus.chat2push.android.configuration.Configuration;
-import com.infobip.campus.chat2push.android.models.ChannelMessage;
 import com.infobip.campus.chat2push.android.models.ChannelModel;
+import com.infobip.campus.chat2push.android.models.MessageModel;
 
 public class DefaultInfobipClient implements InfobipClient {
 
@@ -97,7 +97,7 @@ public class DefaultInfobipClient implements InfobipClient {
 			
 			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
 			HttpClient client = new DefaultHttpClient();
-			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION + "user/login");
+			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION + "channel/fetch");
 			request.addHeader("content-type", "application/json");
 			request.setEntity(parms);
 			HttpResponse response = client.execute(request);
@@ -111,7 +111,7 @@ public class DefaultInfobipClient implements InfobipClient {
 	}
 
 	@Override
-	public ArrayList<ChannelMessage> fetchAllMessages(ChannelModel channel, Date startTime, Date endTime) {
+	public ArrayList<MessageModel> fetchAllMessages(ChannelModel channel, Date startTime, Date endTime) {
 		return null;
 	}
 
