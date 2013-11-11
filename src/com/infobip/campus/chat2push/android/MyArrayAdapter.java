@@ -2,6 +2,9 @@ package com.infobip.campus.chat2push.android;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.infobip.campus.chat2push.android.models.ChannelModel;
+
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -12,16 +15,16 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-public class MyArrayAdapter extends ArrayAdapter<ChannelItem>{
+public class MyArrayAdapter extends ArrayAdapter<ChannelModel>{
 
-	private ArrayList<ChannelItem> channelList;
+	private ArrayList<ChannelModel> channelList;
 	private Context context;
 
-	public MyArrayAdapter(Activity context, int davaViewResourceId, List<ChannelItem> data) {
+	public MyArrayAdapter(Activity context, int davaViewResourceId, List<ChannelModel> data) {
 		super(context, davaViewResourceId, data);
 		
 		this.context = context;
-		this.channelList = new ArrayList<ChannelItem>();
+		this.channelList = new ArrayList<ChannelModel>();
 		this.channelList.addAll(data);		
 	}
 	
@@ -51,7 +54,7 @@ public class MyArrayAdapter extends ArrayAdapter<ChannelItem>{
 			viewHolder.checkboxChannelStatus.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					CheckBox checkBox = (CheckBox) v;
-					ChannelItem channelItem = (ChannelItem) checkBox.getTag();
+					ChannelModel channelItem = (ChannelModel) checkBox.getTag();
 					channelItem.setStatus(checkBox.isChecked());
 				}
 			});
@@ -60,7 +63,7 @@ public class MyArrayAdapter extends ArrayAdapter<ChannelItem>{
 		}
 
 		// doda konkretne podatke u novi contentView
-		ChannelItem channelItem = channelList.get(position);
+		ChannelModel channelItem = channelList.get(position);
 		viewHolder.textViewChannelName.setText(channelItem.getName());
 		viewHolder.textViewChannelDescription.setText(channelItem.getDescription());
 		viewHolder.checkboxChannelStatus.setChecked(channelItem.getStatus());

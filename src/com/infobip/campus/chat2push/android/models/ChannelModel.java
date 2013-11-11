@@ -1,6 +1,6 @@
-package com.infobip.campus.chat2push.android;
+package com.infobip.campus.chat2push.android.models;
 
-public class ChannelItem {
+public class ChannelModel {
 	
 	private String name, description;
 	private Boolean status;
