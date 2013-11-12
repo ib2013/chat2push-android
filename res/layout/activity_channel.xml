@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ChannelActivity" >
+
+	<ListView 
+	    android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="4dp"
+    	android:layout_marginLeft="4dp"
+    	android:layout_marginRight="4dp"
+    	android:dividerHeight="8dp"
+    	android:divider="@null"
+    	android:id="@+id/listView"
+    	android:layout_weight="1" 
+    	android:stackFromBottom="true" />
+	
+	
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:background="@color/light_gray" />
+    
+	<LinearLayout 
+	    android:layout_height="wrap_content"
+	    android:layout_width="match_parent"
+	    android:orientation="horizontal"
+	    android:layout_weight="0">
+	    
+	    	<EditText
+	    	    android:layout_width="fill_parent"
+	    	    android:layout_height="wrap_content"
+	    	    android:layout_marginLeft="4dp"
+	    	    android:layout_marginRight="4dp"
+	    	    android:maxLines="3"
+	    	    android:scrollbars="vertical"
+	    	    android:scrollbarStyle="outsideInset"
+	    	    android:layout_weight="1"
+	    	    android:inputType="textCapSentences|textMultiLine" />
+	    	
+	    	<ImageButton
+	    	    android:layout_width="48dp"
+	    	    android:layout_height="48dp"
+	    	    android:layout_gravity="center_vertical"
+	    	    android:src="@drawable/ic_action_send_now"
+	    	    android:layout_weight="0" />
+	    
+	</LinearLayout>
+	
+</LinearLayout>
