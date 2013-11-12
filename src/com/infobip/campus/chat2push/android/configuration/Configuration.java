@@ -5,5 +5,5 @@ public class Configuration {
 	public static final String AUTHORIZATION_INFO = "";
 	public static final String SERVER_LOCATION = "http://192.168.1.144/";
 	
-	public static final String CURRENT_USER_NAME = "Ljudina";
+	public static String CURRENT_USER_NAME = "Ljudina";
 }

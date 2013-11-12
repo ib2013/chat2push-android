@@ -3,6 +3,7 @@ package com.infobip.campus.chat2push.android.adapters;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.infobip.campus.chat2push.android.MainActivity;
 import com.infobip.campus.chat2push.android.R;
 import com.infobip.campus.chat2push.android.R.id;
 import com.infobip.campus.chat2push.android.R.layout;
@@ -20,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MessageArrayAdapter extends ArrayAdapter<MessageModel>{
 
@@ -49,8 +51,10 @@ public class MessageArrayAdapter extends ArrayAdapter<MessageModel>{
 		if (convertView == null) {
 			LayoutInflater viewInflater = ((Activity) context).getLayoutInflater();
 			
-			if (currentMessageItem.getAuthor().equals(Configuration.CURRENT_USER_NAME))
+			if (currentMessageItem.getAuthor().equals(Configuration.CURRENT_USER_NAME)) {
 				convertView = viewInflater.inflate(R.layout.list_message_right_item, null);
+				Toast.makeText(getContext(), currentMessageItem.getAuthor(), Toast.LENGTH_SHORT).show();
+			}
 			else
 				convertView = viewInflater.inflate(R.layout.list_message_left_item, null);
 
