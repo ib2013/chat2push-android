@@ -35,7 +35,7 @@ import android.widget.ListView;
 public class ChannelListActivity extends ActionBarActivity {
 	
 	ChannelArrayAdapter listViewAdapter = null;
-	ArrayList<ChannelModel> channelList;
+	ArrayList<ChannelModel> channelList = new ArrayList<ChannelModel>();
 	ChannelModel mdl1 = new ChannelModel();
 	ChannelModel mdl2 = new ChannelModel();
 	
@@ -138,12 +138,18 @@ public class ChannelListActivity extends ActionBarActivity {
 //				} catch (JSONException e) {
 //					e.printStackTrace();
 //					errorCode = 1;
+				String rez="";
+				for (ChannelModel x : channelList){
+					rez+=x.getName() + "-" + x.getDescription() + "-" + x.getStatus();
+				}
+				Log.d("CHANNELS: ", "SUCCES " + rez);
 //				}
 			} catch (Exception e) {
 				Log.d("ERROR LOADING CHANNELS: ", "FETCHING PROBLEM");
 				errorCode = 1;
 				e.printStackTrace();
 			}
+			
 			return "prazan string";
 		}
 
@@ -153,6 +159,8 @@ public class ChannelListActivity extends ActionBarActivity {
 //			pDialog.dismiss();
 			runOnUiThread(new Runnable() {
 				public void run() {
+					Log.d("DISPLAYING: ", "...");
+					displayListView(channelList);
 //					if (errorCode == 0) {
 //						addItemsOnListView();
 //						writeChannelListToFile(channels);

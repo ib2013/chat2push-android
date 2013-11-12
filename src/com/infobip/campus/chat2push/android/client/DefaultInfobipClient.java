@@ -101,7 +101,9 @@ public class DefaultInfobipClient {
 			return channelList;
 
 		} catch (Exception e) {
-			return new ArrayList<ChannelModel>();
+			channelList = new ArrayList<ChannelModel>();
+			channelList.add(new ChannelModel("exc","eption",false));
+			return channelList;
 		}
 	}
 
