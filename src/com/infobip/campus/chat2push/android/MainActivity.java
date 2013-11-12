@@ -4,6 +4,7 @@ package com.infobip.campus.chat2push.android;
 //import com.infobip.campus.chat2push.android.R;
 
 import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
+import com.infobip.campus.chat2push.android.configuration.Configuration;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -28,46 +29,46 @@ public class MainActivity extends ActionBarActivity {
 		final EditText userNameEditText = (EditText) findViewById(R.id.editTextUserName);
 		final EditText passwordEditText = (EditText) findViewById(R.id.editTextPassword);
 		
-		// LOGIN BUTTON
+		// login button
 		Button loginButton = (Button) findViewById(R.id.buttonLogin);
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
-				
-				if(DefaultInfobipClient.loginUser(userNameEditText.getText().toString(),
-						passwordEditText.getText().toString())) {
+				// ako loginUser vrati true, znaci da user/password kombinacija postoji u bazi
+				// postavlja USER_NAME na usera i prelazi na ChannelListActivity
+				if(true
+//						DefaultInfobipClient.loginUser(userNameEditText.getText().toString(),
+//						passwordEditText.getText().toString())
+						) {
+							//Configuration.USER_NAME = userNameEditText.getText().toString();
 							Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
 							startActivity(intent);
-					}
-				else {
+				}
 				
-				new AlertDialog.Builder(MainActivity.this)
-				.setTitle("Incorrect username/password combination!")
-				.setMessage("Create account as " + userNameEditText.getText().toString() + "?")
-				.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
-						startActivity(intent);
-					}
-				})
-				.setPositiveButton("OK", null) // umesto null ide listener i registerUser(userNameEditText.getText().toString(), passwordNameEditText.getText().toString());
-				.show();
-
-			}	
-			} });
+				// ako loginUser vrati false, izbaci alert da je netacna user/password kombinacija
+				else {
+					new AlertDialog.Builder(MainActivity.this)
+					.setTitle("Login error")
+					.setMessage("Incorrect username/password combination!")
+					.setPositiveButton("OK", null)
+					.show();
+				}	
+			}
+		});
 		
-		// REGISTER BUTTON
+		// register button
 		Button registerUserButton = (Button) findViewById(R.id.buttonRegisterUser);
 		registerUserButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				
-//				if(Client.login(userNameEditText.getText().toString(),
-//				passwordEditText.getText().toString())) {
+				// ako postoji taj user
+				if(true
+//						DefaultInfobipClient.loginUser(userNameEditText.getText().toString(),
+//				passwordEditText.getText().toString())
+				) {
+					// prikazi alert da taj user postoji u bazi
 					new AlertDialog.Builder(MainActivity.this)
 					.setTitle("Error!")
 					.setMessage("Username " + userNameEditText.getText().toString() + " already exists in database!")
@@ -77,22 +78,24 @@ public class MainActivity extends ActionBarActivity {
 						public void onClick(DialogInterface dialog, int which) {
 							Intent intent = new Intent(MainActivity.this, ChannelActivity.class);
 							startActivity(intent);
-							
 						}
 					})
 					.show();
-//				}
-					
-				//else registerUser(userNameEditText.getText().toString(), passwordNameEditText.getText().toString());
-					
+			}
 				
+				// else REGISTRUJ USERA
+				else {
+					if(DefaultInfobipClient.registerUser(userNameEditText.getText().toString(),
+						passwordEditText.getText().toString())) {
+							new AlertDialog.Builder(MainActivity.this)
+							.setTitle("New account created")
+							.setMessage("Welcome,  " + userNameEditText.getText().toString() + "!")
+							.setNeutralButton("ok", null)
+							.show();
+					}
+				}
 			}
 		});
-		
-		
-//		client.fetchAllChannels(String userName);
-//		client.createUserId(String userName, String password);
-
 	}
 
 	@Override
