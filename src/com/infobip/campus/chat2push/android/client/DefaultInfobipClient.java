@@ -90,11 +90,10 @@ public class DefaultInfobipClient {
 
 			int responseCode = response.getStatusLine().getStatusCode();
 
-			channelList = parseJson(responseText);
+			channelList = parseJsonChannelModel(responseText);
 
 			return channelList;
 
-			// TODO parsirati responseText u JSON
 		} catch (Exception e) {
 			return new ArrayList<ChannelModel>();
 		}
@@ -103,10 +102,28 @@ public class DefaultInfobipClient {
 	public static ArrayList<MessageModel> fetchAllMessages(
 			ChannelModel channel, Date startTime, Date endTime) {
 
-		return null;
+		Gson gson = new Gson();
+		ArrayList<MessageModel> messageList;
+
+		try {
+			HttpClient client = new DefaultHttpClient();
+			HttpGet request = new HttpGet(Configuration.SERVER_LOCATION
+					+ "message/fetch/username=");
+			HttpResponse response = client.execute(request);
+			String responseText = getResponseText(response);
+
+			int responseCode = response.getStatusLine().getStatusCode();
+
+			channelList = parseJsonMessageModel(responseText);
+
+			return channelList;
+
+		} catch (Exception e) {
+			return new ArrayList<ChannelModel>();
+		}
 	}
 
-	private static ArrayList<ChannelModel> parseJson(String jsonResponse) {
+	private static ArrayList<ChannelModel> parseJsonChannelModel(String jsonResponse) {
 		JsonParser jsonParser = new JsonParser();
 		JsonElement jsonTree = jsonParser.parse(jsonResponse);
 		JsonArray jsonArray = jsonTree.getAsJsonArray();
@@ -144,6 +161,10 @@ public class DefaultInfobipClient {
 		}
 
 		return channelList;
+	}
+	
+	private static ArrayList<MessageModel> parseJsonMessageModel (String responseText){
+		return null;
 	}
 
 	private static String getResponseText(HttpResponse response)
