@@ -5,18 +5,20 @@ package com.infobip.campus.chat2push.android;
 
 import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
 import com.infobip.campus.chat2push.android.configuration.Configuration;
-
 import com.infobip.campus.chat2push.android.*;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -46,7 +48,7 @@ public class MainActivity extends ActionBarActivity {
 				// ako loginUser vrati true, znaci da user/password kombinacija postoji u bazi
 				// postavlja USER_NAME na usera i prelazi na ChannelListActivity
 				if(DefaultInfobipClient.loginUser(userNameEditText.getText().toString(),
-						passwordEditText.getText().toString()) != null) {
+						passwordEditText.getText().toString()) == null) {
 							Configuration.CURRENT_USER_NAME = userNameEditText.getText().toString();
 							Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
 							startActivity(intent);
@@ -74,23 +76,9 @@ public class MainActivity extends ActionBarActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// ako postoji taj user
-				if(DefaultInfobipClient.loginUser(userNameEditText.getText().toString(),
-				passwordEditText.getText().toString()) != null) {
-					// prikazi alert da taj user postoji u bazi
-					new AlertDialog.Builder(MainActivity.this)
-					.setTitle("Registration error")
-					.setMessage("Username " + userNameEditText.getText().toString() + " already exists in database!")
-					.setNegativeButton("Close", null)
-					.show();
-					
-					userNameEditText.setText("");
-					passwordEditText.setText("");
-					userNameEditText.requestFocus();
-			}
+
 				
-				// else REGISTRUJ USERA
-				else {
+				// REGISTRUJ USERA
 
 					// ako username nije duzi od 2 karaktera
 					if(!(userNameEditText.getText().toString().length() < 3)) {
@@ -98,13 +86,26 @@ public class MainActivity extends ActionBarActivity {
 						if(!(passwordEditText.getText().toString().length()<6)) {
 							// ako je sve u redu, registerUser prolazi
 							if(DefaultInfobipClient.registerUser(userNameEditText.getText().toString(),
-									passwordEditText.getText().toString()) != null) {
+									passwordEditText.getText().toString()) == null) {
 									new AlertDialog.Builder(MainActivity.this)
 									.setTitle("New account created")
 									.setMessage("Welcome,  " + userNameEditText.getText().toString() + "!")
-									.setNeutralButton("ok", null)
+									.setPositiveButton("ok", new OnClickListener() {
+										
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											Configuration.CURRENT_USER_NAME = userNameEditText.getText().toString();
+											Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
+											startActivity(intent);
+											
+										}
+									})
 									.show();
+									
+									
 							}
+							else 
+								Log.i("registerTag", "nije prosao register");
 						}
 		
 						else {
@@ -131,7 +132,7 @@ public class MainActivity extends ActionBarActivity {
 						passwordEditText.setText("");
 						userNameEditText.requestFocus();
 					}
-				}
+				
 				
 			}
 		});

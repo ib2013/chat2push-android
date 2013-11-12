@@ -42,6 +42,7 @@ public class DefaultInfobipClient {
 			request.addHeader("content-type", "application/json");
 			request.setEntity(parms);
 			HttpResponse response = client.execute(request);
+			
 			String responseText = getResponseText(response);
 
 			int responseCode = response.getStatusLine().getStatusCode();
@@ -94,7 +95,7 @@ public class DefaultInfobipClient {
 			
 			HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(Configuration.SERVER_LOCATION
-					+ "channel/fetch/" + userName);
+					+ "channel/fetch/"/* + userName*/);
 			HttpResponse response = client.execute(request);
 			Log.i("CLIENT -----", response.toString());
 			String responseText = getResponseText(response);
