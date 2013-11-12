@@ -7,4 +7,8 @@ public class Configuration {
 
 	
 	public static String CURRENT_USER_NAME = "Ljudina";
+
+	public static final String SENDER_ID = "434459427504";
+	public static final String APP_ID = "1a6cfc8b976c";
+	public static final String APP_SECRET = "52df27301ebd";
 }
