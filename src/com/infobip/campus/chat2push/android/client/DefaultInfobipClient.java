@@ -114,7 +114,7 @@ public class DefaultInfobipClient {
 	}
 
 	public static ArrayList<MessageModel> fetchAllMessages(
-			ChannelModel channel, Date startTime, Date endTime) {
+			String channelName, Date startTime, Date endTime) {
 
 		Gson gson = new Gson();
 		ArrayList<MessageModel> messageList;
@@ -124,7 +124,7 @@ public class DefaultInfobipClient {
 			HttpGet request = new HttpGet(Configuration.SERVER_LOCATION
 					+ "message/fetch/username="
 					+ Configuration.CURRENT_USER_NAME + "&channel="
-					+ channel.getName() + " &start-time="
+					+ channelName + " &start-time="
 					+ startTime.toString() + "&end-time=" + endTime.toString());
 			HttpResponse response = client.execute(request);
 			String responseText = getResponseText(response);

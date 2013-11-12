@@ -6,17 +6,19 @@ package com.infobip.campus.chat2push.android;
 import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
 import com.infobip.campus.chat2push.android.configuration.Configuration;
 
-import com.infobip.campus.chat2push.android.*;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -141,4 +143,17 @@ public class MainActivity extends ActionBarActivity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO napraviti za pravi meni, trenutno je samo za gumb za testiranje ChannelActivitya.
+		switch (item.getItemId()) {
+		case R.id.test_channel_activity :
+			Intent intent = new Intent(this, ChannelActivity.class);
+			intent.putExtra("channelName", "TEST");
+			this.startActivity(intent);				
+		}
+		return false;
+	}
+	
 }
