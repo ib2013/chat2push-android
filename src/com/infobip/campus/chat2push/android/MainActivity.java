@@ -41,7 +41,7 @@ public class MainActivity extends ActionBarActivity {
 //						DefaultInfobipClient.loginUser(userNameEditText.getText().toString(),
 //						passwordEditText.getText().toString())
 						) {
-							Configuration.CURRENT_USER_NAME = userNameEditText.getText().toString();
+							//Configuration.CURRENT_USER_NAME = "Ljudina";//userNameEditText.getText().toString();
 							Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
 							startActivity(intent);
 				}
