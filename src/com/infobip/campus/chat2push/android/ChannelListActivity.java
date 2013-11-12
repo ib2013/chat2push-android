@@ -26,6 +26,7 @@ import android.content.pm.FeatureInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
@@ -35,7 +36,7 @@ import android.widget.ListView;
 public class ChannelListActivity extends ActionBarActivity {
 	
 	ChannelArrayAdapter listViewAdapter = null;
-	ArrayList<ChannelModel> channelList = new ArrayList<ChannelModel>();
+	ArrayList<ChannelModel> channelList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,23 @@ public class ChannelListActivity extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.channel_list, menu);
+		
+		//MenuItem searchItem = menu.findItem()
+		
+		
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+			case R.id.refresh:
+				new LoadAllChannels().execute();
+				break;
+			case R.id.settings:
+				
+		}
+		
 		return true;
 	}
 	
@@ -58,19 +76,6 @@ public class ChannelListActivity extends ActionBarActivity {
 		listViewAdapter = new ChannelArrayAdapter(this, R.layout.activity_channel_list, channelList);
 		ListView listView = (ListView) findViewById(R.id.listView);
 		listView.setAdapter(listViewAdapter);
-		listView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				if(arg2==1) {
-					Intent intent = new Intent(ChannelListActivity.this, ChannelActivity.class);
-					startActivity(intent);
-				}
-				
-				
-			}
-		});
 	}
 	
 	class LoadAllChannels extends AsyncTask<String, String, String> {
@@ -84,9 +89,10 @@ public class ChannelListActivity extends ActionBarActivity {
 		}
 
 		protected String doInBackground(String... args) {
-
+			channelList = new ArrayList<ChannelModel>();
+			
 			try {
-
+					
 					channelList = DefaultInfobipClient.fetchAllChannels(Configuration.CURRENT_USER_NAME);
 					for(ChannelModel model : channelList) {
 						Log.i("MODEL TAG", model.toString());

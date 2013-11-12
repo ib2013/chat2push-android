@@ -13,6 +13,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -87,13 +89,16 @@ public class DefaultInfobipClient {
 		ArrayList<ChannelModel> channelList;
 
 		try {
+			
 			HttpClient client = new DefaultHttpClient();
-			HttpGet request = new HttpGet(Configuration.SERVER_LOCATION
-					+ "channel2/fetch"); // + userName
+			HttpGet request = new HttpGet(Configuration.SERVER_LOCATION); // + "channel2/fetch" + userName
+			
 			request.addHeader("content-type", "application/json");
 			HttpResponse response = client.execute(request);
+			Log.i("CLIENT -----", response.toString());
 			String responseText = getResponseText(response);
 
+			
 			int responseCode = response.getStatusLine().getStatusCode();
 
 			channelList = parseJsonChannelModel(responseText);
@@ -103,6 +108,8 @@ public class DefaultInfobipClient {
 		} catch (Exception e) {
 			channelList = new ArrayList<ChannelModel>();
 			channelList.add(new ChannelModel("exc","eption",false));
+			channelList.add(new ChannelModel("qwe","eption",false));
+			channelList.add(new ChannelModel("zxc","eption",false));
 			return channelList;
 		}
 	}
