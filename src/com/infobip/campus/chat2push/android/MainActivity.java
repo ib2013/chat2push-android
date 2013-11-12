@@ -4,7 +4,6 @@ package com.infobip.campus.chat2push.android;
 //import com.infobip.campus.chat2push.android.R;
 
 import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
-import com.infobip.campus.chat2push.android.client.InfobipClient;
 import com.infobip.campus.chat2push.android.configuration.Configuration;
 
 import android.os.Bundle;
