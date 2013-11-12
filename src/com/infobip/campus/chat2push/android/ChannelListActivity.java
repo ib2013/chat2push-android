@@ -15,11 +15,24 @@ public class ChannelListActivity extends ActionBarActivity {
 	
 	ChannelArrayAdapter listViewAdapter = null;
 	final ArrayList<ChannelModel> channelList = new ArrayList<ChannelModel>();
+	ChannelModel mdl1 = new ChannelModel();
+	ChannelModel mdl2 = new ChannelModel();
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_channel_list);
+		mdl1.setName("Ime kanala 1");
+		mdl1.setStatus(true);
+		mdl1.setDescription("Description kanala 1");
+		
+		mdl2.setName("Ime kanala 2");
+		mdl2.setStatus(true);
+		mdl2.setDescription("Description kanala 2");
+		
+		channelList.add(mdl1);
+		channelList.add(mdl2);
 		
 		displayListView(channelList);
 		
