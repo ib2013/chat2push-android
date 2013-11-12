@@ -3,7 +3,9 @@
     package="com.infobip.campus.chat2push.android"
     android:versionCode="1"
     android:versionName="1.0" >
-
+    
+	<uses-permission android:name="android.permission.INTERNET" />
+    
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
@@ -31,5 +33,7 @@
             android:label="@string/title_activity_channel" >
         </activity>
     </application>
+    
+    
 
 </manifest>

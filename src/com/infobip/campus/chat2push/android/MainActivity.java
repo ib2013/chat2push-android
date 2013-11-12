@@ -46,8 +46,7 @@ public class MainActivity extends ActionBarActivity {
 				// ako loginUser vrati true, znaci da user/password kombinacija postoji u bazi
 				// postavlja USER_NAME na usera i prelazi na ChannelListActivity
 				if(DefaultInfobipClient.loginUser(userNameEditText.getText().toString(),
-						passwordEditText.getText().toString())
-						) {
+						passwordEditText.getText().toString()) != null) {
 							Configuration.CURRENT_USER_NAME = userNameEditText.getText().toString();
 							Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
 							startActivity(intent);
@@ -77,8 +76,7 @@ public class MainActivity extends ActionBarActivity {
 			public void onClick(View v) {
 				// ako postoji taj user
 				if(DefaultInfobipClient.loginUser(userNameEditText.getText().toString(),
-				passwordEditText.getText().toString())
-				) {
+				passwordEditText.getText().toString()) != null) {
 					// prikazi alert da taj user postoji u bazi
 					new AlertDialog.Builder(MainActivity.this)
 					.setTitle("Registration error")
@@ -93,13 +91,14 @@ public class MainActivity extends ActionBarActivity {
 				
 				// else REGISTRUJ USERA
 				else {
+
 					// ako username nije duzi od 2 karaktera
 					if(!(userNameEditText.getText().toString().length() < 3)) {
 						// ako password nije duzi od 5 karaktera
 						if(!(passwordEditText.getText().toString().length()<6)) {
 							// ako je sve u redu, registerUser prolazi
 							if(DefaultInfobipClient.registerUser(userNameEditText.getText().toString(),
-									passwordEditText.getText().toString())) {
+									passwordEditText.getText().toString()) != null) {
 									new AlertDialog.Builder(MainActivity.this)
 									.setTitle("New account created")
 									.setMessage("Welcome,  " + userNameEditText.getText().toString() + "!")
@@ -109,6 +108,7 @@ public class MainActivity extends ActionBarActivity {
 						}
 		
 						else {
+
 							new AlertDialog.Builder(MainActivity.this)
 							.setTitle("Registration error")
 							.setMessage("Password must contain at least 6 characters!")
