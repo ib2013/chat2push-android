@@ -102,6 +102,7 @@ public class DefaultInfobipClient {
 
 	public static ArrayList<MessageModel> fetchAllMessages(
 			ChannelModel channel, Date startTime, Date endTime) {
+
 		return null;
 	}
 
