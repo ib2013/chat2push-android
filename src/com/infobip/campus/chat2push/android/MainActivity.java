@@ -4,7 +4,6 @@ package com.infobip.campus.chat2push.android;
 //import com.infobip.campus.chat2push.android.R;
 
 import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
-import com.infobip.campus.chat2push.android.client.InfobipClient;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -29,6 +28,7 @@ public class MainActivity extends ActionBarActivity {
 		final EditText userNameEditText = (EditText) findViewById(R.id.editTextUserName);
 		final EditText passwordEditText = (EditText) findViewById(R.id.editTextPassword);
 		
+		// LOGIN BUTTON
 		Button loginButton = (Button) findViewById(R.id.buttonLogin);
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			
@@ -59,6 +59,7 @@ public class MainActivity extends ActionBarActivity {
 			}	
 			} });
 		
+		// REGISTER BUTTON
 		Button registerUserButton = (Button) findViewById(R.id.buttonRegisterUser);
 		registerUserButton.setOnClickListener(new View.OnClickListener() {
 			
