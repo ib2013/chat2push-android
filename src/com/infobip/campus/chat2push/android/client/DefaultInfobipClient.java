@@ -26,7 +26,7 @@ import com.infobip.campus.chat2push.android.models.MessageModel;
 
 public class DefaultInfobipClient {
 
-	public static boolean registerUser(String userName, String password) {
+	public static String registerUser(String userName, String password) {
 		Gson gson = new Gson();
 
 		try {
@@ -46,13 +46,16 @@ public class DefaultInfobipClient {
 
 			int responseCode = response.getStatusLine().getStatusCode();
 
-			return responseCode == 201;
+			if (responseText.equals("success")) {
+				return null;
+			} else
+				return responseText;
 		} catch (Exception e) {
-			return false;
+			return "Connection error!";
 		}
 	}
 
-	public static boolean loginUser(String userName, String password) {
+	public static String loginUser(String userName, String password) {
 		Gson gson = new Gson();
 
 		try {
@@ -72,15 +75,14 @@ public class DefaultInfobipClient {
 
 			int responseCode = response.getStatusLine().getStatusCode();
 
-			if (responseCode == 201){
+			if (responseText.equals("success")) {
 				Configuration.CURRENT_USER_NAME = userName;
-				return true;
-			}
-			else{
-				return false;
+				return null;
+			} else {
+				return responseText;
 			}
 		} catch (Exception e) {
-			return false;
+			return "Connection error!";
 		}
 	}
 
@@ -92,23 +94,17 @@ public class DefaultInfobipClient {
 			HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(Configuration.SERVER_LOCATION
 					+ "channel/fetch/" + userName);
-			Log.d("LINE1", request.getURI().toString());
 			HttpResponse response = client.execute(request);
-			Log.d("LINE2", "Proslo");
 			String responseText = getResponseText(response);
-			
 
 			int responseCode = response.getStatusLine().getStatusCode();
 
 			channelList = parseJsonChannelModel(responseText);
-			
-			channelList.add(new ChannelModel("RADI","JARANE :)",true));
 
 			return channelList;
 
 		} catch (Exception e) {
 			channelList = new ArrayList<ChannelModel>();
-			channelList.add(new ChannelModel("exc","eption",false));
 			return channelList;
 		}
 	}
@@ -122,7 +118,8 @@ public class DefaultInfobipClient {
 		try {
 			HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(Configuration.SERVER_LOCATION
-					+ "message/fetch/username=" + Configuration.CURRENT_USER_NAME + "&channel="
+					+ "message/fetch/username="
+					+ Configuration.CURRENT_USER_NAME + "&channel="
 					+ channel.getName() + " &start-time="
 					+ startTime.toString() + "&end-time=" + endTime.toString());
 			HttpResponse response = client.execute(request);
@@ -136,6 +133,39 @@ public class DefaultInfobipClient {
 
 		} catch (Exception e) {
 			return new ArrayList<MessageModel>();
+		}
+	}
+
+	public static String sendMessage(String userName, String channelName,
+			String messageText) {
+
+		Gson gson = new Gson();
+
+		try {
+
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("username", userName);
+			jsonObject.addProperty("channel", channelName);
+			jsonObject.addProperty("message-text", messageText);
+
+			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
+			HttpClient client = new DefaultHttpClient();
+			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
+					+ "user/login");
+			request.addHeader("content-type", "application/json");
+			request.setEntity(parms);
+			HttpResponse response = client.execute(request);
+			String responseText = getResponseText(response);
+
+			int responseCode = response.getStatusLine().getStatusCode();
+
+			if (responseText.equals("success")) {
+				return null;
+			} else {
+				return responseText;
+			}
+		} catch (Exception e) {
+			return "Connection error!";
 		}
 	}
 
@@ -193,7 +223,7 @@ public class DefaultInfobipClient {
 			String messageText;
 			String sentBy;
 			Date time;
-			
+
 			boolean isUserSubscribedToChannel;
 
 			try {
@@ -203,20 +233,20 @@ public class DefaultInfobipClient {
 				messageText = "";
 			}
 			try {
-				sentBy = jsonElement.getAsJsonPrimitive(
-						"sent-by;").getAsString();
+				sentBy = jsonElement.getAsJsonPrimitive("sent-by;")
+						.getAsString();
 			} catch (Exception e) {
 				sentBy = "";
 			}
 
 			try {
-				time = new Date(jsonElement.getAsJsonPrimitive(
-						"time").getAsString());
+				time = new Date(jsonElement.getAsJsonPrimitive("time")
+						.getAsString());
 			} catch (Exception e) {
 				time = new Date(0);
 			}
 
-			messageList.add(new MessageModel(sentBy,messageText,time));
+			messageList.add(new MessageModel(sentBy, messageText, time));
 		}
 
 		return messageList;

@@ -86,7 +86,7 @@ public class MainActivity extends ActionBarActivity {
 				// else REGISTRUJ USERA
 				else {
 					if(DefaultInfobipClient.registerUser(userNameEditText.getText().toString(),
-						passwordEditText.getText().toString())) {
+						passwordEditText.getText().toString()) == null) {
 							new AlertDialog.Builder(MainActivity.this)
 							.setTitle("New account created")
 							.setMessage("Welcome,  " + userNameEditText.getText().toString() + "!")
