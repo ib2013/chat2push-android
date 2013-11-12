@@ -5,6 +5,14 @@ public class ChannelModel {
 	private String name, description;
 	private Boolean status;
 
+	public ChannelModel(String channelName, String channelDescription,
+			boolean isUserSubscribedToChannel) {
+		name=channelName;
+		description=channelDescription;
+		status=isUserSubscribedToChannel;
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getName () {
 		return name;
 	}
