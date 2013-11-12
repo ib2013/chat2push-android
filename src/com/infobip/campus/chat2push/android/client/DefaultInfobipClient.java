@@ -114,13 +114,14 @@ public class DefaultInfobipClient {
 
 			int responseCode = response.getStatusLine().getStatusCode();
 
-			channelList = parseJsonMessageModel(responseText);
+			//channelList = parseJsonMessageModel(responseText);
 
-			return channelList;
+			//return channelList;
 
 		} catch (Exception e) {
-			return new ArrayList<ChannelModel>();
+			//return new ArrayList<ChannelModel>();
 		}
+		return null;
 	}
 
 	private static ArrayList<ChannelModel> parseJsonChannelModel(String jsonResponse) {
