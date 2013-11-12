@@ -1,8 +1,10 @@
 package com.infobip.campus.chat2push.android;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -12,10 +14,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.infobip.campus.chat2push.android.adapters.ChannelArrayAdapter;
 import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
 import com.infobip.campus.chat2push.android.configuration.Configuration;
 import com.infobip.campus.chat2push.android.models.ChannelModel;
+import com.infobip.campus.chat2push.android.models.MessageModel;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,7 +41,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class ChannelListActivity extends ActionBarActivity {
-	
+
 	ChannelArrayAdapter listViewAdapter = null;
 	ArrayList<ChannelModel> channelList = new ArrayList<ChannelModel>();
 
@@ -41,9 +49,9 @@ public class ChannelListActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_channel_list);
-		
+
 		new LoadAllChannels().execute();
-	
+
 	}
 
 	@Override
@@ -52,10 +60,11 @@ public class ChannelListActivity extends ActionBarActivity {
 		getMenuInflater().inflate(R.menu.channel_list, menu);
 		return true;
 	}
-	
+
 	private void displayListView(ArrayList<ChannelModel> channelList) {
-		// kreiraj ArrayAdaptar iz String Array		
-		listViewAdapter = new ChannelArrayAdapter(this, R.layout.activity_channel_list, channelList);
+		// kreiraj ArrayAdaptar iz String Array
+		listViewAdapter = new ChannelArrayAdapter(this,
+				R.layout.activity_channel_list, channelList);
 		ListView listView = (ListView) findViewById(R.id.listView);
 		listView.setAdapter(listViewAdapter);
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -63,16 +72,16 @@ public class ChannelListActivity extends ActionBarActivity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				if(arg2==1) {
-					Intent intent = new Intent(ChannelListActivity.this, ChannelActivity.class);
+				if (arg2 == 1) {
+					Intent intent = new Intent(ChannelListActivity.this,
+							ChannelActivity.class);
 					startActivity(intent);
 				}
-				
-				
+
 			}
 		});
 	}
-	
+
 	class LoadAllChannels extends AsyncTask<String, String, String> {
 		int errorCode = 0;
 		String textView = "";
@@ -85,20 +94,14 @@ public class ChannelListActivity extends ActionBarActivity {
 
 		protected String doInBackground(String... args) {
 
-			try {
-
-					channelList = DefaultInfobipClient.fetchAllChannels(Configuration.CURRENT_USER_NAME);
-					for(ChannelModel model : channelList) {
-						Log.i("MODEL TAG", model.toString());
-					}
-
-			} catch (Exception e) {
-				Log.d("ERROR LOADING CHANNELS: ", "FETCHING PROBLEM");
-				errorCode = 1;
-				e.printStackTrace();
+			channelList = DefaultInfobipClient
+					.fetchAllChannels(Configuration.CURRENT_USER_NAME);
+			for (ChannelModel model : channelList) {
+				Log.i("MODEL TAG", model.toString());
 			}
 
-			Log.i("iTAG", "PROVERA STANJA---------------------------------------------");
+			Log.i("iTAG",
+					"PROVERA STANJA---------------------------------------------");
 			return "doInBackgroundReturnValue";
 		}
 
