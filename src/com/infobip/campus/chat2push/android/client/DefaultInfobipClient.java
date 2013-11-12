@@ -44,7 +44,7 @@ public class DefaultInfobipClient {
 
 			int responseCode = response.getStatusLine().getStatusCode();
 
-			return responseCode == 200;
+			return responseCode == 201;
 		} catch (Exception e) {
 			return false;
 		}
@@ -89,7 +89,7 @@ public class DefaultInfobipClient {
 		try {
 			HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(Configuration.SERVER_LOCATION
-					+ "channel/fetch/" + userName);
+					+ "channel2/fetch"); // + userName
 			request.addHeader("content-type", "application/json");
 			HttpResponse response = client.execute(request);
 			String responseText = getResponseText(response);
