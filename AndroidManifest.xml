@@ -49,6 +49,7 @@
         
         <activity
 			android:name="com.infobip.campus.chat2push.android.ChannelActivity"
+			android:windowSoftInputMode="stateHidden|adjustPan"
             android:label="@string/title_activity_channel" >
         </activity>
         

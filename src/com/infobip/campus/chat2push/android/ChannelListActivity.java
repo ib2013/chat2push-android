@@ -95,7 +95,7 @@ public class ChannelListActivity extends ActionBarActivity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-
+		
 		}
 
 		protected String doInBackground(String... args) {
