@@ -3,10 +3,15 @@ package com.infobip.campus.chat2push.android;
 //import com.example.helloworld.R;
 //import com.infobip.campus.chat2push.android.R;
 
+import java.util.ArrayList;
+
 import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
 import com.infobip.campus.chat2push.android.configuration.Configuration;
 
 
+import com.infobip.campus.chat2push.android.models.ChannelModel;
+
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -45,28 +50,11 @@ public class MainActivity extends ActionBarActivity {
 			
 			@Override
 			public void onClick(View arg0) {
-				// ako loginUser vrati true, znaci da user/password kombinacija postoji u bazi
-				// postavlja USER_NAME na usera i prelazi na ChannelListActivity
-				if(DefaultInfobipClient.loginUser(userNameEditText.getText().toString(),
-						passwordEditText.getText().toString()) == null) {
-							Configuration.CURRENT_USER_NAME = userNameEditText.getText().toString();
-							Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
-							startActivity(intent);
-				}
+				//LOGIN USERA
 				
-				// ako loginUser vrati false, izbaci alert da je netacna user/password kombinacija
-				else {
-					new AlertDialog.Builder(MainActivity.this)
-					.setTitle("Login error")
-					.setMessage("Incorrect username/password combination!")
-					.setPositiveButton("OK", null)
-					.show();
-					
-					userNameEditText.setText("");
-					passwordEditText.setText("");
-					userNameEditText.requestFocus();
-					
-				}	
+				new LoginUser().execute(userNameEditText.getText().toString(),
+						passwordEditText.getText().toString());
+				
 			}
 		});
 		
@@ -76,40 +64,19 @@ public class MainActivity extends ActionBarActivity {
 			
 			@Override
 			public void onClick(View v) {
-
-				
 				// REGISTRUJ USERA
 
 					// ako username nije duzi od 2 karaktera
 					if(!(userNameEditText.getText().toString().length() < 3)) {
 						// ako password nije duzi od 5 karaktera
 						if(!(passwordEditText.getText().toString().length()<6)) {
-							// ako je sve u redu, registerUser prolazi
-							if(DefaultInfobipClient.registerUser(userNameEditText.getText().toString(),
-									passwordEditText.getText().toString()) == null) {
-									new AlertDialog.Builder(MainActivity.this)
-									.setTitle("New account created")
-									.setMessage("Welcome,  " + userNameEditText.getText().toString() + "!")
-									.setPositiveButton("ok", new OnClickListener() {
-										
-										@Override
-										public void onClick(DialogInterface dialog, int which) {
-											Configuration.CURRENT_USER_NAME = userNameEditText.getText().toString();
-											Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
-											startActivity(intent);
-											
-										}
-									})
-									.show();
-									
-									
-							}
-							else 
-								Log.i("registerTag", "nije prosao register");
+							
+							new RegisterUser().execute(userNameEditText.getText().toString(),
+									passwordEditText.getText().toString());
+							
 						}
-		
 						else {
-
+							
 							new AlertDialog.Builder(MainActivity.this)
 							.setTitle("Registration error")
 							.setMessage("Password must contain at least 6 characters!")
@@ -133,7 +100,6 @@ public class MainActivity extends ActionBarActivity {
 						userNameEditText.requestFocus();
 					}
 				
-				
 			}
 		});
 	}
@@ -153,6 +119,116 @@ public class MainActivity extends ActionBarActivity {
 			this.startActivity(intent);				
 		}
 		return false;
+	}
+	
+	class LoginUser extends AsyncTask<String, String, String> {
+		
+		boolean isValidLogin = false;
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+
+		}
+
+		protected String doInBackground(String... args) {
+			try {
+				Log.i("LoginUser_ARGUMENT_LIST", args[0] + " -  " + args[1]);
+				if(DefaultInfobipClient.loginUser(args[0], args[1]) == null) {
+					isValidLogin = true;
+					Configuration.CURRENT_USER_NAME = args[0];
+				}
+			} catch (Exception e) {
+				Log.d("LoginUser doInBackground EXCEPTION:", "Login error!");
+				e.printStackTrace();
+
+			}
+			return "LoginUser doInBackground return value";
+		}
+
+		protected void onPostExecute(String file_url) {
+			runOnUiThread(new Runnable() {
+				public void run() {
+					if(isValidLogin) {
+						new AlertDialog.Builder(MainActivity.this)
+						.setTitle("Login successful")
+						.setMessage("Welcome,  " + Configuration.CURRENT_USER_NAME + "!")
+						.setPositiveButton("ok", new OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
+								startActivity(intent);
+							}
+						})
+						.show();
+					}
+					else {
+						new AlertDialog.Builder(MainActivity.this)
+						.setTitle("Login error")
+						.setMessage("Incorrect username/password combination!")
+						.setPositiveButton("OK", null)
+						.show();
+					}
+				}
+			});
+		}
+
+	}
+	
+	class RegisterUser extends AsyncTask<String, String, String> {
+		
+		boolean isValidRegister = false;
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+
+		}
+
+		protected String doInBackground(String... args) {
+			try {
+				Log.i("RegisterUser_ARGUMENT_LIST", args[0] + " -  " + args[1]);
+				if(DefaultInfobipClient.registerUser(args[0], args[1]) == null) {
+					isValidRegister = true;
+					Configuration.CURRENT_USER_NAME = args[0];
+				}
+			} catch (Exception e) {
+				Log.d("RegisterUser doInBackground EXCEPTION:", "Error registering user!");
+				e.printStackTrace();
+
+			}
+			return "RegisterUser doInBackground return value";
+		}
+
+		protected void onPostExecute(String file_url) {
+			runOnUiThread(new Runnable() {
+				public void run() {
+					if(isValidRegister) {
+						new AlertDialog.Builder(MainActivity.this)
+						.setTitle("New account created")
+						.setMessage("Welcome,  " + Configuration.CURRENT_USER_NAME + "!")
+						.setPositiveButton("ok", new OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
+								startActivity(intent);
+							}
+						})
+						.show();
+					}
+					else {
+						new AlertDialog.Builder(MainActivity.this)
+						.setTitle("Registration error")
+						.setMessage("Unable to create new account")
+						.setPositiveButton("OK", null)
+						.show();
+					}
+				}
+			});
+		}
+
 	}
 	
 }
