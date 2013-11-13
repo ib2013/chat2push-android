@@ -70,9 +70,17 @@ public class MainActivity extends ActionBarActivity {
 					if(!(userNameEditText.getText().toString().length() < 3)) {
 						// ako password nije duzi od 5 karaktera
 						if(!(passwordEditText.getText().toString().length()<6)) {
-							
-							new RegisterUser().execute(userNameEditText.getText().toString(),
-									passwordEditText.getText().toString());
+							if(!userNameEditText.getText().toString().contains(" ")) {
+								new RegisterUser().execute(userNameEditText.getText().toString(),
+										passwordEditText.getText().toString());
+							}
+							else {
+								new AlertDialog.Builder(MainActivity.this)
+								.setTitle("Registration error")
+								.setMessage("Password must not contain any spaces")
+								.setNeutralButton("ok", null)
+								.show();
+							}
 							
 						}
 						else {
@@ -123,7 +131,7 @@ public class MainActivity extends ActionBarActivity {
 	
 	class LoginUser extends AsyncTask<String, String, String> {
 		
-		boolean isValidLogin = false;
+		boolean isValidLogin = true;
 
 		@Override
 		protected void onPreExecute() {

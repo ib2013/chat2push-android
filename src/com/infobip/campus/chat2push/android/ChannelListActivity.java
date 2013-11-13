@@ -28,20 +28,26 @@ import com.infobip.campus.chat2push.android.models.MessageModel;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.FeatureInfo;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.OnNavigationListener;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class ChannelListActivity extends ActionBarActivity {
+public class ChannelListActivity extends ActionBarActivity implements OnNavigationListener {
 
 	ChannelArrayAdapter listViewAdapter = null;
 	ArrayList<ChannelModel> channelList;
@@ -50,6 +56,17 @@ public class ChannelListActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_channel_list);
+		
+		
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayShowTitleEnabled(false);
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		
+		ArrayList itemList = new ArrayList();
+		itemList.add("Public");
+		itemList.add("Private");
+		ArrayAdapter aAdpt = new ArrayAdapter(this, android.R.layout.simple_list_item_1, android.R.id.text1, itemList);
+		actionBar.setListNavigationCallbacks(aAdpt, this);
 
 		new LoadAllChannels().execute();
 
@@ -118,7 +135,7 @@ public class ChannelListActivity extends ActionBarActivity {
 
 			Log.i("iTAG",
 					"PROVERA STANJA---------------------------------------------");
-			return "doInBackgroundReturnValue";
+			return "LoadAllChannels return value";
 		}
 
 		protected void onPostExecute(String file_url) {
@@ -131,6 +148,25 @@ public class ChannelListActivity extends ActionBarActivity {
 			});
 		}
 
+	}
+
+	@Override
+	public boolean onNavigationItemSelected(int arg0, long arg1) {
+		if(arg0==0) {
+			new AlertDialog.Builder(ChannelListActivity.this)
+			.setTitle("Spinner")
+			.setMessage("Selected public")
+			.setNeutralButton("ok", null)
+			.show();
+		}
+		if(arg0==1) {
+			new AlertDialog.Builder(ChannelListActivity.this)
+			.setTitle("Spinner")
+			.setMessage("Selected private")
+			.setNeutralButton("ok", null)
+			.show();
+		}
+		return false;
 	}
 
 }
