@@ -76,10 +76,12 @@ public class DefaultInfobipClient {
 
 			int responseCode = response.getStatusLine().getStatusCode();
 
-			if (responseText.equals("success")) {
+			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
 				Configuration.CURRENT_USER_NAME = userName;
+				Log.i("LOGIN STATUS","uspjelo");
 				return null;
 			} else {
+				Log.i("LOGIN STATUS","nije uspjelo: " + responseText);
 				return responseText;
 			}
 		} catch (Exception e) {
