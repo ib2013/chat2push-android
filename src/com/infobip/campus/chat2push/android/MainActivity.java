@@ -27,22 +27,43 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DialerFilter;
 import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 	
+	public String m_Text;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		
+		
+		final EditText txtUrl = new EditText(this);
+		new AlertDialog.Builder(this)
+		.setTitle("Insert confirmation number")
+		.setView(txtUrl)
+		.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Log.i("PROBA INPUTA", txtUrl.getText().toString());
+			}
+		})
+		.setNegativeButton("Cancel", null)
+		.show();
 		
 		if(SessionManager.isAnyUserLogedIn()) {
 			Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
@@ -50,8 +71,17 @@ public class MainActivity extends ActionBarActivity {
 			finish();
 		}
 		
-		final EditText userNameEditText = (EditText) findViewById(R.id.editTextUserName);
+		// ovde ce da se dobija lista korisnika iz SessionManager
+		final String[] users = new String[] { "Korisnik1", "Mica", "Pera", "Zika" };
+		final AutoCompleteTextView userNameEditText = (AutoCompleteTextView) findViewById(R.id.editTextUserName);
 		final EditText passwordEditText = (EditText) findViewById(R.id.editTextPassword);
+		
+		// autocompletion
+		
+		ArrayAdapter<String> autoCompletionAdapter =
+				new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, users);
+		userNameEditText.setAdapter(autoCompletionAdapter);
+		
 		
 		// login button
 		Button loginButton = (Button) findViewById(R.id.buttonLogin);
@@ -74,50 +104,11 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				// REGISTRUJ USERA
-
-					// ako username nije duzi od 2 karaktera
-					if(!(userNameEditText.getText().toString().length() < 3)) {
-						// ako password nije duzi od 5 karaktera
-						if(!(passwordEditText.getText().toString().length()<6)) {
-							if(!userNameEditText.getText().toString().contains(" ") &&
-									!passwordEditText.getText().toString().contains(" ")) {
-								new RegisterUser().execute(userNameEditText.getText().toString(),
-										passwordEditText.getText().toString());
-							}
-							else {
-								new AlertDialog.Builder(MainActivity.this)
-								.setTitle("Registration error")
-								.setMessage("Username and password must not contain any spaces")
-								.setNeutralButton("ok", null)
-								.show();
-							}
-							
-						}
-						else {
-							
-							new AlertDialog.Builder(MainActivity.this)
-							.setTitle("Registration error")
-							.setMessage("Password must contain at least 6 characters!")
-							.setNeutralButton("ok", null)
-							.show();
-							
-							passwordEditText.setText("");
-							passwordEditText.requestFocus();
-						}
-					}
-					
-					else {
-						new AlertDialog.Builder(MainActivity.this)
-						.setTitle("Registration error")
-						.setMessage("Username must contain at least 3 characters!")
-						.setNeutralButton("ok", null)
-						.show();
-							
-						userNameEditText.setText("");
-						passwordEditText.setText("");
-						userNameEditText.requestFocus();
-					}
 				
+				Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+				intent.putExtra("userName", userNameEditText.getText().toString());
+				intent.putExtra("password", passwordEditText.getText().toString());
+				startActivity(intent);
 			}
 		});
 	}
@@ -161,7 +152,6 @@ public class MainActivity extends ActionBarActivity {
 				Log.i("LoginUser_ARGUMENT_LIST", args[0] + " -  " + args[1]);
 				if(DefaultInfobipClient.loginUser(args[0], args[1]) == null) {
 					isValidLogin = true;
-					Configuration.CURRENT_USER_NAME = args[0];
 					SessionManager.loginUser(args[0], args[1]);
 				}
 			} catch (Exception e) {
@@ -205,63 +195,4 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 	}
-	
-	
-	class RegisterUser extends AsyncTask<String, String, String> {
-		
-		boolean isValidRegister = false;
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-
-		}
-
-		protected String doInBackground(String... args) {
-			try {
-				Log.i("RegisterUser_ARGUMENT_LIST", args[0] + " -  " + args[1]);
-				if(DefaultInfobipClient.registerUser(args[0], args[1]) == null) {
-					isValidRegister = true;
-					Configuration.CURRENT_USER_NAME = args[0];
-				}
-			} catch (Exception e) {
-				Log.d("RegisterUser doInBackground EXCEPTION:", "Error registering user!");
-				e.printStackTrace();
-
-			}
-			return "RegisterUser doInBackground return value";
-		}
-
-		protected void onPostExecute(String file_url) {
-			runOnUiThread(new Runnable() {
-				public void run() {
-					if(isValidRegister) {
-						new AlertDialog.Builder(MainActivity.this)
-						.setTitle("New account created")
-						.setMessage("Welcome,  " + Configuration.CURRENT_USER_NAME + "!")
-						.setPositiveButton("ok", new OnClickListener() {
-							
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
-								startActivity(intent);
-							}
-						})
-						.show();
-					}
-					else {
-						new AlertDialog.Builder(MainActivity.this)
-						.setTitle("Registration error")
-						.setMessage("Unable to create new account")
-						.setPositiveButton("OK", null)
-						.show();
-						
-						
-					}
-				}
-			});
-		}
-
-	}
-	
 }
