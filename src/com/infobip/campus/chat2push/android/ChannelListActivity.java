@@ -43,6 +43,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -62,10 +63,8 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		
-		ArrayList itemList = new ArrayList();
-		itemList.add("Public");
-		itemList.add("Private");
-		ArrayAdapter aAdpt = new ArrayAdapter(this, android.R.layout.simple_list_item_1, android.R.id.text1, itemList);
+		SpinnerAdapter aAdpt = 
+				ArrayAdapter.createFromResource(this, R.array.auth_array, R.layout.support_simple_spinner_dropdown_item);
 		actionBar.setListNavigationCallbacks(aAdpt, this);
 
 		new LoadAllChannels().execute();

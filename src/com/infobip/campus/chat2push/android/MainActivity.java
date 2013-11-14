@@ -131,7 +131,7 @@ public class MainActivity extends ActionBarActivity {
 	
 	class LoginUser extends AsyncTask<String, String, String> {
 		
-		boolean isValidLogin = true;
+		boolean isValidLogin = false;
 
 		@Override
 		protected void onPreExecute() {

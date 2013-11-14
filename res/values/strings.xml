@@ -6,5 +6,9 @@
     <string name="hello_world">POZDRAV JARANE</string>
 	<string name="title_activity_channel_list">Channel List Activity</string>
 	<string name="title_activity_channel">Channel Activity</string>
+	<string-array name="auth_array">
+        <item>Public</item>
+        <item>Private</item>
+    </string-array>
 
 </resources>
