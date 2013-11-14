@@ -48,7 +48,6 @@ public class DefaultInfobipClient {
 			int responseCode = response.getStatusLine().getStatusCode();
 
 			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
-				Log.i("REG STATUS:", "uspjelo");
 				return null;
 			} else
 				return responseText;
@@ -79,10 +78,8 @@ public class DefaultInfobipClient {
 
 			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
 				Configuration.CURRENT_USER_NAME = userName;
-				Log.i("LOGIN STATUS","uspjelo");
 				return null;
 			} else {
-				Log.i("LOGIN STATUS","nije uspjelo: " + responseText);
 				return responseText;
 			}
 		} catch (Exception e) {
@@ -159,7 +156,7 @@ public class DefaultInfobipClient {
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("username", userName);
 			jsonObject.addProperty("channel", channelName);
-			jsonObject.addProperty("message-text", messageText);
+			jsonObject.addProperty("messageText", messageText);
 
 			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
 			HttpClient client = new DefaultHttpClient();
