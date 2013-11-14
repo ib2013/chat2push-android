@@ -20,6 +20,7 @@ import com.infobip.campus.chat2push.android.adapters.MessageArrayAdapter;
 import com.infobip.campus.chat2push.android.adapters.MyApplication;
 import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
 import com.infobip.campus.chat2push.android.configuration.Configuration;
+import com.infobip.campus.chat2push.android.managers.SessionManager;
 import com.infobip.campus.chat2push.android.models.MessageModel;
 import com.infobip.push.ChannelRegistrationListener;
 import com.infobip.push.PushNotificationManager;
@@ -74,25 +75,11 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 			public void onClick(View v) {
 				String messageText = new String (editTextMessage.getText().toString());
 				editTextMessage.setText("");
-				new SendMessage().execute(Configuration.CURRENT_USER_NAME, channelName, messageText);
-				
+				new SendMessage().execute(SessionManager.getCurrentUserName(), channelName, messageText);
 			}
 		});
 		
-		//displayListView(messageList);
-		
-		//PRIVREMENA!!! prijava na infobipov server za testiranje notifikacija!
-		PushNotificationManager manager;
-		manager = new PushNotificationManager(getApplicationContext());
-		manager.initialize(Configuration.SENDER_ID, Configuration.APP_ID, Configuration.APP_SECRET);
-		if (!manager.isRegistered()) 
-			manager.register();
-		manager.overrideDefaultMessageHandling(true);	
-		ChannelRegistrationListener channelRegistrationListener = null;
-		List<String> channels = new ArrayList<String>();
-		channels.add(channelName);
-		manager.registerToChannels(channels, true, channelRegistrationListener);
-		
+		displayListView(messageList);		
 	}
 
 	
@@ -146,6 +133,10 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 				preferenceEditor.commit();
 				item.setTitle("Don't cach");
 			}
+		case R.id.log_out :
+			SessionManager.logout();
+			Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);
 		}
 		return false;
 	}
@@ -181,7 +172,7 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 			
 			//deleteFile(channelName + ".txt");
 			
-			Log.d("Ulazi u doInBackground, user je: ", Configuration.CURRENT_USER_NAME);
+			Log.d("Ulazi u doInBackground, user je: ", SessionManager.getCurrentUserName());
 			Log.d("Ulazi u doInBackground, channel je: ", channelName);
 			messageList.addAll(FileAdapter.readFromFIle(context, channelName));
 			Log.d("Procitao je file, u messageList ima ovoliko elemenata: ", "" + messageList.size());
@@ -213,7 +204,9 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 
 		protected String doInBackground(String... args) {	
 			
+			Log.d("Ulazi u doInBackground, user je: ", SessionManager.getCurrentUserName());
 			DefaultInfobipClient.sendMessage(args[0], args[1], args[2]);
+			Log.d("Obavio : DefaultInfobipClient.sendMessage s argumentima: ", args[0] + args[1] + args[2]);
 			
 			return "doInBackgroundReturnValue";
 		}

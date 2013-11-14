@@ -7,6 +7,12 @@
         android:title="Don't cach"/>
     
     <item
+        android:id="@+id/log_out"
+        android:orderInCategory="5"
+        android:showAsAction="ifRoom"
+        android:title="Log me out!"/>
+    
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
