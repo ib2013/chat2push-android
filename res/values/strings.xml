@@ -4,11 +4,14 @@
     <string name="app_name">Chat2Push</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">POZDRAV JARANE</string>
-	<string name="title_activity_channel_list">Channel List Activity</string>
-	<string name="title_activity_channel">Channel Activity</string>
-	<string-array name="auth_array">
+    <string name="title_activity_channel_list">Channel List Activity</string>
+    <string name="title_activity_channel">Channel Activity</string>
+
+    <string-array name="auth_array">
         <item>Public</item>
         <item>Private</item>
     </string-array>
+
+    <string name="title_activity_registration">RegistrationActivity</string>
 
 </resources>

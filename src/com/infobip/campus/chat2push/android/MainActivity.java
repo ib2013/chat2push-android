@@ -10,6 +10,7 @@ import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
 import com.infobip.campus.chat2push.android.configuration.Configuration;
 
 
+import com.infobip.campus.chat2push.android.managers.SessionManager;
 import com.infobip.campus.chat2push.android.models.ChannelModel;
 
 import android.os.AsyncTask;
@@ -43,11 +44,11 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-//		if(SessionManager.isAnyUserLogedIn()) {
-//			Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
-//			startActivity(intent);
-//			finish();
-//		}
+		if(SessionManager.isAnyUserLogedIn()) {
+			Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
+			startActivity(intent);
+			finish();
+		}
 		
 		final EditText userNameEditText = (EditText) findViewById(R.id.editTextUserName);
 		final EditText passwordEditText = (EditText) findViewById(R.id.editTextPassword);
@@ -138,6 +139,13 @@ public class MainActivity extends ActionBarActivity {
 		return false;
 	}
 	
+	public void clearEditTexts() {
+		EditText userNameEditText = (EditText) findViewById(R.id.editTextUserName);
+		userNameEditText.setText("");
+		EditText passwordEditText = (EditText) findViewById(R.id.editTextPassword);
+		passwordEditText.setText("");
+	}
+	
 	class LoginUser extends AsyncTask<String, String, String> {
 		
 		boolean isValidLogin = false;
@@ -154,7 +162,7 @@ public class MainActivity extends ActionBarActivity {
 				if(DefaultInfobipClient.loginUser(args[0], args[1]) == null) {
 					isValidLogin = true;
 					Configuration.CURRENT_USER_NAME = args[0];
-//					SessionManager.loginUser(args[0], args[1]);
+					SessionManager.loginUser(args[0], args[1]);
 				}
 			} catch (Exception e) {
 				Log.d("LoginUser doInBackground EXCEPTION:", "Login error!");
@@ -190,12 +198,14 @@ public class MainActivity extends ActionBarActivity {
 						.setPositiveButton("OK", null)
 						.show();
 						
+						clearEditTexts();
 					}
 				}
 			});
 		}
 
 	}
+	
 	
 	class RegisterUser extends AsyncTask<String, String, String> {
 		
@@ -246,8 +256,7 @@ public class MainActivity extends ActionBarActivity {
 						.setPositiveButton("OK", null)
 						.show();
 						
-						EditText userNameEditText = (EditText) findViewById(R.id.editTextUserName);
-						userNameEditText.setText("");
+						
 					}
 				}
 			});
