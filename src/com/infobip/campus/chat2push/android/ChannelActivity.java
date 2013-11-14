@@ -51,6 +51,9 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+//		deleteFile(channelName + ".txt");
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_channel);
 		
@@ -62,9 +65,7 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 		this.setTitle(channelName);
 			
 		new LoadMessages().execute();
-		
-		Toast.makeText(this, "" + getPreferences(MODE_PRIVATE).getBoolean(channelName + "-cach", true) , Toast.LENGTH_LONG).show();
-		
+				
 		//listener za send button:
 		ImageButton sendMessageButton = (ImageButton) findViewById(R.id.image_button_send_message);
 		final EditText editTextMessage = (EditText) findViewById(R.id.edit_text_message);
@@ -73,8 +74,7 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 			public void onClick(View v) {
 				String messageText = new String (editTextMessage.getText().toString());
 				editTextMessage.setText("");
-				//Toast.makeText(context, messageText, Toast.LENGTH_LONG).show();
-				//DefaultInfobipClient.sendMessage(Configuration.CURRENT_USER_NAME, channelName, messageText.gett)
+				new SendMessage().execute(Configuration.CURRENT_USER_NAME, channelName, messageText);
 				
 			}
 		});
@@ -106,8 +106,7 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
     protected void onPause() {
         clearReferences();
         if (getPreferences(MODE_PRIVATE).getBoolean(channelName + "-cach", true)) {
-        	Toast.makeText(this, "Writing to file", Toast.LENGTH_LONG).show();
-        	 FileAdapter.writeToFile(this, channelName + ".txt", messageList);  
+        	FileAdapter.writeToFile(this, channelName, messageList);  
         }
         super.onPause();
     }
@@ -178,11 +177,20 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 			super.onPreExecute();
 		}
 
-		protected String doInBackground(String... args) {	
+		protected String doInBackground(String... args) {
 			
+			deleteFile(channelName + ".txt");
+			
+			Log.d("Ulazi u doInBackground, user je: ", Configuration.CURRENT_USER_NAME);
+			Log.d("Ulazi u doInBackground, channel je: ", channelName);
 			messageList.addAll(FileAdapter.readFromFIle(context, channelName));
-			//messageList.addAll(DefaultInfobipClient.fetchAllMessages(channelName, messageList.get(messageList.size()).getDate() , new Date(System.currentTimeMillis())));
-			
+			Log.d("Procitao je file, u messageList ima ovoliko elemenata: ", "" + messageList.size());
+			Date  startTime = new Date(0);
+			if (messageList.size() != 0)
+				startTime = messageList.get(messageList.size()).getDate();
+			Log.d("startTime je inicijaliziran na: ", "" + startTime);
+			messageList.addAll(DefaultInfobipClient.fetchAllMessages(channelName, startTime, new Date(System.currentTimeMillis())));
+			Log.d("Procitao je poruke sa servera, messageList sad ima ovoliko elemenata: ", "" + messageList.size());
 		    return "doInBackgroundReturnValue";
 		}
 
@@ -207,16 +215,11 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 			
 			DefaultInfobipClient.sendMessage(args[0], args[1], args[2]);
 			
-		    return "doInBackgroundReturnValue";
+			return "doInBackgroundReturnValue";
 		}
 
 		protected void onPostExecute(String file_url) {
 			super.onPostExecute(file_url);
-			runOnUiThread(new Runnable() {
-				public void run() {
-					displayListView(messageList);
-				}
-			});
 		}
 
 	}
