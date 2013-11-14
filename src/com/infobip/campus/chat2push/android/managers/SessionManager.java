@@ -9,6 +9,8 @@ import org.json.JSONObject;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.infobip.campus.chat2push.android.adapters.MyApplication;
 import com.infobip.campus.chat2push.android.configuration.Configuration;
@@ -91,6 +93,7 @@ public class SessionManager {
 				channelNames.add(channelItem.getName());
 		ChannelRegistrationListener channelRegistrationListener = null;
 		manager.registerToChannels(channelNames, true, channelRegistrationListener);
+		Log.d("Pretplatio sam se na: ", channelNames.toString());
 		
 	}
 

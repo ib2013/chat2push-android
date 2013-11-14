@@ -22,6 +22,7 @@ import com.google.gson.JsonParser;
 import com.infobip.campus.chat2push.android.adapters.ChannelArrayAdapter;
 import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
 import com.infobip.campus.chat2push.android.configuration.Configuration;
+import com.infobip.campus.chat2push.android.managers.SessionManager;
 import com.infobip.campus.chat2push.android.models.ChannelModel;
 import com.infobip.campus.chat2push.android.models.MessageModel;
 
@@ -120,7 +121,7 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 			
 			try {
 					
-					channelList = DefaultInfobipClient.fetchAllChannels(Configuration.CURRENT_USER_NAME);
+					channelList = DefaultInfobipClient.fetchAllChannels(SessionManager.getCurrentUserName());
 //					SessionManager.subscribeToChannels(channelList);
 					for(ChannelModel model : channelList) {
 						Log.i("MODEL TAG", model.toString());
@@ -141,7 +142,7 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 		protected void onPostExecute(String file_url) {
 			runOnUiThread(new Runnable() {
 				public void run() {
-
+					SessionManager.subscribeToChannels(channelList);
 					displayListView(channelList);
 
 				}

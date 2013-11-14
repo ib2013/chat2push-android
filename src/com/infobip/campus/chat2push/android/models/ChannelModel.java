@@ -28,7 +28,7 @@ public class ChannelModel {
 	public Boolean getStatus() {
 		return status;
 	}
-
+	
 	public void setName(String str) {
 		name = str;
 	}

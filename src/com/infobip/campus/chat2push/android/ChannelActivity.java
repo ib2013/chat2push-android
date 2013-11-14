@@ -21,6 +21,7 @@ import com.infobip.campus.chat2push.android.adapters.MyApplication;
 import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
 import com.infobip.campus.chat2push.android.configuration.Configuration;
 import com.infobip.campus.chat2push.android.managers.SessionManager;
+import com.infobip.campus.chat2push.android.models.ChannelModel;
 import com.infobip.campus.chat2push.android.models.MessageModel;
 import com.infobip.push.ChannelRegistrationListener;
 import com.infobip.push.PushNotificationManager;
@@ -54,6 +55,8 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 	protected void onCreate(Bundle savedInstanceState) {
 		
 //		deleteFile(channelName + ".txt");
+		//TODO kasnije ovo pobrisati, sad sluzi samo za testiranje!
+		
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_channel);
@@ -133,10 +136,12 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 				preferenceEditor.commit();
 				item.setTitle("Don't cach");
 			}
+			break;
 		case R.id.log_out :
 			SessionManager.logout();
 			Intent intent = new Intent(this, MainActivity.class);
 			startActivity(intent);
+			break;
 		}
 		return false;
 	}
@@ -170,12 +175,15 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 
 		protected String doInBackground(String... args) {
 			
-			//deleteFile(channelName + ".txt");
+//			deleteFile(channelName + ".txt");
 			
 			Log.d("Ulazi u doInBackground, user je: ", SessionManager.getCurrentUserName());
 			Log.d("Ulazi u doInBackground, channel je: ", channelName);
-			messageList.addAll(FileAdapter.readFromFIle(context, channelName));
-			Log.d("Procitao je file, u messageList ima ovoliko elemenata: ", "" + messageList.size());
+			if (getPreferences(MODE_PRIVATE).getBoolean(channelName + "-cach", true)) {
+				messageList.addAll(FileAdapter.readFromFIle(context, channelName));
+				Log.d("Procitao je file, u messageList ima ovoliko elemenata: ", "" + messageList.size());
+			} else
+				Log.d("Preskoèeno èitanje iz filea, idem odmah na net!", "Ludilo brale!");
 			Date  startTime = new Date(0);
 			if (messageList.size() != 0)
 				startTime = messageList.get(messageList.size()).getDate();

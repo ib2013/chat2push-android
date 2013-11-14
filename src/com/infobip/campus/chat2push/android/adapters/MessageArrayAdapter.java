@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.infobip.campus.chat2push.android.R;
 import com.infobip.campus.chat2push.android.configuration.Configuration;
+import com.infobip.campus.chat2push.android.managers.SessionManager;
 import com.infobip.campus.chat2push.android.models.MessageModel;
 
 import android.app.Activity;
@@ -45,7 +46,7 @@ public class MessageArrayAdapter extends ArrayAdapter<MessageModel>{
 
 		LayoutInflater viewInflater = ((Activity) context).getLayoutInflater();
 			
-		if (currentMessageItem.getAuthor().equals(Configuration.CURRENT_USER_NAME))  {
+		if (currentMessageItem.getAuthor().equals(SessionManager.getCurrentUserName()))  {
 			convertView = viewInflater.inflate(R.layout.list_message_right_item, null);
 		} else {
 			convertView = viewInflater.inflate(R.layout.list_message_left_item, null);
@@ -63,8 +64,8 @@ public class MessageArrayAdapter extends ArrayAdapter<MessageModel>{
 		viewHolder.textViewText.setText(currentMessageItem.getText());
 		viewHolder.textViewTime.setText(currentMessageItem.getDateAsString());
 		//TODO: rijesiti ikone usera!
-		Log.d("Autor ove poruke je: ", currentMessageItem.getAuthor());
-		//viewHolder.imageVIewAuthorIcon.setBackgroundColor(Color.rgb((currentMessageItem.getAuthor().charAt(0)*5)%200+50, (currentMessageItem.getAuthor().charAt(1)*6)%200+50, (currentMessageItem.getAuthor().charAt(2)*7)%200+50));
+//		Log.d("Autor ove poruke je: ", currentMessageItem.getAuthor());
+		viewHolder.imageVIewAuthorIcon.setBackgroundColor(Color.rgb(((currentMessageItem.getAuthor()+"   ").charAt(0)*5)%200+50, ((currentMessageItem.getAuthor()+"   ").charAt(1)*6)%200+50, ((currentMessageItem.getAuthor()+"   ").charAt(2)*7)%200+50));
 		return convertView;
 	}
 

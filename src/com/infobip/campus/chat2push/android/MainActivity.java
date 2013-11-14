@@ -22,6 +22,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
+import android.service.textservice.SpellCheckerService.Session;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -161,7 +162,7 @@ public class MainActivity extends ActionBarActivity {
 				Log.i("LoginUser_ARGUMENT_LIST", args[0] + " -  " + args[1]);
 				if(DefaultInfobipClient.loginUser(args[0], args[1]) == null) {
 					isValidLogin = true;
-					Configuration.CURRENT_USER_NAME = args[0];
+//					Configuration.CURRENT_USER_NAME = args[0];
 					SessionManager.loginUser(args[0], args[1]);
 				}
 			} catch (Exception e) {
@@ -180,7 +181,7 @@ public class MainActivity extends ActionBarActivity {
 						// kasnije cemo da stavimo rotating spinner
 						new AlertDialog.Builder(MainActivity.this)
 						.setTitle("Login successful")
-						.setMessage("Welcome,  " + Configuration.CURRENT_USER_NAME + "!")
+						.setMessage("Welcome,  " + SessionManager.getCurrentUserName() + "!")
 						.setPositiveButton("ok", new OnClickListener() {
 							
 							@Override
@@ -222,7 +223,8 @@ public class MainActivity extends ActionBarActivity {
 				Log.i("RegisterUser_ARGUMENT_LIST", args[0] + " -  " + args[1]);
 				if(DefaultInfobipClient.registerUser(args[0], args[1]) == null) {
 					isValidRegister = true;
-					Configuration.CURRENT_USER_NAME = args[0];
+					SessionManager.loginUser(args[0], args[1]);
+//					Configuration.CURRENT_USER_NAME = args[0];
 				}
 			} catch (Exception e) {
 				Log.d("RegisterUser doInBackground EXCEPTION:", "Error registering user!");
@@ -238,7 +240,7 @@ public class MainActivity extends ActionBarActivity {
 					if(isValidRegister) {
 						new AlertDialog.Builder(MainActivity.this)
 						.setTitle("New account created")
-						.setMessage("Welcome,  " + Configuration.CURRENT_USER_NAME + "!")
+						.setMessage("Welcome,  " + SessionManager.getCurrentUserName() + "!")
 						.setPositiveButton("ok", new OnClickListener() {
 							
 							@Override
