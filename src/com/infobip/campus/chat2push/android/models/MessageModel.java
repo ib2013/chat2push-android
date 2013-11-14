@@ -5,6 +5,8 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 public class MessageModel {
 	
 	private String author, text;
@@ -41,6 +43,21 @@ public class MessageModel {
 		return jsonObject;	
 	}
 
+	public String toString () {
+		String string ="";
+		string = author + ": " + text + "; " + timestamp;
+		return string;
+	}
+	
+	public boolean areYouOK () {
+		boolean response = true;
+		if (author == null || text == null || timestamp == null) {
+			response = false;
+			Log.e("Pogrešno napravljen model", "");
+		}		
+		return response;
+	}
+	
 	public String getAuthor () {
 		return author;
 	}
