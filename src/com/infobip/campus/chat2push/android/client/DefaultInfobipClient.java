@@ -47,7 +47,8 @@ public class DefaultInfobipClient {
 
 			int responseCode = response.getStatusLine().getStatusCode();
 
-			if (responseText.equals("success")) {
+			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
+				Log.i("REG STATUS:", "uspjelo");
 				return null;
 			} else
 				return responseText;
@@ -97,11 +98,9 @@ public class DefaultInfobipClient {
 			
 			HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(Configuration.SERVER_LOCATION
-					+ "channel/fetch/"/* + userName*/);
+					+ "channel/fetch/" + userName);
 			HttpResponse response = client.execute(request);
-			Log.i("CLIENT -----", response.toString());
 			String responseText = getResponseText(response);
-
 			
 			int responseCode = response.getStatusLine().getStatusCode();
 
@@ -173,7 +172,7 @@ public class DefaultInfobipClient {
 
 			int responseCode = response.getStatusLine().getStatusCode();
 
-			if (responseText.equals("success")) {
+			if (responseText.equals("true")) {
 				return null;
 			} else {
 				return responseText;
@@ -241,20 +240,20 @@ public class DefaultInfobipClient {
 			boolean isUserSubscribedToChannel;
 
 			try {
-				messageText = jsonElement.getAsJsonPrimitive("message-text")
+				messageText = jsonElement.getAsJsonPrimitive("message")
 						.getAsString();
 			} catch (Exception e) {
 				messageText = "";
 			}
 			try {
-				sentBy = jsonElement.getAsJsonPrimitive("sent-by;")
+				sentBy = jsonElement.getAsJsonPrimitive("user")
 						.getAsString();
 			} catch (Exception e) {
 				sentBy = "";
 			}
 
 			try {
-				time = new Date(jsonElement.getAsJsonPrimitive("time")
+				time = new Date(jsonElement.getAsJsonPrimitive("lastMessageDate")
 						.getAsString());
 			} catch (Exception e) {
 				time = new Date(0);
