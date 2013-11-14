@@ -71,6 +71,7 @@ public class DefaultInfobipClient {
 					+ "user/login");
 			request.addHeader("content-type", "application/json");
 			request.setEntity(parms);
+			Log.e("LOGIN STATUS REQUEST ", request.getURI().toString());
 			HttpResponse response = client.execute(request);
 			String responseText = getResponseText(response);
 
@@ -85,6 +86,7 @@ public class DefaultInfobipClient {
 				return responseText;
 			}
 		} catch (Exception e) {
+			Log.e("LOGIN STATUS EXCEPTION: ", e.getMessage());
 			return "Connection error!";
 		}
 	}

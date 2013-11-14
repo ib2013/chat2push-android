@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme for API 14+. This theme completely replaces
@@ -14,12 +14,30 @@
     <style name="CustomActionBarTheme"
            parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
+        
     </style>
 
     <!-- ActionBar styles -->
     <style name="MyActionBar"
            parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+<!--         <item name="android:spinnerMode -->
+        <item name="android:background">@color/orange</item>
+        <item name="android:spinnerDropDownItemStyle">@style/MySpinner1</item>
+    </style>
+    
+	<style name="MySpinner1"
+           parent="@style/Widget.AppCompat.Light.DropDownItem.Spinner">
+        <item name="android:background">@style/MySpinner</item>
+
+    </style>
+    
+    <style name="MySpinner"
+           parent="@style/Widget.AppCompat.Spinner.DropDown.ActionBar">
         <item name="android:background">@color/orange</item>
     </style>
+    
+
+    
+    
 
 </resources>

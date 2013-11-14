@@ -45,4 +45,12 @@ public class ChannelModel {
 		status = !status;
 	}
 
+	@Override
+	public String toString() {
+		return "ChannelModel [name=" + name + ", description=" + description
+				+ ", status=" + status + "]";
+	}
+	
+	
+
 }
