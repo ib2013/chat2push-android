@@ -62,7 +62,7 @@ public class MyPushReceiver extends AbstractPushReceiver {
     			try {
     				JSONObject jsonObject = new JSONObject(payload);
     				newMessage = new MessageModel(jsonObject);
-    				Toast.makeText(context, jsonObject.getString("time"), Toast.LENGTH_LONG).show();
+//    				Toast.makeText(context, jsonObject.getString("time"), Toast.LENGTH_LONG).show();
     				channel = jsonObject.getString("channel");
     			} catch (JSONException e) {
     				Toast.makeText(context, "Error reading push message. Details: " + e.getMessage(), Toast.LENGTH_LONG).show();

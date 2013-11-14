@@ -179,7 +179,7 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 
 		protected String doInBackground(String... args) {
 			
-			deleteFile(channelName + ".txt");
+			//deleteFile(channelName + ".txt");
 			
 			Log.d("Ulazi u doInBackground, user je: ", Configuration.CURRENT_USER_NAME);
 			Log.d("Ulazi u doInBackground, channel je: ", channelName);
