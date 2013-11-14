@@ -21,6 +21,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.infobip.campus.chat2push.android.configuration.Configuration;
+import com.infobip.campus.chat2push.android.managers.SessionManager;
 import com.infobip.campus.chat2push.android.models.ChannelModel;
 import com.infobip.campus.chat2push.android.models.MessageModel;
 
@@ -77,7 +78,7 @@ public class DefaultInfobipClient {
 			int responseCode = response.getStatusLine().getStatusCode();
 
 			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
-				Configuration.CURRENT_USER_NAME = userName;
+//				Configuration.CURRENT_USER_NAME = userName;
 				return null;
 			} else {
 				return responseText;
@@ -114,7 +115,7 @@ public class DefaultInfobipClient {
 
 	public static ArrayList<MessageModel> fetchAllMessages(
 			String channelName, Date startTime, Date endTime) {
-		Log.d("Trenutni korisnik je: ", Configuration.CURRENT_USER_NAME);
+		Log.d("Trenutni korisnik je: ", SessionManager.getCurrentUserName());
 		Log.d("Start time ", ""+startTime.getTime());
 		Log.d("End time ", ""+endTime.getTime());
 		Gson gson = new Gson();
@@ -124,7 +125,7 @@ public class DefaultInfobipClient {
 			HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(Configuration.SERVER_LOCATION
 					+ "message/fetch/"
-					+ Configuration.CURRENT_USER_NAME + "/"
+					+ SessionManager.getCurrentUserName() + "/"
 					+ channelName + "/"
 					+ startTime.getTime() + "/" + endTime.getTime());
 			
@@ -208,11 +209,11 @@ public class DefaultInfobipClient {
 
 			try {
 				isUserSubscribedToChannel = jsonElement.getAsJsonPrimitive(
-						"isSubscribed").getAsBoolean();
+						"subscribed").getAsBoolean();
 			} catch (Exception e) {
 				isUserSubscribedToChannel = false;
 			}
-
+			Log.d("Parsirani channel model: ", (new ChannelModel(channelName, channelDescription, isUserSubscribedToChannel)).toString());
 			channelList.add(new ChannelModel(channelName, channelDescription,
 					isUserSubscribedToChannel));
 		}
@@ -251,7 +252,7 @@ public class DefaultInfobipClient {
 
 			try {
 				time = new Date(jsonElement.getAsJsonPrimitive("lastMessageDate")
-						.getAsString());
+						.getAsLong());
 			} catch (Exception e) {
 				time = new Date(0);
 			}
@@ -259,6 +260,9 @@ public class DefaultInfobipClient {
 			messageList.add(new MessageModel(sentBy, messageText, time));
 		}
 
+		for (MessageModel messageItem : messageList)
+			Log.d("Parsirani responseText: ", messageItem.toString());
+		
 		return messageList;
 	}
 

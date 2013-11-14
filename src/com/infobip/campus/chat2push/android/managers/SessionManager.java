@@ -9,6 +9,8 @@ import org.json.JSONObject;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.infobip.campus.chat2push.android.adapters.MyApplication;
 import com.infobip.campus.chat2push.android.configuration.Configuration;
@@ -52,6 +54,7 @@ public class SessionManager {
 		if ( !oldUsername.equals(username)) {
 			SharedPreferences.Editor editor = sharedPreferences.edit();
 			editor.putString("currentUserName", username);
+			editor.commit();
 			//TODO za kasnije sve dovrsiti
 //			JSONArray jsonAllUsenames = new JSONArray(sharedPreferences.getString("allUsersData", " "));
 //			jsonAllUsenames.
@@ -64,6 +67,7 @@ public class SessionManager {
 		initialize();
 		SharedPreferences.Editor editor = sharedPreferences.edit();
 		editor.putString("currentUserName", " ");
+		editor.commit();
 		//izbrise pretplatu na kanale:
 		ChannelRegistrationListener channelRegistrationListener = null;
 		manager.registerToChannels(new ArrayList<String>(), true, channelRegistrationListener);
@@ -89,9 +93,17 @@ public class SessionManager {
 				channelNames.add(channelItem.getName());
 		ChannelRegistrationListener channelRegistrationListener = null;
 		manager.registerToChannels(channelNames, true, channelRegistrationListener);
+		Log.d("Pretplatio sam se na: ", channelNames.toString());
 		
 	}
 
+	public static String getCurrentUserName () {
+		
+		initialize();
+		return sharedPreferences.getString("currentUserName", " ");
+		
+	}
+	
 //	public static nešto nešto
 	
 }

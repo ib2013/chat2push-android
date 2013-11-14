@@ -27,7 +27,7 @@ public class FileAdapter {
 	        outputStreamWriter.write(jsonArray.toString());
 	        outputStreamWriter.close();
 	        
-	        //Log.e("Write to file: ", jsonArray.toString());
+	        Log.e("Writing to file: ", jsonArray.toString());
 	    }
 	    catch (IOException e) {
 	        Log.e("Exception", "IOException: " + e.toString());

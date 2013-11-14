@@ -132,7 +132,7 @@ class RegisterUser extends AsyncTask<String, String, String> {
 					if(isValidRegister) {
 						new AlertDialog.Builder(RegistrationActivity.this)
 						.setTitle("New account created")
-						.setMessage("Welcome,  " + Configuration.CURRENT_USER_NAME + "!")
+						.setMessage("Welcome,  " + SessionManager.getCurrentUserName() + "!")
 						.setPositiveButton("ok", new OnClickListener() {
 							
 							@Override

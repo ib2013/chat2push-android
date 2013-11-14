@@ -22,6 +22,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
+import android.service.textservice.SpellCheckerService.Session;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -170,7 +171,7 @@ public class MainActivity extends ActionBarActivity {
 						// kasnije cemo da stavimo rotating spinner
 						new AlertDialog.Builder(MainActivity.this)
 						.setTitle("Login successful")
-						.setMessage("Welcome,  " + Configuration.CURRENT_USER_NAME + "!")
+						.setMessage("Welcome,  " + SessionManager.getCurrentUserName() + "!")
 						.setPositiveButton("ok", new OnClickListener() {
 							
 							@Override
@@ -195,4 +196,5 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 	}
+
 }
