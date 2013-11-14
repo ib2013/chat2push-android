@@ -23,7 +23,7 @@ public class MessageModel {
 		super();
 		this.author = jsonObject.getString("sent-by");
 		this.text = jsonObject.getString("message");
-		this.timestamp = new Date(System.currentTimeMillis());
+		this.timestamp = new Date(jsonObject.getLong("time"));
 	}
 	
 	public JSONObject getJSONObject () throws JSONException {

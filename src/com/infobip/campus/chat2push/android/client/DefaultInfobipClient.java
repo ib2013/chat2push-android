@@ -47,7 +47,7 @@ public class DefaultInfobipClient {
 
 			int responseCode = response.getStatusLine().getStatusCode();
 
-			if (responseText.equals("success")) {
+			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
 				return null;
 			} else
 				return responseText;
