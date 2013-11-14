@@ -3,6 +3,7 @@ package com.infobip.campus.chat2push.android;
 //import com.example.helloworld.R;
 //import com.infobip.campus.chat2push.android.R;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
@@ -30,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -41,7 +43,12 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-
+//		if(SessionManager.isAnyUserLogedIn()) {
+//			Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
+//			startActivity(intent);
+//			finish();
+//		}
+		
 		final EditText userNameEditText = (EditText) findViewById(R.id.editTextUserName);
 		final EditText passwordEditText = (EditText) findViewById(R.id.editTextPassword);
 		
@@ -71,14 +78,15 @@ public class MainActivity extends ActionBarActivity {
 					if(!(userNameEditText.getText().toString().length() < 3)) {
 						// ako password nije duzi od 5 karaktera
 						if(!(passwordEditText.getText().toString().length()<6)) {
-							if(!userNameEditText.getText().toString().contains(" ")) {
+							if(!userNameEditText.getText().toString().contains(" ") &&
+									!passwordEditText.getText().toString().contains(" ")) {
 								new RegisterUser().execute(userNameEditText.getText().toString(),
 										passwordEditText.getText().toString());
 							}
 							else {
 								new AlertDialog.Builder(MainActivity.this)
 								.setTitle("Registration error")
-								.setMessage("Password must not contain any spaces")
+								.setMessage("Username and password must not contain any spaces")
 								.setNeutralButton("ok", null)
 								.show();
 							}
@@ -146,6 +154,7 @@ public class MainActivity extends ActionBarActivity {
 				if(DefaultInfobipClient.loginUser(args[0], args[1]) == null) {
 					isValidLogin = true;
 					Configuration.CURRENT_USER_NAME = args[0];
+//					SessionManager.loginUser(args[0], args[1]);
 				}
 			} catch (Exception e) {
 				Log.d("LoginUser doInBackground EXCEPTION:", "Login error!");
@@ -159,6 +168,8 @@ public class MainActivity extends ActionBarActivity {
 			runOnUiThread(new Runnable() {
 				public void run() {
 					if(isValidLogin) {
+						
+						// kasnije cemo da stavimo rotating spinner
 						new AlertDialog.Builder(MainActivity.this)
 						.setTitle("Login successful")
 						.setMessage("Welcome,  " + Configuration.CURRENT_USER_NAME + "!")
@@ -178,6 +189,7 @@ public class MainActivity extends ActionBarActivity {
 						.setMessage("Incorrect username/password combination!")
 						.setPositiveButton("OK", null)
 						.show();
+						
 					}
 				}
 			});
@@ -233,6 +245,9 @@ public class MainActivity extends ActionBarActivity {
 						.setMessage("Unable to create new account")
 						.setPositiveButton("OK", null)
 						.show();
+						
+						EditText userNameEditText = (EditText) findViewById(R.id.editTextUserName);
+						userNameEditText.setText("");
 					}
 				}
 			});
