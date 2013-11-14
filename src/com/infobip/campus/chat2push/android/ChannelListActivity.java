@@ -90,6 +90,12 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 				new LoadAllChannels().execute();
 				break;
 			case R.id.settings:
+				break;
+			case R.id.log_out :
+				SessionManager.logout();
+				Intent intent = new Intent(this, MainActivity.class);
+				startActivity(intent);
+				break;
 				
 		}
 		

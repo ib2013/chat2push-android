@@ -10,6 +10,12 @@
         android:icon="@drawable/ic_action_refresh"/>
     
     <item
+        android:id="@+id/log_out"
+        android:orderInCategory="15"
+        android:showAsAction="ifRoom"
+        android:title="Log me out!"/>
+    
+    <item
         android:id="@+id/settings"
         android:orderInCategory="10"
         android:showAsAction="ifRoom"
