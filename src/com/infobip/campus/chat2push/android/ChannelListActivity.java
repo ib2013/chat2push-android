@@ -111,7 +111,7 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-
+		
 		}
 
 		protected String doInBackground(String... args) {

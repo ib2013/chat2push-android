@@ -76,10 +76,12 @@ public class DefaultInfobipClient {
 
 			int responseCode = response.getStatusLine().getStatusCode();
 
-			if (responseText.equals("success")) {
+			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
 				Configuration.CURRENT_USER_NAME = userName;
+				Log.i("LOGIN STATUS","uspjelo");
 				return null;
 			} else {
+				Log.i("LOGIN STATUS","nije uspjelo: " + responseText);
 				return responseText;
 			}
 		} catch (Exception e) {
@@ -116,20 +118,27 @@ public class DefaultInfobipClient {
 
 	public static ArrayList<MessageModel> fetchAllMessages(
 			String channelName, Date startTime, Date endTime) {
-
+		Log.d("Trenutni korisnik je: ", Configuration.CURRENT_USER_NAME);
+		Log.d("Start time ", ""+startTime.getTime());
+		Log.d("End time ", ""+endTime.getTime());
 		Gson gson = new Gson();
 		ArrayList<MessageModel> messageList;
 
 		try {
 			HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(Configuration.SERVER_LOCATION
-					+ "message/fetch/username="
-					+ Configuration.CURRENT_USER_NAME + "&channel="
-					+ channelName + " &start-time="
-					+ startTime.toString() + "&end-time=" + endTime.toString());
+					+ "message/fetch/"
+					+ Configuration.CURRENT_USER_NAME + "/"
+					+ channelName + "/"
+					+ startTime.getTime() + "/" + endTime.getTime());
+			
+			Log.d("Request ", request.getURI().toString());
+			
 			HttpResponse response = client.execute(request);
 			String responseText = getResponseText(response);
 
+			Log.d("responseText: ", responseText);
+			
 			int responseCode = response.getStatusLine().getStatusCode();
 
 			messageList = parseJsonMessageModel(responseText);
@@ -156,7 +165,7 @@ public class DefaultInfobipClient {
 			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
 			HttpClient client = new DefaultHttpClient();
 			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
-					+ "user/login");
+					+ "message/send");
 			request.addHeader("content-type", "application/json");
 			request.setEntity(parms);
 			HttpResponse response = client.execute(request);

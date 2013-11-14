@@ -30,6 +30,7 @@
 	    android:layout_weight="0">
 	    
 	    	<EditText
+	    	    android:id="@+id/edit_text_message"
 	    	    android:layout_width="fill_parent"
 	    	    android:layout_height="wrap_content"
 	    	    android:layout_marginLeft="4dp"
@@ -41,6 +42,7 @@
 	    	    android:inputType="textCapSentences|textMultiLine" />
 	    	
 	    	<ImageButton
+	    	    android:id="@+id/image_button_send_message"
 	    	    android:layout_width="48dp"
 	    	    android:layout_height="48dp"
 	    	    android:layout_gravity="center_vertical"

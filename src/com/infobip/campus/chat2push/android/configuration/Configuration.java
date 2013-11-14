@@ -6,7 +6,7 @@ public class Configuration {
 	public static final String SERVER_LOCATION = "http://192.168.1.189:8888/";
 
 	
-	public static String CURRENT_USER_NAME = "Ljudina";
+	public static String CURRENT_USER_NAME = "korisnik1";
 
 	public static final String SENDER_ID = "434459427504";
 	public static final String APP_ID = "1a6cfc8b976c";

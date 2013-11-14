@@ -10,6 +10,7 @@ import com.infobip.campus.chat2push.android.models.MessageModel;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,8 @@ public class MessageArrayAdapter extends ArrayAdapter<MessageModel>{
 		viewHolder.textViewText.setText(currentMessageItem.getText());
 		viewHolder.textViewTime.setText(currentMessageItem.getDateAsString());
 		//TODO: rijesiti ikone usera!
-		viewHolder.imageVIewAuthorIcon.setBackgroundColor(Color.rgb((currentMessageItem.getAuthor().charAt(0)*5)%200+50, (currentMessageItem.getAuthor().charAt(1)*6)%200+50, (currentMessageItem.getAuthor().charAt(2)*7)%200+50));
+		Log.d("Autor ove poruke je: ", currentMessageItem.getAuthor());
+		//viewHolder.imageVIewAuthorIcon.setBackgroundColor(Color.rgb((currentMessageItem.getAuthor().charAt(0)*5)%200+50, (currentMessageItem.getAuthor().charAt(1)*6)%200+50, (currentMessageItem.getAuthor().charAt(2)*7)%200+50));
 		return convertView;
 	}
 
