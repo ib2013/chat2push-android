@@ -71,7 +71,6 @@ public class DefaultInfobipClient {
 					+ "user/login");
 			request.addHeader("content-type", "application/json");
 			request.setEntity(parms);
-			Log.e("LOGIN STATUS REQUEST ", request.getURI().toString());
 			HttpResponse response = client.execute(request);
 			String responseText = getResponseText(response);
 
@@ -79,14 +78,11 @@ public class DefaultInfobipClient {
 
 			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
 				Configuration.CURRENT_USER_NAME = userName;
-				Log.i("LOGIN STATUS","uspjelo");
 				return null;
 			} else {
-				Log.i("LOGIN STATUS","nije uspjelo: " + responseText);
 				return responseText;
 			}
 		} catch (Exception e) {
-			Log.e("LOGIN STATUS EXCEPTION: ", e.getMessage());
 			return "Connection error!";
 		}
 	}
@@ -99,11 +95,9 @@ public class DefaultInfobipClient {
 			
 			HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(Configuration.SERVER_LOCATION
-					+ "channel/fetch/"/* + userName*/);
+					+ "channel/fetch/" + userName);
 			HttpResponse response = client.execute(request);
-			Log.i("CLIENT -----", response.toString());
 			String responseText = getResponseText(response);
-
 			
 			int responseCode = response.getStatusLine().getStatusCode();
 
@@ -162,7 +156,7 @@ public class DefaultInfobipClient {
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("username", userName);
 			jsonObject.addProperty("channel", channelName);
-			jsonObject.addProperty("message-text", messageText);
+			jsonObject.addProperty("messageText", messageText);
 
 			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
 			HttpClient client = new DefaultHttpClient();
@@ -175,7 +169,7 @@ public class DefaultInfobipClient {
 
 			int responseCode = response.getStatusLine().getStatusCode();
 
-			if (responseText.equals("success")) {
+			if (responseText.equals("true")) {
 				return null;
 			} else {
 				return responseText;
@@ -243,20 +237,20 @@ public class DefaultInfobipClient {
 			boolean isUserSubscribedToChannel;
 
 			try {
-				messageText = jsonElement.getAsJsonPrimitive("message-text")
+				messageText = jsonElement.getAsJsonPrimitive("message")
 						.getAsString();
 			} catch (Exception e) {
 				messageText = "";
 			}
 			try {
-				sentBy = jsonElement.getAsJsonPrimitive("sent-by;")
+				sentBy = jsonElement.getAsJsonPrimitive("user")
 						.getAsString();
 			} catch (Exception e) {
 				sentBy = "";
 			}
 
 			try {
-				time = new Date(jsonElement.getAsJsonPrimitive("time")
+				time = new Date(jsonElement.getAsJsonPrimitive("lastMessageDate")
 						.getAsString());
 			} catch (Exception e) {
 				time = new Date(0);
