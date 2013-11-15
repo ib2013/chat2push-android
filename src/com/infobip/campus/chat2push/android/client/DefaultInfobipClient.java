@@ -302,6 +302,37 @@ public class DefaultInfobipClient {
 		}
 
 	}
+	
+	public static boolean createNewRoom(String name, String description){
+		Gson gson = new Gson();
+
+		try {
+
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("name", name);
+			jsonObject.addProperty("description", description);
+			jsonObject.addProperty("isPublic", true);
+
+			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
+			HttpClient client = new DefaultHttpClient();
+			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
+					+ "channel/add");
+			request.addHeader("content-type", "application/json");
+			request.setEntity(parms);
+			HttpResponse response = client.execute(request);
+			String responseText = getResponseText(response);
+
+			int responseCode = response.getStatusLine().getStatusCode();
+
+			if (responseText.equals("succes")) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+	}
 
 	private static ArrayList<ChannelModel> parseJsonChannelModel(
 			String jsonResponse) {
