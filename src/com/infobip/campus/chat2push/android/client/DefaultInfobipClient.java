@@ -27,7 +27,8 @@ import com.infobip.campus.chat2push.android.models.MessageModel;
 
 public class DefaultInfobipClient {
 
-	public static String registerUser(String userName, String password) {
+	public static String registerUser(String userName, String password,
+			String phoneNumber) {
 		Gson gson = new Gson();
 
 		try {
@@ -35,6 +36,7 @@ public class DefaultInfobipClient {
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("username", userName);
 			jsonObject.addProperty("password", password);
+			jsonObject.addProperty("phoneNumber", phoneNumber);
 
 			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
 			HttpClient client = new DefaultHttpClient();
@@ -43,15 +45,21 @@ public class DefaultInfobipClient {
 			request.addHeader("content-type", "application/json");
 			request.setEntity(parms);
 			HttpResponse response = client.execute(request);
-			
+
 			String responseText = getResponseText(response);
 
 			int responseCode = response.getStatusLine().getStatusCode();
 
 			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
 				return null;
-			} else
+			} else if (responseText.toUpperCase().equals(
+					"\"MISSIN_REGISTRATION\"")) {
+				return "MISSIN_REGISTRATION";
+			}
+
+			else {
 				return responseText;
+			}
 		} catch (Exception e) {
 			return "Connection error!";
 		}
@@ -78,7 +86,7 @@ public class DefaultInfobipClient {
 			int responseCode = response.getStatusLine().getStatusCode();
 
 			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
-//				Configuration.CURRENT_USER_NAME = userName;
+				// Configuration.CURRENT_USER_NAME = userName;
 				return null;
 			} else {
 				return responseText;
@@ -88,18 +96,49 @@ public class DefaultInfobipClient {
 		}
 	}
 
+	public static boolean verifyUser(String userName, int registrationCode) {
+		Gson gson = new Gson();
+
+		try {
+
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("username", userName);
+			jsonObject.addProperty("registrationCode", registrationCode);
+
+			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
+			HttpClient client = new DefaultHttpClient();
+			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
+					+ "user/verify");
+			request.addHeader("content-type", "application/json");
+			request.setEntity(parms);
+			HttpResponse response = client.execute(request);
+			String responseText = getResponseText(response);
+
+			int responseCode = response.getStatusLine().getStatusCode();
+
+			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
+				// Configuration.CURRENT_USER_NAME = userName;
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 	public static ArrayList<ChannelModel> fetchAllChannels(String userName) {
 		Gson gson = new Gson();
 		ArrayList<ChannelModel> channelList;
 
 		try {
-			
+
 			HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(Configuration.SERVER_LOCATION
 					+ "channel/fetch/" + userName);
 			HttpResponse response = client.execute(request);
 			String responseText = getResponseText(response);
-			
+
 			int responseCode = response.getStatusLine().getStatusCode();
 
 			channelList = parseJsonChannelModel(responseText);
@@ -113,29 +152,28 @@ public class DefaultInfobipClient {
 		}
 	}
 
-	public static ArrayList<MessageModel> fetchAllMessages(
-			String channelName, Date startTime, Date endTime) {
+	public static ArrayList<MessageModel> fetchAllMessages(String channelName,
+			Date startTime, Date endTime) {
 		Log.d("Trenutni korisnik je: ", SessionManager.getCurrentUserName());
-		Log.d("Start time ", ""+startTime.getTime());
-		Log.d("End time ", ""+endTime.getTime());
+		Log.d("Start time ", "" + startTime.getTime());
+		Log.d("End time ", "" + endTime.getTime());
 		Gson gson = new Gson();
 		ArrayList<MessageModel> messageList;
 
 		try {
 			HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(Configuration.SERVER_LOCATION
-					+ "message/fetch/"
-					+ SessionManager.getCurrentUserName() + "/"
-					+ channelName + "/"
-					+ startTime.getTime() + "/" + endTime.getTime());
-			
+					+ "message/fetch/" + SessionManager.getCurrentUserName()
+					+ "/" + channelName + "/" + startTime.getTime() + "/"
+					+ endTime.getTime());
+
 			Log.d("Request ", request.getURI().toString());
-			
+
 			HttpResponse response = client.execute(request);
 			String responseText = getResponseText(response);
 
 			Log.d("responseText: ", responseText);
-			
+
 			int responseCode = response.getStatusLine().getStatusCode();
 
 			messageList = parseJsonMessageModel(responseText);
@@ -213,7 +251,8 @@ public class DefaultInfobipClient {
 			} catch (Exception e) {
 				isUserSubscribedToChannel = false;
 			}
-			Log.d("Parsirani channel model: ", (new ChannelModel(channelName, channelDescription, isUserSubscribedToChannel)).toString());
+			Log.d("Parsirani channel model: ", (new ChannelModel(channelName,
+					channelDescription, isUserSubscribedToChannel)).toString());
 			channelList.add(new ChannelModel(channelName, channelDescription,
 					isUserSubscribedToChannel));
 		}
@@ -244,15 +283,14 @@ public class DefaultInfobipClient {
 				messageText = "";
 			}
 			try {
-				sentBy = jsonElement.getAsJsonPrimitive("user")
-						.getAsString();
+				sentBy = jsonElement.getAsJsonPrimitive("user").getAsString();
 			} catch (Exception e) {
 				sentBy = "";
 			}
 
 			try {
-				time = new Date(jsonElement.getAsJsonPrimitive("lastMessageDate")
-						.getAsLong());
+				time = new Date(jsonElement.getAsJsonPrimitive(
+						"lastMessageDate").getAsLong());
 			} catch (Exception e) {
 				time = new Date(0);
 			}
@@ -262,7 +300,7 @@ public class DefaultInfobipClient {
 
 		for (MessageModel messageItem : messageList)
 			Log.d("Parsirani responseText: ", messageItem.toString());
-		
+
 		return messageList;
 	}
 
