@@ -30,7 +30,7 @@ public class MessageModel {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("sent-by", author);
 		jsonObject.put("message", text);
-		jsonObject.put("time", timestamp);
+		jsonObject.put("time", timestamp.getTime());
 		return jsonObject;	
 	}
 	
@@ -38,7 +38,7 @@ public class MessageModel {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("sent-by", author);
 		jsonObject.put("message", text);
-		jsonObject.put("time", timestamp);
+		jsonObject.put("time", timestamp.getTime());
 		jsonObject.put("chhanel", chanalName);
 		return jsonObject;	
 	}
@@ -56,6 +56,31 @@ public class MessageModel {
 			Log.e("Pogrešno napravljen model", "");
 		}		
 		return response;
+	}
+	
+	public boolean equals (MessageModel secondMessage) {
+	
+		boolean response = false;
+		
+		if ( secondMessage.getAuthor().equals(author) &&
+			 secondMessage.getText().equals(text) )
+			response = true;
+		
+		return response;
+		
+	}
+	
+	public boolean timelyEquals (MessageModel secondMessage) {
+		
+		boolean response = false;
+		
+		if ( secondMessage.getAuthor().equals(author) &&
+			 secondMessage.getText().equals(text) &&
+			 secondMessage.getDate() == timestamp )
+			response = true;
+		
+		return response;
+		
 	}
 	
 	public String getAuthor () {

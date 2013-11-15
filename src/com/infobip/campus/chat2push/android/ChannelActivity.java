@@ -67,8 +67,6 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 		Intent intent = getIntent();
 		channelName = intent.getStringExtra("channelName");
 		this.setTitle(channelName);
-			
-		new LoadMessages().execute();
 				
 		//listener za send button:
 		ImageButton sendMessageButton = (ImageButton) findViewById(R.id.image_button_send_message);
@@ -78,11 +76,15 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 			public void onClick(View v) {
 				String messageText = new String (editTextMessage.getText().toString());
 				editTextMessage.setText("");
-				new SendMessage().execute(SessionManager.getCurrentUserName(), channelName, messageText);
+				if (!messageText.replaceAll(" ", "").equals("")) {
+					new SendMessage().execute(SessionManager.getCurrentUserName(), channelName, messageText);
+//					Dodam "privremenu" poruku (to se vidi iz razmaka na pocetku username-a!)
+					messageList.add(new MessageModel(" " + SessionManager.getCurrentUserName(), messageText, new Date(0)));
+					displayListView(messageList);
+				}				
 			}
 		});
 		
-		displayListView(messageList);		
 	}
 
 	
@@ -90,12 +92,15 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 	protected void onResume() {
         super.onResume();
         myApplication.setCurrentActivity(this);
+        new LoadMessages().execute();
+		displayListView(messageList);		
     }
 	
 	@Override
     protected void onPause() {
         clearReferences();
         if (getPreferences(MODE_PRIVATE).getBoolean(channelName + "-cach", true)) {
+        	Log.d("Pisem u file...", "filename="+channelName+".txt");
         	FileAdapter.writeToFile(this, channelName, messageList);  
         }
         super.onPause();
@@ -153,7 +158,12 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
     }
 	
 	public void addNewMessage (MessageModel newMessage) {
-		messageList.add(newMessage);
+		int indexToReplace = -1;
+		indexToReplace = messageList.indexOf(new MessageModel(" " + newMessage.getAuthor(), newMessage.getText(), new Date(0)));
+		if (indexToReplace > -1) {
+			messageList.set(indexToReplace, newMessage);
+		} else
+			messageList.add(newMessage);
 		displayListView(messageList);
 	}
 	
@@ -186,7 +196,7 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 				Log.d("Preskoèeno èitanje iz filea, idem odmah na net!", "Ludilo brale!");
 			Date  startTime = new Date(0);
 			if (messageList.size() != 0)
-				startTime = messageList.get(messageList.size()).getDate();
+				startTime = messageList.get(messageList.size()-1).getDate();
 			Log.d("startTime je inicijaliziran na: ", "" + startTime);
 			messageList.addAll(DefaultInfobipClient.fetchAllMessages(channelName, startTime, new Date(System.currentTimeMillis())));
 			Log.d("Procitao je poruke sa servera, messageList sad ima ovoliko elemenata: ", "" + messageList.size());
