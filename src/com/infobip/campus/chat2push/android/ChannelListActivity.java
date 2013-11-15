@@ -110,38 +110,36 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 			public boolean onQueryTextChange(String arg0) {
 				filterZaListuKanala = arg0;
 				addItemsOnListView();
-				displayListView(channelList);
+//				displayListView(channelList);
 				return false;
 			}
 		});
 		
-MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+		MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
 	
-	@Override
-	public boolean onMenuItemActionExpand(MenuItem arg0) {
-		return true;
-	}
+			@Override
+			public boolean onMenuItemActionExpand(MenuItem arg0) {
+				return true;
+			}
 
-	@Override
-	public boolean onMenuItemActionCollapse(MenuItem arg0) {
-		filterZaListuKanala = "";
-		addItemsOnListView();
-		displayListView(channelList);
-		return true;
-	}
-});
+			@Override
+			public boolean onMenuItemActionCollapse(MenuItem arg0) {
+				filterZaListuKanala = "";
+				addItemsOnListView();
+				displayListView(channelList);
+				return true;
+			}
+		});
 
 		return true;
 	}
 	
 	private void addItemsOnListView() {
-		
 		final ArrayList<ChannelModel> tempChannelList = new ArrayList<ChannelModel>();
 		for (ChannelModel model : channelList)	
 			if (model.getName().toLowerCase().contains(filterZaListuKanala.toLowerCase()))
 				tempChannelList.add(model);
 		displayListView(tempChannelList);
-		Log.i("TEMPCHANNELS:", tempChannelList.toString());
 	}
 	
 	@Override
