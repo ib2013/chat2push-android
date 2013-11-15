@@ -145,10 +145,11 @@ public class MainActivity extends ActionBarActivity {
 				else if(DefaultInfobipClient.loginUser(args[0], args[1]).equals("MISSING_VERIFICATION")) {
 					isValidLogin = true;
 					if(args.length == 3) {
-//						if(checkVerificationNumber(SessionManager.getCurrentUserName(), args[2])) {
-//							isVerified = true;
-//							SessionManager.loginUser(args[0], args[1]);
-//						}
+						Log.i("argumenti f-je verifyUser:", args[0] + " " + Integer.parseInt(args[2]));
+						if(DefaultInfobipClient.verifyUser(args[0], Integer.parseInt(args[2]))) {
+							isVerified = true;
+							SessionManager.loginUser(args[0], args[1]);
+						}
 					}
 				}
 			} catch (Exception e) {
