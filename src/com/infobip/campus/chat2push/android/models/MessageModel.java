@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
-public class MessageModel {
+public class MessageModel extends Object {
 	
 	private String author, text;
 	private Date timestamp;
@@ -54,21 +54,27 @@ public class MessageModel {
 		if (author == null || text == null || timestamp == null) {
 			response = false;
 			Log.e("Pogrešno napravljen model", "");
-		}		
+		}	
+		if (author.charAt(0) == ' ') {
+			response = false;
+			Log.e("Autor ima razmak na pocetku, radi se o sending poruci ", this.toString());
+		}
 		return response;
 	}
 	
-	public boolean equals (MessageModel secondMessage) {
+//	public boolean equals (MessageModel secondMessage) {
+//	
+//		boolean response = false;
+//		
+//		if ( secondMessage.getAuthor().equals(this.author) &&
+//			 secondMessage.getText().equals(this.text) )
+//			response = true;
+//		
+//		return response;
+//		
+//	}
 	
-		boolean response = false;
-		
-		if ( secondMessage.getAuthor().equals(author) &&
-			 secondMessage.getText().equals(text) )
-			response = true;
-		
-		return response;
-		
-	}
+	
 	
 	public boolean timelyEquals (MessageModel secondMessage) {
 		
@@ -83,6 +89,29 @@ public class MessageModel {
 		
 	}
 	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MessageModel other = (MessageModel) obj;
+		if (author == null) {
+			if (other.author != null)
+				return false;
+		} else if (!author.equals(other.author))
+			return false;
+		if (text == null) {
+			if (other.text != null)
+				return false;
+		} else if (!text.equals(other.text))
+			return false;
+		return true;
+	}
+
 	public String getAuthor () {
 		return author;
 	}

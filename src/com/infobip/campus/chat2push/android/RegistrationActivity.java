@@ -38,8 +38,6 @@ public class RegistrationActivity extends Activity {
 		telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 		Log.i("BROJ_TELEFONA", telephonyManager.getLine1Number());
 		
-		Log.i("PROLAZ", "PROVERA PROLAZA");
-		
 		Intent intent = getIntent();
 		userNameEditText.setText(intent.getStringExtra("userName"));
 		passwordEditText.setText(intent.getStringExtra("password"));
@@ -140,9 +138,9 @@ class RegisterUser extends AsyncTask<String, String, String> {
 		protected String doInBackground(String... args) {
 			try {
 				Log.i("RegisterUser_ARGUMENT_LIST", args[0] + " -  " + args[1]);
-//				if(DefaultInfobipClient.registerUser(args[0], args[1], args[2]) == null) {
-//					isValidRegister = true;
-//				}	
+				if(DefaultInfobipClient.registerUser(args[0], args[1], args[2]) == null) {
+					isValidRegister = true;
+				}	
 			} catch (Exception e) {
 				Log.d("RegisterUser doInBackground EXCEPTION:", "Error registering user!");
 				e.printStackTrace();

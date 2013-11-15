@@ -22,7 +22,8 @@ public class FileAdapter {
 		JSONArray jsonArray = new JSONArray();
         try {
         	for (MessageModel message : messageList) 
-            	jsonArray.put(message.getJSONObject());
+        		if (message.areYouOK()) 
+        			jsonArray.put(message.getJSONObject());
 	        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename + ".txt", Context.MODE_PRIVATE));
 	        outputStreamWriter.write(jsonArray.toString());
 	        outputStreamWriter.close();

@@ -87,9 +87,13 @@ public class DefaultInfobipClient {
 			int responseCode = response.getStatusLine().getStatusCode();
 
 			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
-				// Configuration.CURRENT_USER_NAME = userName;
 				return null;
-			} else {
+			} else if (responseText.toUpperCase().equals(
+					"\"MISSING_REGISTRATION\"")) {
+				return "MISSING_VERIFICATION";
+			}
+
+			else {
 				return responseText;
 			}
 		} catch (Exception e) {
@@ -115,7 +119,7 @@ public class DefaultInfobipClient {
 			request.setEntity(parms);
 			HttpResponse response = client.execute(request);
 			String responseText = getResponseText(response);
-
+			Log.i("RESPONSE_TEXT", responseText);
 			int responseCode = response.getStatusLine().getStatusCode();
 
 			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
@@ -308,6 +312,7 @@ public class DefaultInfobipClient {
 
 	private static String getResponseText(HttpResponse response)
 			throws IOException {
+		try {
 		BufferedReader rd = new BufferedReader(new InputStreamReader(response
 				.getEntity().getContent()));
 		String responseText = new String();
@@ -317,5 +322,9 @@ public class DefaultInfobipClient {
 		}
 
 		return responseText;
+		} catch (Exception e) {
+			Log.e("On NE ÈITA!", e.getMessage());
+			return "[]";
+		}
 	}
 }
