@@ -102,10 +102,13 @@ public class SessionManager {
 	public static void subscribeToChannelByName (String channelName) {
 		
 		initialize();
-		ArrayList<String> channelNames = new ArrayList<String>();
+		
+		List<String> channelNames = new ArrayList<String>();
 		channelNames.add(channelName);
+		Log.d("U SessionMenager.subscribeToChannelByName", "Poslat cu mu da se pretplatim na: " + channelNames.toString());
 		ChannelRegistrationListener channelRegistrationListener = null;
 		manager.registerToChannels(channelNames, false, channelRegistrationListener);
+		Log.d("U SessionMenager.subscribeToChannelByName", "Sve je proslo bez greske!");
 		
 	}
 	
@@ -114,12 +117,12 @@ public class SessionManager {
 		initialize();
 		ArrayList<String> channelNames = new ArrayList<String>();
 		
-		class DefoultChannelObtainListener implements ChannelObtainListener {
+		class DefaultChannelObtainListener implements ChannelObtainListener {
 			
 			ArrayList<String> obtainedChannelNames;
 			String channelToUnsubscribeFrom = "";
 			
-			DefoultChannelObtainListener( String channelName) {
+			DefaultChannelObtainListener( String channelName) {
 				super();
 				obtainedChannelNames= new ArrayList<String>();
 				channelToUnsubscribeFrom = channelName;
@@ -145,7 +148,7 @@ public class SessionManager {
 			
 		}
 		
-		ChannelObtainListener channelObtainListener = new DefoultChannelObtainListener(channelName);
+		ChannelObtainListener channelObtainListener = new DefaultChannelObtainListener(channelName);
 		manager.getRegisteredChannels(channelObtainListener);
 
 	}

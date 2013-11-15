@@ -71,10 +71,18 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 					CheckBox checkBox = (CheckBox) v;
 					ChannelModel channelItem = (ChannelModel) checkBox.getTag();
 					channelItem.setStatus(checkBox.isChecked());
-					if (checkBox.isChecked()) 
+					if (checkBox.isChecked()) {
 						new SubscribeToChannel().execute(channelItem.getName());
-					else
+						
+						SessionManager.subscribeToChannelByName(channelItem.getName());
+						Log.d("Background od SubscribeToChannel", "SessionManager.subscribeToChannelByName je prosao");
+					}
+					else {
 						new UnsubscribeFromChannel().execute(channelItem.getName());
+						
+						SessionManager.unsubscribeFromChannelByName(channelItem.getName());
+						Log.d("Background od UnsubscribeFromChannel", "SessionManager.unsubscribeFromChannelByName je prosao");
+					}
 				}
 			});
 			
@@ -89,6 +97,9 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 					String ime = tv.getText().toString();
 					
 					new SubscribeToChannel().execute(ime);
+					
+					SessionManager.subscribeToChannelByName(ime);
+					Log.d("Background od SubscribeToChannel", "SessionManager.subscribeToChannelByName je prosao");
 					
 					Intent intent = new Intent(getContext(), ChannelActivity.class);
 					intent.putExtra("channelName", tv.getText().toString());
@@ -127,10 +138,10 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 		}
 
 		protected String doInBackground(String... args) {
-
-			DefoultInfobipClient.registerUserToChannel(SessionManager.getCurrentUserName(), args[0]);
-			SessionManager.subscribeToChannelByName(args[0]);
 			
+			Log.d("Background od SubscribeToChannel", "username je: " + SessionManager.getCurrentUserName() + " ime kanala za dodati: " + args[0]);
+			DefaultInfobipClient.registerUserToChannel(SessionManager.getCurrentUserName(), args[0]);
+			Log.d("Background od SubscribeToChannel", "Prošao mi je DefaultInfobipClient.registerUserToChannel");
 			return "Subscribe to channel return value";
 		}
 
@@ -152,9 +163,9 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 
 		protected String doInBackground(String... args) {
 
-			DefoultInfobipClient.unregisterUserFromChannel(SessionManager.getCurrentUserName(), args[0]);
-			SessionManager.unsubscribeFromChannelByName(args[0]);
-			
+			Log.d("Background od UnsubscribeFromChannel", "username je: " + SessionManager.getCurrentUserName() + " ime kanala za obrisati: " + args[0]);
+			DefaultInfobipClient.unregisterUserFromChannel(SessionManager.getCurrentUserName(), args[0]);
+			Log.d("Background od UnsubscribeFromChannel", "Prošao mi je DefaultInfobipClient.unregisterUserFromChannel");
 			return "Subscribe to channel return value";
 		}
 
