@@ -15,6 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="78dp"
+        android:background="@drawable/rect_text_edit"
         android:ems="10" >
 
         <requestFocus />
@@ -27,7 +28,7 @@
         android:layout_alignBottom="@+id/editTextUserName"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="43dp"
-        android:text="user name:"
+        android:text="User name:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
@@ -37,6 +38,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:ems="10"
+        android:background="@drawable/rect_text_edit"
         android:inputType="textPassword" />
 
     <TextView
@@ -46,7 +48,7 @@
         android:layout_above="@+id/editTextPassword"
         android:layout_alignRight="@+id/textViewUserName"
         android:layout_marginBottom="20dp"
-        android:text="password:"
+        android:text="Password:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
@@ -57,6 +59,7 @@
         android:layout_alignRight="@+id/editTextUserName"
         android:layout_below="@+id/editTextPassword"
         android:layout_marginTop="26dp"
+        android:background="@drawable/rect_button"
         android:text="Login" />
 
     <Button
@@ -67,6 +70,8 @@
         android:layout_alignRight="@+id/buttonLogin"
         android:layout_below="@+id/buttonLogin"
         android:layout_marginTop="17dp"
+        android:background="@drawable/rect_button"
         android:text="Register" />
+<!--     android:background="@drawable/rect_button" -->
 
 </RelativeLayout>
