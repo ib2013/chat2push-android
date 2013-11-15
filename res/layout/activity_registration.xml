@@ -23,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView1"
+        android:paddingLeft="10px"
         android:layout_centerHorizontal="true"
         android:background="@drawable/rect_text_edit"
         android:ems="10"
@@ -45,6 +46,7 @@
         android:layout_alignLeft="@+id/textView2"
         android:layout_alignRight="@+id/editTextRegisterUserName"
         android:layout_below="@+id/textView2"
+        android:paddingLeft="10px"
         android:background="@drawable/rect_text_edit"
         android:ems="10"
         android:inputType="textPassword" />
@@ -67,6 +69,7 @@
         android:layout_alignLeft="@+id/textView3"
         android:layout_alignRight="@+id/editTextRegisterUserName"
         android:layout_below="@+id/textView3"
+        android:paddingLeft="10px"
         android:background="@drawable/rect_text_edit"
         android:ems="10"
         android:inputType="textPassword" />
@@ -87,6 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView4"
         android:layout_below="@+id/textView4"
+        android:paddingLeft="10px"
         android:background="@drawable/rect_text_edit"
         android:ems="10"
         android:inputType="phone" />

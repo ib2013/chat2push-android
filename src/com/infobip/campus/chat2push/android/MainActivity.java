@@ -196,6 +196,7 @@ public class MainActivity extends ActionBarActivity {
 							
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
+								finish();
 								Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
 								startActivity(intent);
 							}
