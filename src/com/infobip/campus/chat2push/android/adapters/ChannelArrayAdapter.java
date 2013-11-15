@@ -7,11 +7,16 @@ import com.infobip.campus.chat2push.android.ChannelActivity;
 import com.infobip.campus.chat2push.android.R;
 import com.infobip.campus.chat2push.android.R.id;
 import com.infobip.campus.chat2push.android.R.layout;
+import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
+import com.infobip.campus.chat2push.android.managers.SessionManager;
 import com.infobip.campus.chat2push.android.models.ChannelModel;
+import com.infobip.campus.chat2push.android.client.*;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.service.textservice.SpellCheckerService.Session;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +71,10 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 					CheckBox checkBox = (CheckBox) v;
 					ChannelModel channelItem = (ChannelModel) checkBox.getTag();
 					channelItem.setStatus(checkBox.isChecked());
+					if (checkBox.isChecked()) 
+						new SubscribeToChannel().execute(channelItem.getName());
+					else
+						new UnsubscribeFromChannel().execute(channelItem.getName());
 				}
 			});
 			
@@ -78,7 +87,9 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 					TextView tv = (TextView) linear.getChildAt(0);
 					
 					String ime = tv.getText().toString();
-
+					
+					new SubscribeToChannel().execute(ime);
+					
 					Intent intent = new Intent(getContext(), ChannelActivity.class);
 					intent.putExtra("channelName", tv.getText().toString());
 					Log.i("channelName = ", tv.getText().toString());
@@ -98,5 +109,62 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 		
 		return convertView;
 	}
+	
+	
+	
+	
+	
+	//ACYNCTASK ZA PRETPLACIVANJE NA KANALE NA SERVERU!!! NADAM SE DA CE OVO OVAKO RADIT!!!
+	
+	class SubscribeToChannel extends AsyncTask<String, String, String> {
+		int errorCode = 0;
+		String textView = "";
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		
+		}
+
+		protected String doInBackground(String... args) {
+
+			DefoultInfobipClient.registerUserToChannel(SessionManager.getCurrentUserName(), args[0]);
+			SessionManager.subscribeToChannelByName(args[0]);
+			
+			return "Subscribe to channel return value";
+		}
+
+		protected void onPostExecute(String file_url) {
+			super.onPostExecute(file_url);
+		}
+
+	}
+	
+	class UnsubscribeFromChannel extends AsyncTask<String, String, String> {
+		int errorCode = 0;
+		String textView = "";
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		
+		}
+
+		protected String doInBackground(String... args) {
+
+			DefoultInfobipClient.unregisterUserFromChannel(SessionManager.getCurrentUserName(), args[0]);
+			SessionManager.unsubscribeFromChannelByName(args[0]);
+			
+			return "Subscribe to channel return value";
+		}
+
+		protected void onPostExecute(String file_url) {
+			super.onPostExecute(file_url);
+		}
+
+	}
+	
+	
+	
 
 }

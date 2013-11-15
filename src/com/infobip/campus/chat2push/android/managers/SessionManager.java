@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.infobip.campus.chat2push.android.adapters.MyApplication;
 import com.infobip.campus.chat2push.android.configuration.Configuration;
 import com.infobip.campus.chat2push.android.models.ChannelModel;
+import com.infobip.push.ChannelObtainListener;
 import com.infobip.push.ChannelRegistrationListener;
 import com.infobip.push.PushNotificationManager;
 
@@ -93,9 +94,60 @@ public class SessionManager {
 			if (channelItem.getStatus())
 				channelNames.add(channelItem.getName());
 		ChannelRegistrationListener channelRegistrationListener = null;
-		manager.registerToChannels(channelNames, true, channelRegistrationListener);
+		manager.registerToChannels(channelNames, false, channelRegistrationListener);
 		Log.d("Pretplatio sam se na: ", channelNames.toString());
 		
+	}
+	
+	public static void subscribeToChannelByName (String channelName) {
+		
+		initialize();
+		ArrayList<String> channelNames = new ArrayList<String>();
+		channelNames.add(channelName);
+		ChannelRegistrationListener channelRegistrationListener = null;
+		manager.registerToChannels(channelNames, false, channelRegistrationListener);
+		
+	}
+	
+	public static void unsubscribeFromChannelByName (String channelName) {
+		
+		initialize();
+		ArrayList<String> channelNames = new ArrayList<String>();
+		
+		class DefoultChannelObtainListener implements ChannelObtainListener {
+			
+			ArrayList<String> obtainedChannelNames;
+			String channelToUnsubscribeFrom = "";
+			
+			DefoultChannelObtainListener( String channelName) {
+				super();
+				obtainedChannelNames= new ArrayList<String>();
+				channelToUnsubscribeFrom = channelName;
+			}
+
+			@Override
+			public void onChannelsObtained(String[] channels) {
+				
+				for (String channelName : channels)
+					obtainedChannelNames.add(channelName);
+				
+				obtainedChannelNames.remove(channelToUnsubscribeFrom);
+				ChannelRegistrationListener channelRegistrationListener = null;
+				manager.registerToChannels(obtainedChannelNames, true, channelRegistrationListener);
+				
+			}
+
+			@Override
+			public void onChannelObtainFailed(int reason) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		}
+		
+		ChannelObtainListener channelObtainListener = new DefoultChannelObtainListener(channelName);
+		manager.getRegisteredChannels(channelObtainListener);
+
 	}
 
 	public static String getCurrentUserName () {
