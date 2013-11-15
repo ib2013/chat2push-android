@@ -175,19 +175,11 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 	@Override
 	public boolean onNavigationItemSelected(int arg0, long arg1) {
 		if(arg0==0) {
-			new AlertDialog.Builder(ChannelListActivity.this)
-			.setTitle("Spinner")
-			.setMessage("Selected public")
-			.setNeutralButton("ok", null)
-			.show();
+			// prikazi samo PUBLIC kanale
 			displayListView(channelList, true);
 		}
 		if(arg0==1) {
-			new AlertDialog.Builder(ChannelListActivity.this)
-			.setTitle("Spinner")
-			.setMessage("Selected private")
-			.setNeutralButton("ok", null)
-			.show();
+			// prikazi samo PRIVATE kanale
 			displayListView(channelList, false);
 		}
 		return false;
