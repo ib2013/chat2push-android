@@ -36,9 +36,12 @@ import android.content.Intent;
 import android.content.pm.FeatureInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.OnNavigationListener;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,6 +58,7 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 	ChannelArrayAdapter listViewAdapter = null;
 	ArrayList<ChannelModel> channelList;
 	boolean isPublic;
+	String filterZaListuKanala = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +86,50 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.channel_list, menu);
 		
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+		
+		searchView.setOnQueryTextListener(new OnQueryTextListener() {
+			
+			public boolean onQueryTextSubmit(String arg0) {
+				return false;
+			}
+			
+			public boolean onQueryTextChange(String arg0) {
+				filterZaListuKanala = arg0;
+				addItemsOnListView();
+				displayListView(channelList);
+				return false;
+			}
+		});
+		
+MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+	
+	@Override
+	public boolean onMenuItemActionExpand(MenuItem arg0) {
 		return true;
+	}
+
+	@Override
+	public boolean onMenuItemActionCollapse(MenuItem arg0) {
+		filterZaListuKanala = "";
+		addItemsOnListView();
+		displayListView(channelList);
+		return true;
+	}
+});
+
+		return true;
+	}
+	
+	private void addItemsOnListView() {
+		
+		final ArrayList<ChannelModel> tempChannelList = new ArrayList<ChannelModel>();
+		for (ChannelModel model : channelList)	
+			if (model.getName().toLowerCase().contains(filterZaListuKanala.toLowerCase()))
+				tempChannelList.add(model);
+		displayListView(tempChannelList);
+		Log.i("TEMPCHANNELS:", tempChannelList.toString());
 	}
 	
 	@Override
