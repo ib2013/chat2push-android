@@ -23,6 +23,7 @@ public class MessageArrayAdapter extends ArrayAdapter<MessageModel>{
 
 	private ArrayList<MessageModel> messageList;
 	private Context context;
+	private String previousMessageAuthor = "";
 
 	public MessageArrayAdapter(Activity context, int davaViewResourceId, List<MessageModel> data) {
 		super(context, davaViewResourceId, data);
@@ -42,30 +43,78 @@ public class MessageArrayAdapter extends ArrayAdapter<MessageModel>{
 
 		ViewHolder viewHolder = null;
 		
-		MessageModel currentMessageItem = messageList.get(position);
-
-		LayoutInflater viewInflater = ((Activity) context).getLayoutInflater();
+		if(messageList.get(position) != null) {
 			
-		if (currentMessageItem.getAuthor().equals(SessionManager.getCurrentUserName()))  {
-			convertView = viewInflater.inflate(R.layout.list_message_right_item, null);
-		} else {
-			convertView = viewInflater.inflate(R.layout.list_message_left_item, null);
-		}
+			MessageModel currentMessageItem = messageList.get(position);
 
-		viewHolder = new ViewHolder();
-		viewHolder.textViewAuthor = (TextView) convertView.findViewById(R.id.textViewMessageAuthor);
-		viewHolder.textViewText = (TextView) convertView.findViewById(R.id.textViewMessageText);
-		viewHolder.textViewTime = (TextView) convertView.findViewById(R.id.textViewMessageTime);
-		viewHolder.imageVIewAuthorIcon = (ImageView) convertView.findViewById(R.id.imageViewMessageAutorIcon);
-		convertView.setTag(viewHolder);
+			LayoutInflater viewInflater = ((Activity) context).getLayoutInflater();
+				
+				//Ako je "privremena poruka":
+				if (currentMessageItem.getAuthor().charAt(0) == ' ') {
+					convertView = viewInflater.inflate(R.layout.list_message_right_item, null);
+					viewHolder = new ViewHolder();
+					viewHolder.textViewAuthor = (TextView) convertView.findViewById(R.id.textViewMessageAuthor);
+					viewHolder.textViewText = (TextView) convertView.findViewById(R.id.textViewMessageText);
+					viewHolder.textViewTime = (TextView) convertView.findViewById(R.id.textViewMessageTime);
+					viewHolder.imageVIewAuthorIcon = (ImageView) convertView.findViewById(R.id.imageViewMessageAutorIcon);
+					convertView.setTag(viewHolder);
+			
+					// doda konkretne podatke u novi contentView
+					viewHolder.textViewAuthor.setText(currentMessageItem.getAuthor());
+					viewHolder.textViewText.setText(currentMessageItem.getText());
+					viewHolder.textViewTime.setText("Sending message...");
+					//TODO: rijesiti ikone usera!
+//					Log.d("Autor ove poruke je: ", currentMessageItem.getAuthor());
+					viewHolder.imageVIewAuthorIcon.setBackgroundColor(Color.rgb(((currentMessageItem.getAuthor()+"   ").charAt(0)*5)%200+50, ((currentMessageItem.getAuthor()+"   ").charAt(1)*6)%200+50, ((currentMessageItem.getAuthor()+"   ").charAt(2)*7)%200+50));
+				} else {
+					
+					//Ako ne appenda poruku (defoultno ponasanje):
+					if (!currentMessageItem.getAuthor().equals(previousMessageAuthor)) { 
+			
+						if (currentMessageItem.getAuthor().equals(SessionManager.getCurrentUserName()))  {
+							convertView = viewInflater.inflate(R.layout.list_message_right_item, null);
+						} else {
+							convertView = viewInflater.inflate(R.layout.list_message_left_item, null);
+						}
+
+						viewHolder = new ViewHolder();
+						viewHolder.textViewAuthor = (TextView) convertView.findViewById(R.id.textViewMessageAuthor);
+						viewHolder.textViewText = (TextView) convertView.findViewById(R.id.textViewMessageText);
+						viewHolder.textViewTime = (TextView) convertView.findViewById(R.id.textViewMessageTime);
+						viewHolder.imageVIewAuthorIcon = (ImageView) convertView.findViewById(R.id.imageViewMessageAutorIcon);
+						convertView.setTag(viewHolder);
 		
-		// doda konkretne podatke u novi contentView
-		viewHolder.textViewAuthor.setText(currentMessageItem.getAuthor());
-		viewHolder.textViewText.setText(currentMessageItem.getText());
-		viewHolder.textViewTime.setText(currentMessageItem.getDateAsString());
-		//TODO: rijesiti ikone usera!
-//		Log.d("Autor ove poruke je: ", currentMessageItem.getAuthor());
-		viewHolder.imageVIewAuthorIcon.setBackgroundColor(Color.rgb(((currentMessageItem.getAuthor()+"   ").charAt(0)*5)%200+50, ((currentMessageItem.getAuthor()+"   ").charAt(1)*6)%200+50, ((currentMessageItem.getAuthor()+"   ").charAt(2)*7)%200+50));
+						// doda konkretne podatke u novi contentView
+						viewHolder.textViewAuthor.setText(currentMessageItem.getAuthor());
+						viewHolder.textViewText.setText(currentMessageItem.getText());
+						viewHolder.textViewTime.setText(currentMessageItem.getDateAsString());
+						//TODO: rijesiti ikone usera!
+//						Log.d("Autor ove poruke je: ", currentMessageItem.getAuthor());
+						viewHolder.imageVIewAuthorIcon.setBackgroundColor(Color.rgb(((currentMessageItem.getAuthor()+"   ").charAt(0)*5)%200+50, ((currentMessageItem.getAuthor()+"   ").charAt(1)*6)%200+50, ((currentMessageItem.getAuthor()+"   ").charAt(2)*7)%200+50));
+					}
+					else {
+				
+						//ako appenda poruku:
+						if (currentMessageItem.getAuthor().equals(SessionManager.getCurrentUserName()))  {
+							convertView = viewInflater.inflate(R.layout.list_appendedmessage_right_item, null);
+						} else {
+							convertView = viewInflater.inflate(R.layout.list_appendedmessage_left_item, null);
+						}
+
+						viewHolder = new ViewHolder();
+						//viewHolder.textViewAuthor = (TextView) convertView.findViewById(R.id.textViewMessageAuthor);
+						viewHolder.textViewText = (TextView) convertView.findViewById(R.id.textViewMessageText);
+						viewHolder.textViewTime = (TextView) convertView.findViewById(R.id.textViewMessageTime);
+						//viewHolder.imageVIewAuthorIcon = (ImageView) convertView.findViewById(R.id.imageViewMessageAutorIcon);
+						convertView.setTag(viewHolder);
+		
+						// doda konkretne podatke u novi contentView
+						//viewHolder.textViewAuthor.setText(currentMessageItem.getAuthor());
+						viewHolder.textViewText.setText(currentMessageItem.getText());
+						viewHolder.textViewTime.setText(currentMessageItem.getDateAsString());
+					}
+			}
+		}
 		return convertView;
 	}
 

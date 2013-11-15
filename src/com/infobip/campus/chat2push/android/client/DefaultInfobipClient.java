@@ -73,7 +73,8 @@ public class DefaultInfobipClient {
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("username", userName);
 			jsonObject.addProperty("password", password);
-
+			
+			Log.d("Saljem request...", userName+"|"+password);
 			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
 			HttpClient client = new DefaultHttpClient();
 			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
@@ -82,7 +83,7 @@ public class DefaultInfobipClient {
 			request.setEntity(parms);
 			HttpResponse response = client.execute(request);
 			String responseText = getResponseText(response);
-
+			Log.d("Dobio odgovor:", responseText);
 			int responseCode = response.getStatusLine().getStatusCode();
 
 			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
@@ -92,6 +93,7 @@ public class DefaultInfobipClient {
 				return responseText;
 			}
 		} catch (Exception e) {
+			Log.e("Exeption u getanju responsa za login:", e.getMessage());
 			return "Connection error!";
 		}
 	}
