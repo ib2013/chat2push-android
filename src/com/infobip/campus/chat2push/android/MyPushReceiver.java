@@ -78,7 +78,7 @@ public class MyPushReceiver extends AbstractPushReceiver {
     			} 
     		} else {   
     			mBuilder = new NotificationCompat.Builder(context)
-                	.setSmallIcon(R.drawable.ic_launcher)
+                	.setSmallIcon(R.drawable.infobip_ico)
                 	.setContentTitle("New message from " + newMessage.getAuthor())
                 	.setContentText(newMessage.getText())
                 	.setWhen(newMessage.getDate().getTime());
