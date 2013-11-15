@@ -53,8 +53,8 @@ public class DefaultInfobipClient {
 			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
 				return null;
 			} else if (responseText.toUpperCase().equals(
-					"\"MISSIN_REGISTRATION\"")) {
-				return "MISSIN_REGISTRATION";
+					"\"MISSING_REGISTRATION\"")) {
+				return "MISSING_REGISTRATION";
 			}
 
 			else {
@@ -321,6 +321,7 @@ public class DefaultInfobipClient {
 
 	private static String getResponseText(HttpResponse response)
 			throws IOException {
+		try {
 		BufferedReader rd = new BufferedReader(new InputStreamReader(response
 				.getEntity().getContent()));
 		String responseText = new String();
@@ -330,5 +331,9 @@ public class DefaultInfobipClient {
 		}
 
 		return responseText;
+		} catch (Exception e) {
+			Log.e("On NE ÈITA!", e.getMessage());
+			return "[]";
+		}
 	}
 }

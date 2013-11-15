@@ -92,8 +92,7 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 	protected void onResume() {
         super.onResume();
         myApplication.setCurrentActivity(this);
-        new LoadMessages().execute();
-		displayListView(messageList);		
+        new LoadMessages().execute();	
     }
 	
 	@Override
@@ -159,10 +158,11 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 	
 	public void addNewMessage (MessageModel newMessage) {
 		int indexToReplace = -1;
+		Log.d("newMessage u channelactivityu kad doðe nova poruka...", "poruka glasi|" + (new MessageModel(" " + newMessage.getAuthor(), newMessage.getText(), new Date(0))).toString());
 		indexToReplace = messageList.indexOf(new MessageModel(" " + newMessage.getAuthor(), newMessage.getText(), new Date(0)));
 		if (indexToReplace > -1) {
 			messageList.set(indexToReplace, newMessage);
-		} else
+		} else 
 			messageList.add(newMessage);
 		displayListView(messageList);
 	}

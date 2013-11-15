@@ -65,12 +65,12 @@ public class MessageArrayAdapter extends ArrayAdapter<MessageModel>{
 					viewHolder.textViewTime.setText("Sending message...");
 					//TODO: rijesiti ikone usera!
 //					Log.d("Autor ove poruke je: ", currentMessageItem.getAuthor());
-					viewHolder.imageVIewAuthorIcon.setBackgroundColor(Color.rgb(((currentMessageItem.getAuthor()+"   ").charAt(0)*5)%200+50, ((currentMessageItem.getAuthor()+"   ").charAt(1)*6)%200+50, ((currentMessageItem.getAuthor()+"   ").charAt(2)*7)%200+50));
+					viewHolder.imageVIewAuthorIcon.setBackgroundColor(Color.rgb(((currentMessageItem.getAuthor().substring(1)+"   ").charAt(0)*5)%200+50, ((currentMessageItem.getAuthor().substring(1)+"   ").charAt(1)*6)%200+50, ((currentMessageItem.getAuthor().substring(1)+"   ").charAt(2)*7)%200+50));
 				} else {
-					
+					Log.d("Message array adapter, pa kaže: ", "previousMessageAuthor: " + previousMessageAuthor + ", currentMessageItem.getAuthor(): " + currentMessageItem.getAuthor());
 					//Ako ne appenda poruku (defoultno ponasanje):
 					if (!currentMessageItem.getAuthor().equals(previousMessageAuthor)) { 
-			
+						Log.d("Zakljuèio da mi treba defoultni view", "U njega stavljam: " + currentMessageItem.toString());
 						if (currentMessageItem.getAuthor().equals(SessionManager.getCurrentUserName()))  {
 							convertView = viewInflater.inflate(R.layout.list_message_right_item, null);
 						} else {
@@ -114,7 +114,9 @@ public class MessageArrayAdapter extends ArrayAdapter<MessageModel>{
 						viewHolder.textViewTime.setText(currentMessageItem.getDateAsString());
 					}
 			}
+//			previousMessageAuthor = currentMessageItem.getAuthor();
 		}
+		
 		return convertView;
 	}
 
