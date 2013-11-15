@@ -72,10 +72,10 @@ public class MyPushReceiver extends AbstractPushReceiver {
     			Toast.makeText(context, "Received push notification was not a message! :/ \n I don't know what to do with it." , Toast.LENGTH_LONG).show();
     		
     		if (MyApplication.getCurrentActivity() != null) {
-    			//if (MyApplication.getCurrentActivity().getTitle().equals(channel)) {
+    			if (MyApplication.getCurrentActivity().getTitle().equals(channel)) {
     				CallbackInterface callbackInterface = (CallbackInterface) MyApplication.getCurrentActivity();
     				callbackInterface.addNewMessage(newMessage);
-    			//} 
+    			} 
     		} else {   
     			mBuilder = new NotificationCompat.Builder(context)
                 	.setSmallIcon(R.drawable.ic_launcher)

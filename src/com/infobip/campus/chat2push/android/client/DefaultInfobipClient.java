@@ -168,9 +168,14 @@ public class DefaultInfobipClient {
 
 		try {
 			HttpClient client = new DefaultHttpClient();
+			
+			Log.d("U fetchAllMessages ide na:", Configuration.SERVER_LOCATION
+					+ "message/fetch/" + SessionManager.getCurrentUserName()
+					+ "/" + channelName.replaceAll(" ", "%20") + "/" + startTime.getTime() + "/"
+					+ endTime.getTime() );
 			HttpGet request = new HttpGet(Configuration.SERVER_LOCATION
 					+ "message/fetch/" + SessionManager.getCurrentUserName()
-					+ "/" + channelName + "/" + startTime.getTime() + "/"
+					+ "/" + channelName.replaceAll(" ", "%20") + "/" + startTime.getTime() + "/"
 					+ endTime.getTime());
 
 			Log.d("Request ", request.getURI().toString());
@@ -239,19 +244,27 @@ public class DefaultInfobipClient {
 			HttpClient client = new DefaultHttpClient();
 			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
 					+ "channel/addUserToRoom");
+			
+			Log.d("DefaultInfobipClient.registerUserToChannel:", request.getURI().toString());
+			Log.d("DefaultInfobipClient.registerUserToChannel:", jsonObject.get("username").getAsString() + "aha! " + jsonObject.toString());
+			
+			
 			request.addHeader("content-type", "application/json");
 			request.setEntity(parms);
 			HttpResponse response = client.execute(request);
 			String responseText = getResponseText(response);
 
 			int responseCode = response.getStatusLine().getStatusCode();
-
+			
+			Log.d("DefaultInfobipClient.registerUserToChannel je obavio http pricu sa odgovorom:", responseText);
+			
 			if (responseText.equals("succes")) {
 				return true;
 			} else {
 				return false;
 			}
 		} catch (Exception e) {
+			Log.e("DefaultInfobipClient.registerUserToChannel je imao exception", e.getMessage());
 			return false;
 		}
 
@@ -271,7 +284,7 @@ public class DefaultInfobipClient {
 			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
 			HttpClient client = new DefaultHttpClient();
 			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
-					+ "channel/removeUserToRoom");
+					+ "channel/removeUserFromRoom");
 			request.addHeader("content-type", "application/json");
 			request.setEntity(parms);
 			HttpResponse response = client.execute(request);
