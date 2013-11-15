@@ -19,6 +19,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.infobip.campus.chat2push.android.ChannelActivity.LoadMessages;
+import com.infobip.campus.chat2push.android.MainActivity.LoginUser;
 import com.infobip.campus.chat2push.android.adapters.ChannelArrayAdapter;
 import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
 import com.infobip.campus.chat2push.android.configuration.Configuration;
@@ -31,6 +33,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.FeatureInfo;
 import android.graphics.Color;
@@ -38,12 +41,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.OnNavigationListener;
 import android.support.v7.app.ActionBarActivity;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -72,10 +78,16 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 				ArrayAdapter.createFromResource(this, R.array.auth_array, R.layout.support_simple_spinner_dropdown_item);
 		actionBar.setListNavigationCallbacks(aAdpt, this);
 
-		new LoadAllChannels().execute();
+//		new LoadAllChannels().execute();
 		
 	}
 
+	@Override
+	protected void onResume() {
+        super.onResume();
+        new LoadAllChannels().execute();	
+    }
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -93,12 +105,29 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 			case R.id.refresh:
 				new LoadAllChannels().execute();
 				break;
-			case R.id.settings:
-				break;
 			case R.id.log_out :
 				SessionManager.logout();
 				Intent intent = new Intent(this, MainActivity.class);
 				startActivity(intent);
+				break;
+			case R.id.add_new_room :
+				
+				final EditText editTextNewRoomName = new EditText(this);
+				editTextNewRoomName.setInputType(InputType.TYPE_CLASS_TEXT);
+				editTextNewRoomName.setHint("New room name =?");
+				new AlertDialog.Builder(this)
+				.setTitle("Adding a new room")
+				.setView(editTextNewRoomName)
+				.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						new CreateNewRoom().execute(editTextNewRoomName.getText().toString(), "Undescribed.");
+					}
+				})
+				.setNegativeButton("ABORT", null)
+				.show();
+				
 				break;
 				
 		}
@@ -174,6 +203,38 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 
 	}
 
+	class CreateNewRoom extends AsyncTask<String, String, String> {
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		
+		}
+
+		protected String doInBackground(String... args) {
+
+			try {
+				
+				DefaultInfobipClient.createNewRoom (args[0], args[1]);
+
+			} catch (Exception e) {
+				Log.d("ERROR CREATING ROOM: ", e.getMessage());
+				e.printStackTrace();
+
+			}
+			return "LoadAllChannels return value";
+		}
+
+		protected void onPostExecute(String file_url) {
+
+			super.onPostExecute(file_url);
+
+		}
+
+	}
+
+	
+	
 	@Override
 	public boolean onNavigationItemSelected(int arg0, long arg1) {
 		if(arg0==0) {
@@ -190,3 +251,5 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 	}
 
 }
+
+
