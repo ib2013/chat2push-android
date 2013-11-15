@@ -26,6 +26,7 @@ import com.infobip.campus.chat2push.android.managers.SessionManager;
 import com.infobip.campus.chat2push.android.models.ChannelModel;
 import com.infobip.campus.chat2push.android.models.MessageModel;
 
+import android.R.drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -66,10 +67,10 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		
-		
+//		R.layout.support_simple_spinner_dropdown_item
 		
 		SpinnerAdapter aAdpt = 
-				ArrayAdapter.createFromResource(this, R.array.auth_array, R.layout.support_simple_spinner_dropdown_item);
+				ArrayAdapter.createFromResource(this, R.array.auth_array, com.infobip.campus.chat2push.android.R.drawable.custom_spinner_dropdown_item);
 		actionBar.setListNavigationCallbacks(aAdpt, this);
 
 		new LoadAllChannels().execute();
@@ -80,9 +81,6 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.channel_list, menu);
-		
-		//MenuItem searchItem = menu.findItem()
-		
 		
 		return true;
 	}
