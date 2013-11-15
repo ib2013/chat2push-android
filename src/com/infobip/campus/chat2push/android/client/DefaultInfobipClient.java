@@ -311,6 +311,7 @@ public class DefaultInfobipClient {
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("name", name);
 			jsonObject.addProperty("description", description);
+			jsonObject.addProperty("isPublic", true);
 
 			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
 			HttpClient client = new DefaultHttpClient();
