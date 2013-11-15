@@ -237,6 +237,7 @@ public class DefaultInfobipClient {
 			String channelName;
 			String channelDescription;
 			boolean isUserSubscribedToChannel;
+			boolean isPublic;
 
 			try {
 				channelName = jsonElement.getAsJsonPrimitive("name")
@@ -257,10 +258,18 @@ public class DefaultInfobipClient {
 			} catch (Exception e) {
 				isUserSubscribedToChannel = false;
 			}
+			
+			try {
+				isPublic = jsonElement.getAsJsonPrimitive(
+						"public").getAsBoolean();
+			} catch (Exception e) {
+				isPublic = false;
+			}
+			
 			Log.d("Parsirani channel model: ", (new ChannelModel(channelName,
 					channelDescription, isUserSubscribedToChannel)).toString());
 			channelList.add(new ChannelModel(channelName, channelDescription,
-					isUserSubscribedToChannel));
+					isUserSubscribedToChannel, isPublic));
 		}
 
 		return channelList;

@@ -64,12 +64,14 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		
+		
+		
 		SpinnerAdapter aAdpt = 
 				ArrayAdapter.createFromResource(this, R.array.auth_array, R.layout.support_simple_spinner_dropdown_item);
 		actionBar.setListNavigationCallbacks(aAdpt, this);
 
 		new LoadAllChannels().execute();
-
+		
 	}
 
 	@Override
@@ -102,10 +104,23 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 		return true;
 	}
 
-	private void displayListView(ArrayList<ChannelModel> channelList) {
+	private void displayListView(ArrayList<ChannelModel> channelList, boolean isPublic) {
 		// kreiraj ArrayAdaptar iz String Array
+		ArrayList<ChannelModel> tempList = new ArrayList<ChannelModel>();
+		for(ChannelModel model : channelList) {
+			if(isPublic) {
+				if(model.getIsPublic()) {
+					tempList.add(model);
+				}
+			}
+			else {
+				if(!model.getIsPublic()) {
+					tempList.add(model);
+				}
+			}
+		}
 		listViewAdapter = new ChannelArrayAdapter(this,
-				R.layout.activity_channel_list, channelList);
+				R.layout.activity_channel_list, tempList);
 		ListView listView = (ListView) findViewById(R.id.listView);
 		listView.setAdapter(listViewAdapter);
 
@@ -149,7 +164,7 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 			runOnUiThread(new Runnable() {
 				public void run() {
 					SessionManager.subscribeToChannels(channelList);
-					displayListView(channelList);
+					displayListView(channelList, true);
 
 				}
 			});
@@ -160,18 +175,12 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 	@Override
 	public boolean onNavigationItemSelected(int arg0, long arg1) {
 		if(arg0==0) {
-			new AlertDialog.Builder(ChannelListActivity.this)
-			.setTitle("Spinner")
-			.setMessage("Selected public")
-			.setNeutralButton("ok", null)
-			.show();
+			// prikazi samo PUBLIC kanale
+			displayListView(channelList, true);
 		}
 		if(arg0==1) {
-			new AlertDialog.Builder(ChannelListActivity.this)
-			.setTitle("Spinner")
-			.setMessage("Selected private")
-			.setNeutralButton("ok", null)
-			.show();
+			// prikazi samo PRIVATE kanale
+			displayListView(channelList, false);
 		}
 		return false;
 	}

@@ -28,6 +28,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
@@ -64,6 +65,27 @@ public class MainActivity extends ActionBarActivity {
 		Intent intent = getIntent();
 		userNameEditText.setText(intent.getStringExtra("userName"));
 		passwordEditText.setText(intent.getStringExtra("password"));
+		if(intent.getBooleanExtra("fromRegistration", false)) {
+			final EditText txtUrl = new EditText(MainActivity.this);
+			int maxLength = 4;    
+			txtUrl.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
+			txtUrl.setInputType(InputType.TYPE_CLASS_NUMBER);
+			new AlertDialog.Builder(MainActivity.this)
+			.setTitle("Insert confirmation number")
+			.setView(txtUrl)
+			.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					EditText userNameEditText = (EditText) findViewById(R.id.editTextUserName);
+					EditText passwordEditText = (EditText) findViewById(R.id.editTextPassword);
+					new LoginUser().execute(userNameEditText.getText().toString(),
+							passwordEditText.getText().toString(), txtUrl.getText().toString());
+				}
+			})
+			.setNegativeButton("Cancel", null)
+			.show();
+		}
 		
 		// autocompletion
 		ArrayAdapter<String> autoCompletionAdapter =
@@ -182,6 +204,9 @@ public class MainActivity extends ActionBarActivity {
 						}
 						else {
 							final EditText txtUrl = new EditText(MainActivity.this);
+							int maxLength = 4;    
+							txtUrl.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
+							txtUrl.setInputType(InputType.TYPE_CLASS_NUMBER);
 							new AlertDialog.Builder(MainActivity.this)
 							.setTitle("Insert confirmation number")
 							.setView(txtUrl)
