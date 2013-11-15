@@ -223,6 +223,72 @@ public class DefaultInfobipClient {
 			return "Connection error!";
 		}
 	}
+	
+	public static boolean registerUserToChannel(String userName, String channelName){
+		//username, chanel (za JSON); channel/addUserToRoom
+		
+		Gson gson = new Gson();
+
+		try {
+
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("username", userName);
+			jsonObject.addProperty("channel", channelName);
+
+			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
+			HttpClient client = new DefaultHttpClient();
+			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
+					+ "channel/addUserToRoom");
+			request.addHeader("content-type", "application/json");
+			request.setEntity(parms);
+			HttpResponse response = client.execute(request);
+			String responseText = getResponseText(response);
+
+			int responseCode = response.getStatusLine().getStatusCode();
+
+			if (responseText.equals("succes")) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+
+	}
+	
+	public static boolean unregisterUserFromChannel(String userName, String channelName){
+		//username, chanel (za JSON); channel/addUserToRoom
+		
+		Gson gson = new Gson();
+
+		try {
+
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("username", userName);
+			jsonObject.addProperty("channel", channelName);
+
+			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
+			HttpClient client = new DefaultHttpClient();
+			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
+					+ "channel/removeUserToRoom");
+			request.addHeader("content-type", "application/json");
+			request.setEntity(parms);
+			HttpResponse response = client.execute(request);
+			String responseText = getResponseText(response);
+
+			int responseCode = response.getStatusLine().getStatusCode();
+
+			if (responseText.equals("succes")) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+
+	}
 
 	private static ArrayList<ChannelModel> parseJsonChannelModel(
 			String jsonResponse) {
