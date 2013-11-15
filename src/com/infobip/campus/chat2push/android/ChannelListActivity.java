@@ -53,11 +53,13 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 
 	ChannelArrayAdapter listViewAdapter = null;
 	ArrayList<ChannelModel> channelList;
+	boolean isPublic;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_channel_list);
+		isPublic = true;
 		
 		
 		ActionBar actionBar = getSupportActionBar();
@@ -104,7 +106,7 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 		return true;
 	}
 
-	private void displayListView(ArrayList<ChannelModel> channelList, boolean isPublic) {
+	private void displayListView(ArrayList<ChannelModel> channelList) {
 		// kreiraj ArrayAdaptar iz String Array
 		ArrayList<ChannelModel> tempList = new ArrayList<ChannelModel>();
 		for(ChannelModel model : channelList) {
@@ -164,7 +166,7 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 			runOnUiThread(new Runnable() {
 				public void run() {
 					SessionManager.subscribeToChannels(channelList);
-					displayListView(channelList, true);
+					displayListView(channelList);
 
 				}
 			});
@@ -175,12 +177,14 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 	@Override
 	public boolean onNavigationItemSelected(int arg0, long arg1) {
 		if(arg0==0) {
+			isPublic = true;
 			// prikazi samo PUBLIC kanale
-			displayListView(channelList, true);
+			displayListView(channelList);
 		}
 		if(arg0==1) {
+			isPublic = false;
 			// prikazi samo PRIVATE kanale
-			displayListView(channelList, false);
+			displayListView(channelList);
 		}
 		return false;
 	}
