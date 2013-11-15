@@ -27,7 +27,7 @@ public class FileAdapter {
 	        outputStreamWriter.write(jsonArray.toString());
 	        outputStreamWriter.close();
 	        
-	        Log.e("Writing to file: ", jsonArray.toString());
+	        Log.d("Writing to file"+filename + ".txt"+": ", jsonArray.toString());
 	    }
 	    catch (IOException e) {
 	        Log.e("Exception", "IOException: " + e.toString());
@@ -44,6 +44,7 @@ public class FileAdapter {
 		InputStream inputStream;
 		try {
 			inputStream = context.openFileInput(filename + ".txt");
+			Log.d("Èitam file pod nazivom", filename + ".txt");
 			if ( inputStream != null ) {
 				InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
 				BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -54,6 +55,7 @@ public class FileAdapter {
 				}
 				inputStream.close();
 				messageListString = stringBuilder.toString();
+				Log.d("Zatvorio stream, sad kod sebe imam:", messageListString);
 				JSONArray jsonArray = new JSONArray(messageListString);
 				for (int i = 0; i < jsonArray.length(); ++i) {
 					messageList.add(new MessageModel (jsonArray.getJSONObject(i)));
