@@ -53,8 +53,8 @@ public class DefaultInfobipClient {
 			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
 				return null;
 			} else if (responseText.toUpperCase().equals(
-					"\"MISSIN_REGISTRATION\"")) {
-				return "MISSIN_REGISTRATION";
+					"\"MISSING_REGISTRATION\"")) {
+				return "MISSING_REGISTRATION";
 			}
 
 			else {
