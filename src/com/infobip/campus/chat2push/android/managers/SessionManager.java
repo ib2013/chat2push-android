@@ -54,6 +54,7 @@ public class SessionManager {
 		if ( !oldUsername.equals(username)) {
 			SharedPreferences.Editor editor = sharedPreferences.edit();
 			editor.putString("currentUserName", username);
+			editor.putString("currentUserPassword", password);
 			editor.commit();
 			//TODO za kasnije sve dovrsiti
 //			JSONArray jsonAllUsenames = new JSONArray(sharedPreferences.getString("allUsersData", " "));
@@ -101,6 +102,13 @@ public class SessionManager {
 		
 		initialize();
 		return sharedPreferences.getString("currentUserName", " ");
+		
+	}
+	
+	public static String getCurrentUserPassword () {
+		
+		initialize();
+		return sharedPreferences.getString("currentUserPassword", " ");
 		
 	}
 	
