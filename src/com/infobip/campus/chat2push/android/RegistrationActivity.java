@@ -56,7 +56,7 @@ public class RegistrationActivity extends Activity {
 								!passwordEditText.getText().toString().contains(" ")) {
 							if(passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())) {
 								if(phoneNumberEditText.getText().toString() !=null
-										&& phoneNumberEditText.getText().toString()!= ""
+										&& !phoneNumberEditText.getText().toString().equals("")
 										&& !phoneNumberEditText.getText().toString().contains(" ")) {
 									new RegisterUser().execute(userNameEditText.getText().toString(),
 											passwordEditText.getText().toString(),
@@ -163,6 +163,7 @@ class RegisterUser extends AsyncTask<String, String, String> {
 						Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
 						intent.putExtra("userName", userNameEditText.getText().toString());
 						intent.putExtra("password", passwordEditText.getText().toString());
+						intent.putExtra("fromRegistration", true);
 						startActivity(intent);
 					}
 					else {

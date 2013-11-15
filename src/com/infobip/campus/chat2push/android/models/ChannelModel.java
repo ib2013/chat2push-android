@@ -4,6 +4,7 @@ public class ChannelModel {
 
 	private String name, description;
 	private Boolean status;
+	private Boolean isPublic;
 
 	public ChannelModel() {
 
@@ -14,7 +15,14 @@ public class ChannelModel {
 		name = channelName;
 		description = channelDescription;
 		status = isUserSubscribedToChannel;
-		// TODO Auto-generated constructor stub
+	}
+	
+	public ChannelModel(String channelName, String channelDescription,
+			boolean isUserSubscribedToChannel, boolean isPublic) {
+		name = channelName;
+		description = channelDescription;
+		status = isUserSubscribedToChannel;
+		this.isPublic = isPublic;
 	}
 
 	public String getName() {
@@ -44,13 +52,18 @@ public class ChannelModel {
 	public void changeStatus() {
 		status = !status;
 	}
+	
+	public Boolean getIsPublic() {
+		return isPublic;
+	}
+	
+	public void setIsPublic(Boolean bool) {
+		isPublic = bool;
+	}
 
 	@Override
 	public String toString() {
 		return "ChannelModel [name=" + name + ", description=" + description
-				+ ", status=" + status + "]";
+				+ ", status=" + status + ", isPublic=" + isPublic + "]";
 	}
-	
-	
-
 }
