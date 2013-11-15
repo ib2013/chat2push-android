@@ -168,9 +168,14 @@ public class DefaultInfobipClient {
 
 		try {
 			HttpClient client = new DefaultHttpClient();
+			
+			Log.d("U fetchAllMessages ide na:", Configuration.SERVER_LOCATION
+					+ "message/fetch/" + SessionManager.getCurrentUserName()
+					+ "/" + channelName.replaceAll(" ", "%20") + "/" + startTime.getTime() + "/"
+					+ endTime.getTime() );
 			HttpGet request = new HttpGet(Configuration.SERVER_LOCATION
 					+ "message/fetch/" + SessionManager.getCurrentUserName()
-					+ "/" + channelName + "/" + startTime.getTime() + "/"
+					+ "/" + channelName.replaceAll(" ", "%20") + "/" + startTime.getTime() + "/"
 					+ endTime.getTime());
 
 			Log.d("Request ", request.getURI().toString());
