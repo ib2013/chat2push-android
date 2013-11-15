@@ -82,7 +82,7 @@
         android:layout_alignRight="@+id/editTextRegisterConfirmPassword"
         android:layout_below="@+id/textView4"
         android:ems="10"
-        android:inputType="text" />
+        android:inputType="phone" />
 
     <Button
         android:id="@+id/buttonSendConfirmationNumber"

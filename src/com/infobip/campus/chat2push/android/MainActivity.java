@@ -49,23 +49,7 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		
-		
-		final EditText txtUrl = new EditText(this);
-		new AlertDialog.Builder(this)
-		.setTitle("Insert confirmation number")
-		.setView(txtUrl)
-		.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				Log.i("PROBA INPUTA", txtUrl.getText().toString());
-			}
-		})
-		.setNegativeButton("Cancel", null)
-		.show();
-		
+
 		if(SessionManager.isAnyUserLogedIn()) {
 			Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
 			startActivity(intent);
@@ -77,12 +61,14 @@ public class MainActivity extends ActionBarActivity {
 		final AutoCompleteTextView userNameEditText = (AutoCompleteTextView) findViewById(R.id.editTextUserName);
 		final EditText passwordEditText = (EditText) findViewById(R.id.editTextPassword);
 		
-		// autocompletion
+		Intent intent = getIntent();
+		userNameEditText.setText(intent.getStringExtra("userName"));
+		passwordEditText.setText(intent.getStringExtra("password"));
 		
+		// autocompletion
 		ArrayAdapter<String> autoCompletionAdapter =
 				new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, users);
 		userNameEditText.setAdapter(autoCompletionAdapter);
-		
 		
 		// login button
 		Button loginButton = (Button) findViewById(R.id.buttonLogin);
@@ -90,11 +76,10 @@ public class MainActivity extends ActionBarActivity {
 			
 			@Override
 			public void onClick(View arg0) {
-				//LOGIN USERA
 				
+				//LOGIN USERA
 				new LoginUser().execute(userNameEditText.getText().toString(),
 						passwordEditText.getText().toString());
-				
 			}
 		});
 		
@@ -141,6 +126,7 @@ public class MainActivity extends ActionBarActivity {
 	class LoginUser extends AsyncTask<String, String, String> {
 		
 		boolean isValidLogin = false;
+		boolean isVerified = false;
 
 		@Override
 		protected void onPreExecute() {
@@ -153,7 +139,17 @@ public class MainActivity extends ActionBarActivity {
 				Log.i("LoginUser_ARGUMENT_LIST", args[0] + " -  " + args[1]);
 				if(DefaultInfobipClient.loginUser(args[0], args[1]) == null) {
 					isValidLogin = true;
+					isVerified = true;
 					SessionManager.loginUser(args[0], args[1]);
+				}
+				else if(DefaultInfobipClient.loginUser(args[0], args[1]).equals("MISSING_VERIFICATION")) {
+					isValidLogin = true;
+					if(args.length == 3) {
+//						if(checkVerificationNumber(SessionManager.getCurrentUserName(), args[2])) {
+//							isVerified = true;
+//							SessionManager.loginUser(args[0], args[1]);
+//						}
+					}
 				}
 			} catch (Exception e) {
 				Log.d("LoginUser doInBackground EXCEPTION:", "Login error!");
@@ -167,6 +163,7 @@ public class MainActivity extends ActionBarActivity {
 			runOnUiThread(new Runnable() {
 				public void run() {
 					if(isValidLogin) {
+						if(isVerified) {
 						
 						// kasnije cemo da stavimo rotating spinner
 						new AlertDialog.Builder(MainActivity.this)
@@ -181,6 +178,26 @@ public class MainActivity extends ActionBarActivity {
 							}
 						})
 						.show();
+						}
+						else {
+							final EditText txtUrl = new EditText(MainActivity.this);
+							new AlertDialog.Builder(MainActivity.this)
+							.setTitle("Insert confirmation number")
+							.setView(txtUrl)
+							.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+								
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									EditText userNameEditText = (EditText) findViewById(R.id.editTextUserName);
+									EditText passwordEditText = (EditText) findViewById(R.id.editTextPassword);
+									new LoginUser().execute(userNameEditText.getText().toString(),
+											passwordEditText.getText().toString(), txtUrl.getText().toString());
+									Log.i("PROBA INPUTA", txtUrl.getText().toString());
+								}
+							})
+							.setNegativeButton("Cancel", null)
+							.show();
+						}
 					}
 					else {
 						new AlertDialog.Builder(MainActivity.this)
