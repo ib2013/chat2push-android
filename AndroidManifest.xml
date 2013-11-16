@@ -93,6 +93,10 @@
             android:name="com.infobip.campus.chat2push.android.NewChannelActivity"
             android:label="@string/title_activity_new_channel" >
         </activity>
+        <activity
+            android:name="com.infobip.campus.chat2push.android.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>

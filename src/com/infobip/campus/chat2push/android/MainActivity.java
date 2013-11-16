@@ -52,6 +52,7 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_main);
 
 		if(SessionManager.isAnyUserLogedIn()) {
+			new LoginUser().execute(SessionManager.getCurrentUserName(), SessionManager.getCurrentUserPassword());
 			Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
 			startActivity(intent);
 			finish();
@@ -67,6 +68,8 @@ public class MainActivity extends ActionBarActivity {
 		passwordEditText.setText(intent.getStringExtra("password"));
 		if(intent.getBooleanExtra("fromRegistration", false)) {
 			final EditText txtUrl = new EditText(MainActivity.this);
+			final Button resendButton = (Button) findViewById(R.id.buttonResendConfirmation);
+			resendButton.setVisibility(View.VISIBLE);
 			int maxLength = 4;    
 			txtUrl.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
 			txtUrl.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -119,6 +122,16 @@ public class MainActivity extends ActionBarActivity {
 				startActivity(intent);
 			}
 		});
+		
+		Button resendButton = (Button) findViewById(R.id.buttonResendConfirmation);
+		resendButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+//				DefaultInfobipClient.resendConfirmationNumber(SessionManager.getCurrentUserName());
+				
+			}
+		});
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -130,10 +143,13 @@ public class MainActivity extends ActionBarActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO napraviti za pravi meni, trenutno je samo za gumb za testiranje ChannelActivitya.
 		switch (item.getItemId()) {
-		case R.id.test_channel_activity :
-			Intent intent = new Intent(this, ChannelActivity.class);
-			intent.putExtra("channelName", "TEST");
-			this.startActivity(intent);				
+		case R.id.settings :
+			Intent intent = new Intent(this, SettingsActivity.class);
+			this.startActivity(intent);
+//		case R.id.test_channel_activity :
+//			Intent intent = new Intent(this, ChannelActivity.class);
+//			intent.putExtra("channelName", "TEST");
+//			this.startActivity(intent);				
 		}
 		return false;
 	}
@@ -204,10 +220,13 @@ public class MainActivity extends ActionBarActivity {
 						.show();
 						}
 						else {
+							final Button resendButton = (Button) findViewById(R.id.buttonResendConfirmation);
+							resendButton.setVisibility(View.VISIBLE);
 							final EditText txtUrl = new EditText(MainActivity.this);
 							int maxLength = 4;    
 							txtUrl.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
 							txtUrl.setInputType(InputType.TYPE_CLASS_NUMBER);
+							
 							new AlertDialog.Builder(MainActivity.this)
 							.setTitle("Insert confirmation number")
 							.setView(txtUrl)

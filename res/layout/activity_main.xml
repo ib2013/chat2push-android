@@ -7,62 +7,60 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
-
-    <AutoCompleteTextView
-        android:id="@+id/editTextUserName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="78dp"
-        android:paddingLeft="10px"
-        android:background="@drawable/rect_text_edit"
-        android:ems="10" >
-        
-        
-
-        <requestFocus />
-    </AutoCompleteTextView>
+<!--     android:background="@drawable/rect_button" -->
 
     <TextView
         android:id="@+id/textViewUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/editTextUserName"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="43dp"
+        android:layout_marginTop="34dp"
         android:text="User name:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <AutoCompleteTextView
+        android:id="@+id/editTextUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editTextPassword"
+        android:layout_alignRight="@+id/editTextPassword"
+        android:layout_below="@+id/textViewUserName"
+        android:background="@drawable/rect_text_edit"
+        android:ems="10"
+        android:paddingLeft="10px" />
+
+    <TextView
+        android:id="@+id/textViewPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewUserName"
+        android:layout_below="@+id/editTextUserName"
+        android:layout_marginTop="29dp"
+        android:text="Password:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewPassword"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:paddingLeft="10px"
-        android:ems="10"
         android:background="@drawable/rect_text_edit"
-        android:inputType="textPassword" />
+        android:ems="10"
+        android:inputType="textPassword"
+        android:paddingLeft="10px" >
 
-    <TextView
-        android:id="@+id/textViewPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/editTextPassword"
-        android:layout_alignRight="@+id/textViewUserName"
-        android:layout_marginBottom="20dp"
-        android:text="Password:"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <requestFocus />
+    </EditText>
 
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editTextUserName"
-        android:layout_alignRight="@+id/editTextUserName"
-        android:layout_below="@+id/editTextPassword"
-        android:layout_marginTop="26dp"
+        android:layout_alignLeft="@+id/editTextPassword"
+        android:layout_alignRight="@+id/editTextPassword"
+        android:layout_centerVertical="true"
         android:background="@drawable/rect_button"
         android:text="Login" />
 
@@ -73,9 +71,20 @@
         android:layout_alignLeft="@+id/buttonLogin"
         android:layout_alignRight="@+id/buttonLogin"
         android:layout_below="@+id/buttonLogin"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="18dp"
         android:background="@drawable/rect_button"
         android:text="Register" />
-<!--     android:background="@drawable/rect_button" -->
+
+    <Button
+        android:id="@+id/buttonResendConfirmation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonRegisterUser"
+        android:layout_alignRight="@+id/buttonRegisterUser"
+        android:layout_below="@+id/buttonRegisterUser"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/rect_button"
+        android:visibility="gone"
+        android:text="Resend confirmation number" />
 
 </RelativeLayout>
