@@ -122,7 +122,7 @@ public class MainActivity extends ActionBarActivity {
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.test, menu);
 		return true;
 	}
 	
@@ -130,9 +130,8 @@ public class MainActivity extends ActionBarActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO napraviti za pravi meni, trenutno je samo za gumb za testiranje ChannelActivitya.
 		switch (item.getItemId()) {
-		case R.id.test_channel_activity :
-			Intent intent = new Intent(this, ChannelActivity.class);
-			intent.putExtra("channelName", "TEST");
+		case R.id.test_activity :
+			Intent intent = new Intent(this, NewChannelActivity.class);
 			this.startActivity(intent);				
 		}
 		return false;
