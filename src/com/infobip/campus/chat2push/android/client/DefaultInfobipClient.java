@@ -4,10 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -149,6 +148,8 @@ public class DefaultInfobipClient {
 			HttpResponse response = client.execute(request);
 			String responseText = getResponseText(response);
 
+			Log.d("fetchAllChannels je dohvatio sljedeci popis", responseText);
+			
 			int responseCode = response.getStatusLine().getStatusCode();
 
 			channelList = parseJsonChannelModel(responseText);
@@ -204,7 +205,7 @@ public class DefaultInfobipClient {
 		
 		ArrayList<String> stringArray = null;
 		ArrayList<ChannelModel> channels = new ArrayList<ChannelModel>();
-		Set<UserModel> userNamesSet = new TreeSet<UserModel>();
+		Set<UserModel> userNamesSet = new HashSet<UserModel>();
 		
 		channels.addAll(fetchAllChannels(userName));
 		
@@ -230,7 +231,7 @@ public class DefaultInfobipClient {
 				HttpResponse response = client.execute(request);
 				String responseText = getResponseText(response);
 
-				parseJsonUserNames(responseText, userNamesSet);
+				userNamesSet.addAll(parseJsonUserNames(responseText));
 				
 				int responseCode = response.getStatusLine().getStatusCode();
 
@@ -241,7 +242,7 @@ public class DefaultInfobipClient {
 			
 		}
 		
-		
+		Log.d("client pred kraj rada ima set ovaj: ", userNamesSet.toString());
 		ArrayList<UserModel> response = new ArrayList<UserModel>(userNamesSet);
 		
 		Log.d("fetchKnownUsers mi je kao rezultat pokusao uvaliti", response.toString());
@@ -439,23 +440,27 @@ public class DefaultInfobipClient {
 		return channelList;
 	}
 	
-	private static void parseJsonUserNames(String jsonResponse, Set<UserModel> whereToPutThem) {
+	private static Set<UserModel> parseJsonUserNames(String jsonResponse) {
 		JsonParser jsonParser = new JsonParser();
 		JsonElement jsonTree = jsonParser.parse(jsonResponse);
 		JsonArray jsonArray = jsonTree.getAsJsonArray();
+		Set<UserModel> result = new HashSet<UserModel>();
 
 		for (int i = 0; i < jsonArray.size(); i++) {
 			JsonObject jsonElement = jsonArray.get(i).getAsJsonObject();
 			String userName;
 
 			try {
-				userName = jsonElement.getAsJsonPrimitive("username")
-						.getAsString();
+				userName = jsonElement.getAsJsonPrimitive("username").getAsString();
 			} catch (Exception e) {
+				Log.e("srfgl ihgs jkgd", "adèfk jgdjfkghsujkd");
 				userName = "";
 			}
-			whereToPutThem.add(new UserModel(userName, false));
+			Log.d("Jason parser nam je izbacio", userName);
+			result.add(new UserModel(userName, false));
 		}
+		Log.d("Sveckupa jason je izbacio:", result.toString());
+		return result;
 		
 	}
 
@@ -482,19 +487,22 @@ public class DefaultInfobipClient {
 				messageText = "";
 			}
 			try {
-				sentBy = jsonElement.getAsJsonPrimitive("user").getAsString();
+				sentBy = jsonElement.getAsJsonPrimitive("username").getAsString();
 			} catch (Exception e) {
 				sentBy = "";
 			}
 
 			try {
 				time = new Date(jsonElement.getAsJsonPrimitive(
-						"lastMessageDate").getAsLong());
+						"messageDate").getAsLong());
 			} catch (Exception e) {
+				Log.e("Jason parser u clientu je failao procitati vrijeme", "");
 				time = new Date(0);
 			}
-
-			messageList.add(new MessageModel(sentBy, messageText, time));
+			
+			MessageModel newMessageToAdd = new MessageModel(sentBy, messageText, time);
+			if (newMessageToAdd.areYouOK()) 
+				messageList.add(new MessageModel(sentBy, messageText, time));
 		}
 
 		for (MessageModel messageItem : messageList)

@@ -213,7 +213,6 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 			try {
 					
 					channelList = DefaultInfobipClient.fetchAllChannels(SessionManager.getCurrentUserName());
-//					SessionManager.subscribeToChannels(channelList);
 					for(ChannelModel model : channelList) {
 						Log.i("MODEL TAG", model.toString());
 					}

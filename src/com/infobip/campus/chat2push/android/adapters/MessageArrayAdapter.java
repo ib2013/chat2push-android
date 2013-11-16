@@ -46,7 +46,9 @@ public class MessageArrayAdapter extends ArrayAdapter<MessageModel>{
 		if(messageList.get(position) != null) {
 			
 			MessageModel currentMessageItem = messageList.get(position);
-
+				
+			Log.d("MessageArrayAdapter je u jednom koraku dobio message:", currentMessageItem.toString());
+			
 			LayoutInflater viewInflater = ((Activity) context).getLayoutInflater();
 				
 				//Ako je "privremena poruka":
