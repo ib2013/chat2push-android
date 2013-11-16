@@ -10,6 +10,7 @@
     <string-array name="auth_array">
         <item>Public</item>
         <item>Private</item>
+        <item>Subscribed</item>
     </string-array>
 
     <string name="title_activity_registration">RegistrationActivity</string>

@@ -9,7 +9,7 @@
     tools:context=".RegistrationActivity" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textViewResendConfirmation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/editTextRegisterUserName"
@@ -22,7 +22,7 @@
         android:id="@+id/editTextRegisterUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/textViewResendConfirmation"
         android:paddingLeft="10px"
         android:layout_centerHorizontal="true"
         android:background="@drawable/rect_text_edit"
