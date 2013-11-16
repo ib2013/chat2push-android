@@ -303,7 +303,7 @@ public class DefaultInfobipClient {
 
 	}
 	
-	public static boolean createNewRoom(String name, String description){
+	public static boolean createNewRoom(String name, String description, Boolean isPrivate){
 		Gson gson = new Gson();
 
 		try {
@@ -311,7 +311,7 @@ public class DefaultInfobipClient {
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("name", name);
 			jsonObject.addProperty("description", description);
-			jsonObject.addProperty("isPublic", true);
+			jsonObject.addProperty("isPublic", (!isPrivate));
 
 			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
 			HttpClient client = new DefaultHttpClient();

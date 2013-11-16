@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    tools:context=".NewChannelActivity" 
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_weight="1" >
+    
+    	<TextView
+        	android:id="@+id/textView1"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Chatroom name:" />
+
+    	<EditText
+        	android:id="@+id/editTextChannelName"
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:ems="10" />
+
+    	<TextView
+        	android:id="@+id/textView2"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Chatroom description:" />
+
+    	<EditText
+        	android:id="@+id/editTextChannelDescription"
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"/>
+
+    	<CheckBox
+        	android:id="@+id/checkBoxIsChannelPrivate"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Room is private!" />
+
+    </LinearLayout>
+    
+	<Button 
+	    android:id="@+id/buttonAddNewChannel"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="0"
+	    android:text="Add it" />"
+    	
+</LinearLayout>
