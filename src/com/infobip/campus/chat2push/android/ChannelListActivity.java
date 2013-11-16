@@ -110,38 +110,36 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 			public boolean onQueryTextChange(String arg0) {
 				filterZaListuKanala = arg0;
 				addItemsOnListView();
-				displayListView(channelList);
+//				displayListView(channelList);
 				return false;
 			}
 		});
 		
-MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+		MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
 	
-	@Override
-	public boolean onMenuItemActionExpand(MenuItem arg0) {
-		return true;
-	}
+			@Override
+			public boolean onMenuItemActionExpand(MenuItem arg0) {
+				return true;
+			}
 
-	@Override
-	public boolean onMenuItemActionCollapse(MenuItem arg0) {
-		filterZaListuKanala = "";
-		addItemsOnListView();
-		displayListView(channelList);
-		return true;
-	}
-});
+			@Override
+			public boolean onMenuItemActionCollapse(MenuItem arg0) {
+				filterZaListuKanala = "";
+				addItemsOnListView();
+				displayListView(channelList);
+				return true;
+			}
+		});
 
 		return true;
 	}
 	
 	private void addItemsOnListView() {
-		
 		final ArrayList<ChannelModel> tempChannelList = new ArrayList<ChannelModel>();
 		for (ChannelModel model : channelList)	
 			if (model.getName().toLowerCase().contains(filterZaListuKanala.toLowerCase()))
 				tempChannelList.add(model);
 		displayListView(tempChannelList);
-		Log.i("TEMPCHANNELS:", tempChannelList.toString());
 	}
 	
 	@Override
@@ -157,22 +155,8 @@ MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnAction
 				break;
 			case R.id.add_new_room :
 				
-				final EditText editTextNewRoomName = new EditText(this);
-				editTextNewRoomName.setInputType(InputType.TYPE_CLASS_TEXT);
-				editTextNewRoomName.setHint("New room name =?");
-				new AlertDialog.Builder(this)
-				.setTitle("Adding a new room")
-				.setView(editTextNewRoomName)
-				.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						new CreateNewRoom().execute(editTextNewRoomName.getText().toString(), "Undescribed.");
-					}
-				})
-				.setNegativeButton("ABORT", null)
-				.show();
-				
+				Intent intent1 = new Intent(this, NewChannelActivity.class);
+				startActivity(intent1);		
 				break;
 				
 		}
@@ -248,38 +232,6 @@ MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnAction
 
 	}
 
-	class CreateNewRoom extends AsyncTask<String, String, String> {
-		
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		
-		}
-
-		protected String doInBackground(String... args) {
-
-			try {
-				
-				DefaultInfobipClient.createNewRoom (args[0], args[1]);
-
-			} catch (Exception e) {
-				Log.d("ERROR CREATING ROOM: ", e.getMessage());
-				e.printStackTrace();
-
-			}
-			return "LoadAllChannels return value";
-		}
-
-		protected void onPostExecute(String file_url) {
-
-			super.onPostExecute(file_url);
-
-		}
-
-	}
-
-	
-	
 	@Override
 	public boolean onNavigationItemSelected(int arg0, long arg1) {
 		if(arg0==0) {

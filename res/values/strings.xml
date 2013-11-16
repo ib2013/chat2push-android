@@ -13,5 +13,7 @@
     </string-array>
 
     <string name="title_activity_registration">RegistrationActivity</string>
+    <string name="title_activity_new_chatroom">NewChatroomActivity</string>
+    <string name="title_activity_new_channel">NewChannelActivity</string>
 
 </resources>
