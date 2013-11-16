@@ -64,6 +64,7 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 	ChannelArrayAdapter listViewAdapter = null;
 	ArrayList<ChannelModel> channelList;
 	boolean isPublic;
+	boolean displaySubscribed;
 	String filterZaListuKanala = "";
 
 	@Override
@@ -71,6 +72,8 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_channel_list);
 		isPublic = true;
+		displaySubscribed = false;
+		
 		
 		
 		ActionBar actionBar = getSupportActionBar();
@@ -182,14 +185,21 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 		// kreiraj ArrayAdaptar iz String Array
 		ArrayList<ChannelModel> tempList = new ArrayList<ChannelModel>();
 		for(ChannelModel model : channelList) {
-			if(isPublic) {
-				if(model.getIsPublic()) {
+			if(displaySubscribed) {
+				if(model.getStatus()) {
 					tempList.add(model);
 				}
 			}
 			else {
-				if(!model.getIsPublic()) {
-					tempList.add(model);
+				if(isPublic) {
+					if(model.getIsPublic()) {
+						tempList.add(model);
+					}
+				}
+				else {
+					if(!model.getIsPublic()) {
+						tempList.add(model);
+					}
 				}
 			}
 		}
@@ -282,12 +292,19 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 	public boolean onNavigationItemSelected(int arg0, long arg1) {
 		if(arg0==0) {
 			isPublic = true;
+			displaySubscribed = false;
 			// prikazi samo PUBLIC kanale
 			displayListView(channelList);
 		}
 		if(arg0==1) {
 			isPublic = false;
+			displaySubscribed = false;
 			// prikazi samo PRIVATE kanale
+			displayListView(channelList);
+		}
+		if(arg0==2) {
+			displaySubscribed = true;
+			// prikazi samo PUBLIC kanale
 			displayListView(channelList);
 		}
 		return false;

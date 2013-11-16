@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView.FindListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -45,6 +46,7 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 		TextView textViewChannelName, textViewChannelDescription;
 		CheckBox checkboxChannelStatus;
 		LinearLayout linearLayoutClickable;
+		ImageView imageView;
 	}
 	
 	@Override
@@ -63,6 +65,7 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 			viewHolder.textViewChannelDescription = (TextView) convertView.findViewById(R.id.textViewChannelDescription);
 			viewHolder.checkboxChannelStatus = (CheckBox) convertView.findViewById(R.id.checkBoxChannelStatus);
 			viewHolder.linearLayoutClickable = (LinearLayout) convertView.findViewById(R.id.linearLayoutClickable);
+			viewHolder.imageView = (ImageView) convertView.findViewById(R.id.privateImageView);
 			convertView.setTag(viewHolder);
 
 			// napravi listener za checkpoint
@@ -113,6 +116,9 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 
 		// doda konkretne podatke u novi contentView
 		ChannelModel channelItem = channelList.get(position);
+		if(!channelItem.getIsPublic()) {
+			viewHolder.imageView.setImageResource(R.drawable.privatekey_icon);
+		}
 		viewHolder.textViewChannelName.setText(channelItem.getName());
 		viewHolder.textViewChannelDescription.setText(channelItem.getDescription());
 		viewHolder.checkboxChannelStatus.setChecked(channelItem.getStatus());
