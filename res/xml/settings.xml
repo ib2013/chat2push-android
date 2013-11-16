@@ -6,19 +6,14 @@
                 android:title="Forgot password?"
                 android:summary="Insert username to resend password via SMS"
                 android:key="prefResendPassword"/>
-    </PreferenceCategory>
+	</PreferenceCategory>
      
     <PreferenceCategory android:title="NOTIFICATION" >
         <SwitchPreference
-            android:defaultValue="false"
+            android:enabled="false"
+            android:defaultValue="true"
             android:key="prefSound"
             android:title="Sounds" >
-        </SwitchPreference>
-        
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="prefVibrate"
-            android:title="Vibrate" >
         </SwitchPreference>
     </PreferenceCategory>
  

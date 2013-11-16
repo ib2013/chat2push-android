@@ -95,7 +95,8 @@
         </activity>
         <activity
             android:name="com.infobip.campus.chat2push.android.SettingsActivity"
-            android:label="@string/title_activity_settings" >
+            android:label="@string/title_activity_settings" 
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

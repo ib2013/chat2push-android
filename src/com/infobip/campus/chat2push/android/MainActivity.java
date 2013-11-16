@@ -69,6 +69,13 @@ public class MainActivity extends ActionBarActivity {
 		if(intent.getBooleanExtra("fromRegistration", false)) {
 			final EditText txtUrl = new EditText(MainActivity.this);
 			final Button resendButton = (Button) findViewById(R.id.buttonResendConfirmation);
+			resendButton.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					//DefaultInfobipClient.resendVerificationNumber(intent.getStringExtra("userName"));
+				}
+			});
 			resendButton.setVisibility(View.VISIBLE);
 			int maxLength = 4;    
 			txtUrl.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
@@ -128,8 +135,7 @@ public class MainActivity extends ActionBarActivity {
 			
 			@Override
 			public void onClick(View v) {
-//				DefaultInfobipClient.resendConfirmationNumber(SessionManager.getCurrentUserName());
-				
+				//DefaultInfobipClient.resendVerificationNumber(intent.getStringExtra("userName"));				
 			}
 		});
 	}
@@ -144,12 +150,11 @@ public class MainActivity extends ActionBarActivity {
 		// TODO napraviti za pravi meni, trenutno je samo za gumb za testiranje ChannelActivitya.
 		switch (item.getItemId()) {
 		case R.id.settings :
+			
 			Intent intent = new Intent(this, SettingsActivity.class);
+			final AutoCompleteTextView userNameEditText = (AutoCompleteTextView) findViewById(R.id.editTextUserName);
+			intent.putExtra("userName", userNameEditText.getText().toString());
 			this.startActivity(intent);
-//		case R.id.test_channel_activity :
-//			Intent intent = new Intent(this, ChannelActivity.class);
-//			intent.putExtra("channelName", "TEST");
-//			this.startActivity(intent);				
 		}
 		return false;
 	}
