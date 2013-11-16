@@ -333,6 +333,36 @@ public class DefaultInfobipClient {
 			return false;
 		}
 	}
+	
+	public void resendConfirmationNumber(String username){
+		Gson gson = new Gson();
+
+		try {
+
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("username", username);
+
+			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
+			HttpClient client = new DefaultHttpClient();
+			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
+					+ "user/resendCode");
+			request.addHeader("content-type", "application/json");
+			request.setEntity(parms);
+			HttpResponse response = client.execute(request);
+			String responseText = getResponseText(response);
+
+			int responseCode = response.getStatusLine().getStatusCode();
+		} catch (Exception e) {
+		}
+	}
+	
+	public static ArrayList<String> fetchKnownUsers(String username){
+		
+		
+		
+		return null;
+		
+	}
 
 	private static ArrayList<ChannelModel> parseJsonChannelModel(
 			String jsonResponse) {
