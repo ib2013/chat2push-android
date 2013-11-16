@@ -135,7 +135,7 @@ public class MainActivity extends ActionBarActivity {
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.test, menu);
+		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 	
@@ -146,14 +146,12 @@ public class MainActivity extends ActionBarActivity {
 
 		case R.id.test_activity :
 			Intent intent = new Intent(this, NewChannelActivity.class);
-			this.startActivity(intent);				
+			this.startActivity(intent);	
+			break;
 		case R.id.settings :
 			Intent intent1 = new Intent(this, SettingsActivity.class);
 			this.startActivity(intent1);
-//		case R.id.test_channel_activity :
-//			Intent intent = new Intent(this, ChannelActivity.class);
-//			intent.putExtra("channelName", "TEST");
-//			this.startActivity(intent);				
+			break;
 		}
 		return false;
 	}
