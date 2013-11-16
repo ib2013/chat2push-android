@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -24,6 +27,7 @@ import com.infobip.campus.chat2push.android.configuration.Configuration;
 import com.infobip.campus.chat2push.android.managers.SessionManager;
 import com.infobip.campus.chat2push.android.models.ChannelModel;
 import com.infobip.campus.chat2push.android.models.MessageModel;
+import com.infobip.campus.chat2push.android.models.UserModel;
 
 public class DefaultInfobipClient {
 
@@ -194,6 +198,56 @@ public class DefaultInfobipClient {
 		} catch (Exception e) {
 			return new ArrayList<MessageModel>();
 		}
+	}
+	
+	public static ArrayList<UserModel> fetchKnownUsers ( String userName) {
+		
+		ArrayList<String> stringArray = null;
+		ArrayList<ChannelModel> channels = new ArrayList<ChannelModel>();
+		Set<UserModel> userNamesSet = new TreeSet<UserModel>();
+		
+		channels.addAll(fetchAllChannels(userName));
+		
+		Log.d("fetchKnownUsers ce pokupiti usere iz sljedecih soba:", channels.toString());
+		
+		for (ChannelModel channel : channels) {
+			
+			Gson gson = new Gson();
+
+			try {
+
+				JsonObject jsonObject = new JsonObject();
+				jsonObject.addProperty("name", channel.getName());
+				jsonObject.addProperty("description", "");
+
+				StringEntity parms = new StringEntity(gson.toJson(jsonObject));
+				HttpClient client = new DefaultHttpClient();
+				HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
+						+ "channel/fetchUsersByRoom");
+				request.addHeader("content-type", "application/json");
+				request.setEntity(parms);
+				
+				HttpResponse response = client.execute(request);
+				String responseText = getResponseText(response);
+
+				parseJsonUserNames(responseText, userNamesSet);
+				
+				int responseCode = response.getStatusLine().getStatusCode();
+
+			} catch (Exception e) {
+				Log.e("Exception fetchKnownUsers", e.getMessage());
+//				return "Connection error!";
+			}
+			
+		}
+		
+		
+		ArrayList<UserModel> response = new ArrayList<UserModel>(userNamesSet);
+		
+		Log.d("fetchKnownUsers mi je kao rezultat pokusao uvaliti", response.toString());
+		
+		return response;
+		
 	}
 
 	public static String sendMessage(String userName, String channelName,
@@ -413,6 +467,26 @@ public class DefaultInfobipClient {
 		}
 
 		return channelList;
+	}
+	
+	private static void parseJsonUserNames(String jsonResponse, Set<UserModel> whereToPutThem) {
+		JsonParser jsonParser = new JsonParser();
+		JsonElement jsonTree = jsonParser.parse(jsonResponse);
+		JsonArray jsonArray = jsonTree.getAsJsonArray();
+
+		for (int i = 0; i < jsonArray.size(); i++) {
+			JsonObject jsonElement = jsonArray.get(i).getAsJsonObject();
+			String userName;
+
+			try {
+				userName = jsonElement.getAsJsonPrimitive("username")
+						.getAsString();
+			} catch (Exception e) {
+				userName = "";
+			}
+			whereToPutThem.add(new UserModel(userName, false));
+		}
+		
 	}
 
 	private static ArrayList<MessageModel> parseJsonMessageModel(

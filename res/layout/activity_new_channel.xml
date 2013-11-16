@@ -40,6 +40,11 @@
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:text="Room is private!" />
+    	
+    	<ListView 
+    	    android:id="@+id/listViewUsers"
+    	    android:layout_width="fill_parent"
+    	    android:layout_height="fill_parent"></ListView>
 
     </LinearLayout>
     

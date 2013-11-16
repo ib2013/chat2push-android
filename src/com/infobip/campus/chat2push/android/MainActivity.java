@@ -143,13 +143,15 @@ public class MainActivity extends ActionBarActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO napraviti za pravi meni, trenutno je samo za gumb za testiranje ChannelActivitya.
 		switch (item.getItemId()) {
+
+		case R.id.test_activity :
+			Intent intent = new Intent(this, NewChannelActivity.class);
+			this.startActivity(intent);	
+			break;
 		case R.id.settings :
-			Intent intent = new Intent(this, SettingsActivity.class);
-			this.startActivity(intent);
-//		case R.id.test_channel_activity :
-//			Intent intent = new Intent(this, ChannelActivity.class);
-//			intent.putExtra("channelName", "TEST");
-//			this.startActivity(intent);				
+			Intent intent1 = new Intent(this, SettingsActivity.class);
+			this.startActivity(intent1);
+			break;
 		}
 		return false;
 	}
