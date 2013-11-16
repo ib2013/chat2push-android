@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -24,6 +26,7 @@ import com.infobip.campus.chat2push.android.configuration.Configuration;
 import com.infobip.campus.chat2push.android.managers.SessionManager;
 import com.infobip.campus.chat2push.android.models.ChannelModel;
 import com.infobip.campus.chat2push.android.models.MessageModel;
+import com.infobip.campus.chat2push.android.models.UserModel;
 
 public class DefaultInfobipClient {
 
@@ -145,6 +148,8 @@ public class DefaultInfobipClient {
 			HttpResponse response = client.execute(request);
 			String responseText = getResponseText(response);
 
+			Log.d("fetchAllChannels je dohvatio sljedeci popis", responseText);
+			
 			int responseCode = response.getStatusLine().getStatusCode();
 
 			channelList = parseJsonChannelModel(responseText);
@@ -194,6 +199,56 @@ public class DefaultInfobipClient {
 		} catch (Exception e) {
 			return new ArrayList<MessageModel>();
 		}
+	}
+	
+	public static ArrayList<UserModel> fetchKnownUsers ( String userName) {
+		
+		ArrayList<String> stringArray = null;
+		ArrayList<ChannelModel> channels = new ArrayList<ChannelModel>();
+		Set<UserModel> userNamesSet = new HashSet<UserModel>();
+		
+		channels.addAll(fetchAllChannels(userName));
+		
+		Log.d("fetchKnownUsers ce pokupiti usere iz sljedecih soba:", channels.toString());
+		
+		for (ChannelModel channel : channels) {
+			
+			Gson gson = new Gson();
+
+			try {
+
+				JsonObject jsonObject = new JsonObject();
+				jsonObject.addProperty("name", channel.getName());
+				jsonObject.addProperty("description", "");
+
+				StringEntity parms = new StringEntity(gson.toJson(jsonObject));
+				HttpClient client = new DefaultHttpClient();
+				HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
+						+ "channel/fetchUsersByRoom");
+				request.addHeader("content-type", "application/json");
+				request.setEntity(parms);
+				
+				HttpResponse response = client.execute(request);
+				String responseText = getResponseText(response);
+
+				userNamesSet.addAll(parseJsonUserNames(responseText));
+				
+				int responseCode = response.getStatusLine().getStatusCode();
+
+			} catch (Exception e) {
+				Log.e("Exception fetchKnownUsers", e.getMessage());
+//				return "Connection error!";
+			}
+			
+		}
+		
+		Log.d("client pred kraj rada ima set ovaj: ", userNamesSet.toString());
+		ArrayList<UserModel> response = new ArrayList<UserModel>(userNamesSet);
+		
+		Log.d("fetchKnownUsers mi je kao rezultat pokusao uvaliti", response.toString());
+		
+		return response;
+		
 	}
 
 	public static String sendMessage(String userName, String channelName,
@@ -384,6 +439,30 @@ public class DefaultInfobipClient {
 
 		return channelList;
 	}
+	
+	private static Set<UserModel> parseJsonUserNames(String jsonResponse) {
+		JsonParser jsonParser = new JsonParser();
+		JsonElement jsonTree = jsonParser.parse(jsonResponse);
+		JsonArray jsonArray = jsonTree.getAsJsonArray();
+		Set<UserModel> result = new HashSet<UserModel>();
+
+		for (int i = 0; i < jsonArray.size(); i++) {
+			JsonObject jsonElement = jsonArray.get(i).getAsJsonObject();
+			String userName;
+
+			try {
+				userName = jsonElement.getAsJsonPrimitive("username").getAsString();
+			} catch (Exception e) {
+				Log.e("srfgl ihgs jkgd", "adèfk jgdjfkghsujkd");
+				userName = "";
+			}
+			Log.d("Jason parser nam je izbacio", userName);
+			result.add(new UserModel(userName, false));
+		}
+		Log.d("Sveckupa jason je izbacio:", result.toString());
+		return result;
+		
+	}
 
 	private static ArrayList<MessageModel> parseJsonMessageModel(
 			String jsonResponse) {
@@ -408,19 +487,22 @@ public class DefaultInfobipClient {
 				messageText = "";
 			}
 			try {
-				sentBy = jsonElement.getAsJsonPrimitive("user").getAsString();
+				sentBy = jsonElement.getAsJsonPrimitive("username").getAsString();
 			} catch (Exception e) {
 				sentBy = "";
 			}
 
 			try {
 				time = new Date(jsonElement.getAsJsonPrimitive(
-						"lastMessageDate").getAsLong());
+						"messageDate").getAsLong());
 			} catch (Exception e) {
+				Log.e("Jason parser u clientu je failao procitati vrijeme", "");
 				time = new Date(0);
 			}
-
-			messageList.add(new MessageModel(sentBy, messageText, time));
+			
+			MessageModel newMessageToAdd = new MessageModel(sentBy, messageText, time);
+			if (newMessageToAdd.areYouOK()) 
+				messageList.add(new MessageModel(sentBy, messageText, time));
 		}
 
 		for (MessageModel messageItem : messageList)

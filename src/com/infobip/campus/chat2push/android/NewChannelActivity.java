@@ -2,8 +2,12 @@ package com.infobip.campus.chat2push.android;
 
 import java.util.ArrayList;
 
+import com.infobip.campus.chat2push.android.adapters.MessageArrayAdapter;
+import com.infobip.campus.chat2push.android.adapters.UsersToSubscribeArrayAdapter;
 import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
 import com.infobip.campus.chat2push.android.managers.SessionManager;
+import com.infobip.campus.chat2push.android.models.MessageModel;
+import com.infobip.campus.chat2push.android.models.UserModel;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,11 +20,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListView;
 
 public class NewChannelActivity extends ActionBarActivity {
 	
-	ArrayList<String> usersToRegister = new ArrayList<String>();
+	ArrayList<UserModel> usersToRegister = new ArrayList<UserModel>();
+	UsersToSubscribeArrayAdapter usersArrayAdapter = null;
 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,6 +36,8 @@ public class NewChannelActivity extends ActionBarActivity {
 		final EditText editTextChannelName = (EditText) findViewById(R.id.editTextChannelName);
 		final EditText eidtTextChannelDescription = (EditText) findViewById(R.id.editTextChannelDescription);
 		final CheckBox checkBoxIsChannelPrivate = (CheckBox) findViewById(R.id.checkBoxIsChannelPrivate);
+		final ListView listViewUsers = (ListView) findViewById(R.id.listViewUsers);
+		listViewUsers.setVisibility(View.GONE);
 		
 		Button buttonAddChannel = (Button) findViewById(R.id.buttonAddNewChannel);
 		buttonAddChannel.setOnClickListener(new OnClickListener() {
@@ -37,8 +46,25 @@ public class NewChannelActivity extends ActionBarActivity {
 				Log.d("Prije ulasku u onclick stanje checkboxa je: ", String.valueOf(checkBoxIsChannelPrivate.isChecked()));
 				new CreateNewRoom().execute(editTextChannelName.getText().toString(), eidtTextChannelDescription.getText().toString(), String.valueOf(checkBoxIsChannelPrivate.isChecked()));	
 				SessionManager.subscribeToChannelByName(editTextChannelName.getText().toString());
+				
 				finish();
 			}
+		});
+
+		checkBoxIsChannelPrivate.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				if (listViewUsers.getVisibility() == View.GONE) {
+					listViewUsers.setVisibility(View.VISIBLE);
+					usersToRegister.clear();
+					new FetchKnownUsersList().execute();
+				} else 
+					listViewUsers.setVisibility(View.GONE);
+				
+			}
+				
 		});
 		
 		//TODO: lista usera koji ce se automatski predplatiti na ovaj channel!
@@ -72,6 +98,10 @@ public class NewChannelActivity extends ActionBarActivity {
 				Log.d("Background od SubscribeToChannel", "username je: " + SessionManager.getCurrentUserName() + " ime kanala za dodati: " + args[0]);
 				DefaultInfobipClient.registerUserToChannel(SessionManager.getCurrentUserName(), args[0]);
 				Log.d("Background od SubscribeToChannel", "Prošao mi je DefaultInfobipClient.registerUserToChannel");
+				for (UserModel user : usersToRegister)
+					if (user.getStatus())
+						DefaultInfobipClient.registerUserToChannel(user.getUsername(), args[0]);
+				
 				return "Subscribe to channel return value";
 
 			} catch (Exception e) {
@@ -89,5 +119,58 @@ public class NewChannelActivity extends ActionBarActivity {
 		}
 
 	}
+	
+	
+	class FetchKnownUsersList extends AsyncTask<String, String, String> {
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		
+		}
+
+		protected String doInBackground(String... args) {
+
+			try {
+				Log.d("Background od FetchKnownUsersList ima argument : ", SessionManager.getCurrentUserName());
+				usersToRegister.addAll(DefaultInfobipClient.fetchKnownUsers(SessionManager.getCurrentUserName()));
+				
+//				//mokani podatci:
+//				usersToRegister.clear();
+//				usersToRegister.add("Ljudna");
+//				usersToRegister.add("Jaran");
+//				
+				Log.d("Background od FetchKnownUsersList ", "Prošlo je, dobio sam: " + usersToRegister.toString());
+				return "Subscribe to channel return value";
+
+			} catch (Exception e) {
+				Log.d("ERROR FETCHING KNOWN USERS: ", e.getMessage());
+				e.printStackTrace();
+
+			}
+			return "LoadAllChannels return value";
+		}
+
+		protected void onPostExecute(String file_url) {
+			
+			runOnUiThread(new Runnable() {
+				public void run() {
+					displayListView(usersToRegister);
+				}
+			});
+			super.onPostExecute(file_url);
+
+		}
+
+	}
+		
+		
+		private void displayListView(ArrayList<UserModel> users) {
+			// kreiraj ArrayAdaptar iz String Array		
+			usersArrayAdapter = new UsersToSubscribeArrayAdapter(this, R.layout.activity_new_channel, users);
+			ListView listView = (ListView) findViewById(R.id.listViewUsers);
+			// dodeli adapter u ListView
+			listView.setAdapter(usersArrayAdapter);
+		}
 	
 }

@@ -36,13 +36,19 @@ public class RegistrationActivity extends Activity {
 		
 		TelephonyManager telephonyManager;
 		telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-		Log.i("BROJ_TELEFONA", telephonyManager.getLine1Number());
 		
 		Intent intent = getIntent();
-		userNameEditText.setText(intent.getStringExtra("userName"));
-		passwordEditText.setText(intent.getStringExtra("password"));
-		phoneNumberEditText.setText(telephonyManager.getLine1Number().toString());
 		
+		if (telephonyManager != null && intent.getStringExtra("userName") != null && intent.getStringExtra("password") != null) {
+		
+//			Log.i("BROJ_TELEFONA", telephonyManager.getLine1Number());
+		
+			userNameEditText.setText(intent.getStringExtra("userName"));
+			passwordEditText.setText(intent.getStringExtra("password"));
+			phoneNumberEditText.setText(telephonyManager.getLine1Number().toString());
+		
+		} else 
+			Log.e("nesto ne valja sa brojem telefona", "  ");
 		
 		
 		buttonSendConfirmationNumber.setOnClickListener(new View.OnClickListener() {
@@ -137,12 +143,12 @@ class RegisterUser extends AsyncTask<String, String, String> {
 
 		protected String doInBackground(String... args) {
 			try {
-				Log.i("RegisterUser_ARGUMENT_LIST", args[0] + " -  " + args[1]);
+//				Log.i("RegisterUser_ARGUMENT_LIST", args[0] + " -  " + args[1]);
 				if(DefaultInfobipClient.registerUser(args[0], args[1], args[2]) == null) {
 					isValidRegister = true;
 				}	
 			} catch (Exception e) {
-				Log.d("RegisterUser doInBackground EXCEPTION:", "Error registering user!");
+//				Log.d("RegisterUser doInBackground EXCEPTION:", "Error registering user!");
 				e.printStackTrace();
 
 			}

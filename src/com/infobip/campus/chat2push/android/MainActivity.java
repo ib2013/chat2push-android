@@ -124,8 +124,10 @@ public class MainActivity extends ActionBarActivity {
 				// REGISTRUJ USERA
 				
 				Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
-				intent.putExtra("userName", userNameEditText.getText().toString());
-				intent.putExtra("password", passwordEditText.getText().toString());
+				if (userNameEditText.getText().toString() != null && passwordEditText.getText().toString() != null) {
+					intent.putExtra("userName", userNameEditText.getText().toString());
+					intent.putExtra("password", passwordEditText.getText().toString());
+				}
 				startActivity(intent);
 			}
 		});
@@ -149,12 +151,13 @@ public class MainActivity extends ActionBarActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO napraviti za pravi meni, trenutno je samo za gumb za testiranje ChannelActivitya.
 		switch (item.getItemId()) {
+
 		case R.id.settings :
-			
 			Intent intent = new Intent(this, SettingsActivity.class);
 			final AutoCompleteTextView userNameEditText = (AutoCompleteTextView) findViewById(R.id.editTextUserName);
 			intent.putExtra("userName", userNameEditText.getText().toString());
 			this.startActivity(intent);
+
 		}
 		return false;
 	}
@@ -179,7 +182,7 @@ public class MainActivity extends ActionBarActivity {
 
 		protected String doInBackground(String... args) {
 			try {
-				Log.i("LoginUser_ARGUMENT_LIST", args[0] + " -  " + args[1]);
+//				Log.i("LoginUser_ARGUMENT_LIST", args[0] + " -  " + args[1]);
 				if(DefaultInfobipClient.loginUser(args[0], args[1]) == null) {
 					isValidLogin = true;
 					isVerified = true;
@@ -188,7 +191,7 @@ public class MainActivity extends ActionBarActivity {
 				else if(DefaultInfobipClient.loginUser(args[0], args[1]).equals("MISSING_VERIFICATION")) {
 					isValidLogin = true;
 					if(args.length == 3) {
-						Log.i("argumenti f-je verifyUser:", args[0] + " " + Integer.parseInt(args[2]));
+//						Log.i("argumenti f-je verifyUser:", args[0] + " " + Integer.parseInt(args[2]));
 						if(DefaultInfobipClient.verifyUser(args[0], Integer.parseInt(args[2]))) {
 							isVerified = true;
 							SessionManager.loginUser(args[0], args[1]);
@@ -243,7 +246,7 @@ public class MainActivity extends ActionBarActivity {
 									EditText passwordEditText = (EditText) findViewById(R.id.editTextPassword);
 									new LoginUser().execute(userNameEditText.getText().toString(),
 											passwordEditText.getText().toString(), txtUrl.getText().toString());
-									Log.i("PROBA INPUTA", txtUrl.getText().toString());
+//									Log.i("PROBA INPUTA", txtUrl.getText().toString());
 								}
 							})
 							.setNegativeButton("Cancel", null)
