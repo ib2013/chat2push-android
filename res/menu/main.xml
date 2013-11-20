@@ -8,14 +8,6 @@
         myApp:showAsAction="ifRoom"
         android:title="Settings"
         android:icon="@drawable/ic_action_settings" 	/>
-	
-	<item
-        android:id="@+id/test_activity"
-        android:orderInCategory="1"
-        android:showAsAction="always"
-        myApp:showAsAction="always"
-        android:title="TEST"
-        android:icon="@drawable/ic_action_new"/>
-	
+
 
 </menu>
