@@ -170,25 +170,28 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 	private void displayListView(ArrayList<ChannelModel> channelList) {
 		// kreiraj ArrayAdaptar iz String Array
 		ArrayList<ChannelModel> tempList = new ArrayList<ChannelModel>();
-		for(ChannelModel model : channelList) {
-			if(displaySubscribed) {
-				if(model.getStatus()) {
-					tempList.add(model);
-				}
-			}
-			else {
-				if(isPublic) {
-					if(model.getIsPublic()) {
+		if (channelList != null) {
+			for(ChannelModel model : channelList) {
+				if(displaySubscribed) {
+					if(model.getStatus()) {
 						tempList.add(model);
 					}
 				}
 				else {
-					if(!model.getIsPublic()) {
-						tempList.add(model);
+					if(isPublic) {
+						if(model.getIsPublic()) {
+							tempList.add(model);
+						}
+					}
+					else {
+						if(!model.getIsPublic()) {
+							tempList.add(model);
+						}
 					}
 				}
 			}
-		}
+		} else 
+			Log.e("U channelListActivityu sam dobio sa je channelList null", "");
 		listViewAdapter = new ChannelArrayAdapter(this,
 				R.layout.activity_channel_list, tempList);
 		ListView listView = (ListView) findViewById(R.id.listView);

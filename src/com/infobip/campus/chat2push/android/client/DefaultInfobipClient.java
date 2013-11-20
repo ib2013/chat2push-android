@@ -53,10 +53,10 @@ public class DefaultInfobipClient {
 
 			int responseCode = response.getStatusLine().getStatusCode();
 
-			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
+			
+			if (responseCode == 200 || responseCode == 201) {
 				return null;
-			} else if (responseText.toUpperCase().equals(
-					"\"MISSING_REGISTRATION\"")) {
+			} else if (responseCode == 476) {
 				return "MISSING_REGISTRATION";
 			}
 
@@ -89,10 +89,11 @@ public class DefaultInfobipClient {
 			Log.d("Dobio odgovor:", responseText);
 			int responseCode = response.getStatusLine().getStatusCode();
 
-			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
+			Log.d("loginUser", responseText + " " + responseCode);
+			
+			if (responseCode == 200 || responseCode== 201) {
 				return null;
-			} else if (responseText.toUpperCase().equals(
-					"\"MISSING_REGISTRATION\"")) {
+			} else if (responseCode == 476) {
 				return "MISSING_VERIFICATION";
 			}
 
@@ -125,7 +126,7 @@ public class DefaultInfobipClient {
 			Log.i("RESPONSE_TEXT", responseText);
 			int responseCode = response.getStatusLine().getStatusCode();
 
-			if (responseText.toUpperCase().equals("\"SUCCESS\"")) {
+			if (responseCode == 200 || responseCode == 201) {
 				// Configuration.CURRENT_USER_NAME = userName;
 				return true;
 			} else {
@@ -274,7 +275,7 @@ public class DefaultInfobipClient {
 
 			int responseCode = response.getStatusLine().getStatusCode();
 
-			if (responseText.equals("true")) {
+			if (responseCode == 200 || responseCode == 201) {
 				return null;
 			} else {
 				return responseText;
@@ -313,7 +314,7 @@ public class DefaultInfobipClient {
 			
 			Log.d("DefaultInfobipClient.registerUserToChannel je obavio http pricu sa odgovorom:", responseText);
 			
-			if (responseText.equals("succes")) {
+			if (responseCode == 200 || responseCode == 201) {
 				return true;
 			} else {
 				return false;
@@ -347,7 +348,7 @@ public class DefaultInfobipClient {
 
 			int responseCode = response.getStatusLine().getStatusCode();
 
-			if (responseText.equals("succes")) {
+			if (responseCode == 200 || responseCode == 201) {
 				return true;
 			} else {
 				return false;
@@ -379,7 +380,7 @@ public class DefaultInfobipClient {
 
 			int responseCode = response.getStatusLine().getStatusCode();
 
-			if (responseText.equals("succes")) {
+			if (responseCode == 200 || responseCode == 201) {
 				return true;
 			} else {
 				return false;

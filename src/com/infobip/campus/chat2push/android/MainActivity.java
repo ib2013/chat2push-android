@@ -55,8 +55,11 @@ public class MainActivity extends ActionBarActivity {
 			new LoginUser().execute(SessionManager.getCurrentUserName(), SessionManager.getCurrentUserPassword());
 			Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
 			startActivity(intent);
-			finish();
+//			finish();
 		}
+	
+	else {
+			
 		
 		// ovde ce da se dobija lista korisnika iz SessionManager
 		final String[] users = new String[] { "Korisnik1", "Mica", "Pera", "Zika" };
@@ -134,6 +137,7 @@ public class MainActivity extends ActionBarActivity {
 				
 			}
 		});
+		}
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -230,7 +234,7 @@ public class MainActivity extends ActionBarActivity {
 							int maxLength = 4;    
 							txtUrl.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
 							txtUrl.setInputType(InputType.TYPE_CLASS_NUMBER);
-							
+							Log.d("Sad i trebao izletiti dialog!", "");
 							new AlertDialog.Builder(MainActivity.this)
 							.setTitle("Insert confirmation number")
 							.setView(txtUrl)
@@ -240,6 +244,7 @@ public class MainActivity extends ActionBarActivity {
 								public void onClick(DialogInterface dialog, int which) {
 									EditText userNameEditText = (EditText) findViewById(R.id.editTextUserName);
 									EditText passwordEditText = (EditText) findViewById(R.id.editTextPassword);
+									Log.d("Ovo je onclick na ok u dialogu!", txtUrl.getText().toString());
 									new LoginUser().execute(userNameEditText.getText().toString(),
 											passwordEditText.getText().toString(), txtUrl.getText().toString());
 //									Log.i("PROBA INPUTA", txtUrl.getText().toString());
