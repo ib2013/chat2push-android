@@ -278,11 +278,15 @@ public class DefaultInfobipClient {
 			int responseCode = response.getStatusLine().getStatusCode();
 
 			if (responseCode == 200 || responseCode == 201) {
+				Log.d("U sendMessage javio status: ", String.valueOf(responseCode));
 				return null;
 			} else {
+				Log.e("U sendMessage javio status: ", String.valueOf(responseCode));
+				Log.e("U sendMessage javio status: ", responseText);
 				return responseText;
 			}
 		} catch (Exception e) {
+			Log.e("U sendMessage izbacio exception: ", e.getMessage());
 			return "Connection error!";
 		}
 	}

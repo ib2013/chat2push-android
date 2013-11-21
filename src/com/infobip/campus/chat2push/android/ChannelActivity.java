@@ -225,7 +225,7 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 			
 			Log.d("Ulazi u doInBackground, user je: ", SessionManager.getCurrentUserName());
 			DefaultInfobipClient.sendMessage(args[0], args[1], args[2]);
-			Log.d("Obavio : DefaultInfobipClient.sendMessage s argumentima: ", args[0] + args[1] + args[2]);
+			Log.d("Obavio : DefaultInfobipClient.sendMessage s argumentima: ", args[0] + " " + args[1] + " " + args[2]);
 			
 			return "doInBackgroundReturnValue";
 		}
