@@ -226,6 +226,8 @@ public class DefaultInfobipClient {
 				HttpClient client = new DefaultHttpClient();
 				HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
 						+ "channel/fetchUsersByRoom");
+				Log.d("-------",channel.getName());
+				Log.d("-----",request.getURI().toString());
 				request.addHeader("content-type", "application/json");
 				request.setEntity(parms);
 				
@@ -393,6 +395,28 @@ public class DefaultInfobipClient {
 			return false;
 		}
 	}
+	
+	public void resendConfirmationNumber(String username){
+		Gson gson = new Gson();
+
+		try {
+
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("username", username);
+
+			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
+			HttpClient client = new DefaultHttpClient();
+			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
+					+ "user/resendCode");
+			request.addHeader("content-type", "application/json");
+			request.setEntity(parms);
+			HttpResponse response = client.execute(request);
+			String responseText = getResponseText(response);
+
+			int responseCode = response.getStatusLine().getStatusCode();
+		} catch (Exception e) {
+		}
+	}
 
 	private static ArrayList<ChannelModel> parseJsonChannelModel(
 			String jsonResponse) {
@@ -449,6 +473,7 @@ public class DefaultInfobipClient {
 		JsonParser jsonParser = new JsonParser();
 		JsonElement jsonTree = jsonParser.parse(jsonResponse);
 		JsonArray jsonArray = jsonTree.getAsJsonArray();
+
 		Set<UserModel> result = new HashSet<UserModel>();
 
 		for (int i = 0; i < jsonArray.size(); i++) {
@@ -466,7 +491,7 @@ public class DefaultInfobipClient {
 		}
 		Log.d("Sveckupa jason je izbacio:", result.toString());
 		return result;
-		
+
 	}
 
 	private static ArrayList<MessageModel> parseJsonMessageModel(
