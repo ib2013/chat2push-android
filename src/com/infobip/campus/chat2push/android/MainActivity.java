@@ -55,8 +55,11 @@ public class MainActivity extends ActionBarActivity {
 			new LoginUser().execute(SessionManager.getCurrentUserName(), SessionManager.getCurrentUserPassword());
 			Intent intent = new Intent(MainActivity.this, ChannelListActivity.class);
 			startActivity(intent);
-			finish();
+//			finish();
 		}
+	
+	else {
+			
 		
 		// ovde ce da se dobija lista korisnika iz SessionManager
 		final String[] users = new String[] { "Korisnik1", "Mica", "Pera", "Zika" };
@@ -69,6 +72,13 @@ public class MainActivity extends ActionBarActivity {
 		if(intent.getBooleanExtra("fromRegistration", false)) {
 			final EditText txtUrl = new EditText(MainActivity.this);
 			final Button resendButton = (Button) findViewById(R.id.buttonResendConfirmation);
+			resendButton.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					//DefaultInfobipClient.resendVerificationNumber(intent.getStringExtra("userName"));
+				}
+			});
 			resendButton.setVisibility(View.VISIBLE);
 			int maxLength = 4;    
 			txtUrl.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
@@ -117,8 +127,10 @@ public class MainActivity extends ActionBarActivity {
 				// REGISTRUJ USERA
 				
 				Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
-				intent.putExtra("userName", userNameEditText.getText().toString());
-				intent.putExtra("password", passwordEditText.getText().toString());
+				if (userNameEditText.getText().toString() != null && passwordEditText.getText().toString() != null) {
+					intent.putExtra("userName", userNameEditText.getText().toString());
+					intent.putExtra("password", passwordEditText.getText().toString());
+				}
 				startActivity(intent);
 			}
 		});
@@ -128,10 +140,10 @@ public class MainActivity extends ActionBarActivity {
 			
 			@Override
 			public void onClick(View v) {
-//				DefaultInfobipClient.resendConfirmationNumber(SessionManager.getCurrentUserName());
-				
+				//DefaultInfobipClient.resendVerificationNumber(intent.getStringExtra("userName"));				
 			}
 		});
+		}
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -144,14 +156,12 @@ public class MainActivity extends ActionBarActivity {
 		// TODO napraviti za pravi meni, trenutno je samo za gumb za testiranje ChannelActivitya.
 		switch (item.getItemId()) {
 
-		case R.id.test_activity :
-			Intent intent = new Intent(this, NewChannelActivity.class);
-			this.startActivity(intent);	
-			break;
 		case R.id.settings :
-			Intent intent1 = new Intent(this, SettingsActivity.class);
-			this.startActivity(intent1);
-			break;
+			Intent intent = new Intent(this, SettingsActivity.class);
+			final AutoCompleteTextView userNameEditText = (AutoCompleteTextView) findViewById(R.id.editTextUserName);
+			intent.putExtra("userName", userNameEditText.getText().toString());
+			this.startActivity(intent);
+
 		}
 		return false;
 	}
@@ -176,7 +186,7 @@ public class MainActivity extends ActionBarActivity {
 
 		protected String doInBackground(String... args) {
 			try {
-				Log.i("LoginUser_ARGUMENT_LIST", args[0] + " -  " + args[1]);
+//				Log.i("LoginUser_ARGUMENT_LIST", args[0] + " -  " + args[1]);
 				if(DefaultInfobipClient.loginUser(args[0], args[1]) == null) {
 					isValidLogin = true;
 					isVerified = true;
@@ -185,7 +195,7 @@ public class MainActivity extends ActionBarActivity {
 				else if(DefaultInfobipClient.loginUser(args[0], args[1]).equals("MISSING_VERIFICATION")) {
 					isValidLogin = true;
 					if(args.length == 3) {
-						Log.i("argumenti f-je verifyUser:", args[0] + " " + Integer.parseInt(args[2]));
+//						Log.i("argumenti f-je verifyUser:", args[0] + " " + Integer.parseInt(args[2]));
 						if(DefaultInfobipClient.verifyUser(args[0], Integer.parseInt(args[2]))) {
 							isVerified = true;
 							SessionManager.loginUser(args[0], args[1]);
@@ -228,7 +238,7 @@ public class MainActivity extends ActionBarActivity {
 							int maxLength = 4;    
 							txtUrl.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
 							txtUrl.setInputType(InputType.TYPE_CLASS_NUMBER);
-							
+							Log.d("Sad i trebao izletiti dialog!", "");
 							new AlertDialog.Builder(MainActivity.this)
 							.setTitle("Insert confirmation number")
 							.setView(txtUrl)
@@ -238,9 +248,10 @@ public class MainActivity extends ActionBarActivity {
 								public void onClick(DialogInterface dialog, int which) {
 									EditText userNameEditText = (EditText) findViewById(R.id.editTextUserName);
 									EditText passwordEditText = (EditText) findViewById(R.id.editTextPassword);
+									Log.d("Ovo je onclick na ok u dialogu!", txtUrl.getText().toString());
 									new LoginUser().execute(userNameEditText.getText().toString(),
 											passwordEditText.getText().toString(), txtUrl.getText().toString());
-									Log.i("PROBA INPUTA", txtUrl.getText().toString());
+//									Log.i("PROBA INPUTA", txtUrl.getText().toString());
 								}
 							})
 							.setNegativeButton("Cancel", null)

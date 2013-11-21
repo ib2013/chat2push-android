@@ -58,6 +58,7 @@ public class NewChannelActivity extends ActionBarActivity {
 				
 				if (listViewUsers.getVisibility() == View.GONE) {
 					listViewUsers.setVisibility(View.VISIBLE);
+					usersToRegister.clear();
 					new FetchKnownUsersList().execute();
 				} else 
 					listViewUsers.setVisibility(View.GONE);

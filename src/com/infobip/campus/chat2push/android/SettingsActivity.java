@@ -1,8 +1,11 @@
 package com.infobip.campus.chat2push.android;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -18,13 +21,12 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.preference.SwitchPreference;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import java.util.List;
-
 import com.infobip.campus.chat2push.android.MainActivity.LoginUser;
 import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
 
@@ -40,7 +42,7 @@ import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends PreferenceActivity {
-	/**
+	/** 
 	 * Determines whether to always show the simplified settings UI, where
 	 * settings are presented in a single list. When false, settings are shown
 	 * as a master/detail two-pane view on tablets. When true, a single pane is
@@ -48,16 +50,55 @@ public class SettingsActivity extends PreferenceActivity {
 	 */
 	private static final boolean ALWAYS_SIMPLE_PREFS = true;
 
+	@SuppressLint("NewApi")
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		
-		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+//		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		addPreferencesFromResource(R.xml.settings);
 		
+		Intent intent = getIntent();
 		
 		EditTextPreference etp = (EditTextPreference) findPreference("prefResendPassword");
+		etp.setText(intent.getStringExtra("userName"));
+//		SwitchPreference switchSound = (SwitchPreference) findPreference("prefSound");
+//		boolean switchValue = sharedPrefs.getBoolean("prefSound", true);
+//
+//		if(switchValue) {
+//			Log.i("Iz sharedPrefs-a:", "Prosao switchSound.isChecked()");
+//			switchSound.setChecked(true);
+//		}
+//		else {
+//			Log.i("Iz sharedPrefs-a:", "Nije prosao switchSound.isChecked()");
+//			switchSound.setChecked(false);
+//		}
+			
+//		switchSound.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+//			@Override
+//			public boolean onPreferenceChange(Preference preference, Object newValue) {
+//				SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
+//				SwitchPreference switchSound = (SwitchPreference) findPreference("prefSound");
+//				Editor editor = sharedPrefs.edit();
+//				if(switchSound.isChecked()) {
+//					Log.i("Unutar listenera:", "Prosao switchSound.isChecked()");
+//					editor.putBoolean("prefSound", true);
+//				}
+//				else {
+//					Log.i("Unutar listenera:", "Nije prosao switchSound.isChecked()");
+//					editor.putBoolean("prefSound", false);
+//				}
+//				
+//				editor.commit();
+//				
+//				Log.i("Posle listenera, prefSound je:", String.valueOf(sharedPrefs.getBoolean("prefSound", true)));
+//					
+//				
+//				return false;
+//			}
+//		});
+		
 		etp.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			
 			@Override
