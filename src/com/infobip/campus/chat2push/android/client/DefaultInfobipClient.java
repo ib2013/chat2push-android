@@ -224,13 +224,16 @@ public class DefaultInfobipClient {
 				HttpClient client = new DefaultHttpClient();
 				HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
 						+ "channel/fetchUsersByRoom");
+				Log.d("-------",channel.getName());
+				Log.d("-----",request.getURI().toString());
 				request.addHeader("content-type", "application/json");
 				request.setEntity(parms);
 				
 				HttpResponse response = client.execute(request);
 				String responseText = getResponseText(response);
-
-				parseJsonUserNames(responseText, userNamesSet);
+				
+				Log.d("--------*****",responseText);
+				userNamesSet.addAll(parseJsonUserNames(responseText));
 				
 				int responseCode = response.getStatusLine().getStatusCode();
 
@@ -409,14 +412,6 @@ public class DefaultInfobipClient {
 		} catch (Exception e) {
 		}
 	}
-	
-	public static ArrayList<String> fetchKnownUsers(String username){
-		
-		
-		
-		return null;
-		
-	}
 
 	private static ArrayList<ChannelModel> parseJsonChannelModel(
 			String jsonResponse) {
@@ -469,10 +464,12 @@ public class DefaultInfobipClient {
 		return channelList;
 	}
 	
-	private static void parseJsonUserNames(String jsonResponse, Set<UserModel> whereToPutThem) {
+	private static Set<UserModel> parseJsonUserNames(String jsonResponse) {
 		JsonParser jsonParser = new JsonParser();
 		JsonElement jsonTree = jsonParser.parse(jsonResponse);
 		JsonArray jsonArray = jsonTree.getAsJsonArray();
+		
+		Set<UserModel> result = new TreeSet<UserModel>();
 
 		for (int i = 0; i < jsonArray.size(); i++) {
 			JsonObject jsonElement = jsonArray.get(i).getAsJsonObject();
@@ -484,9 +481,9 @@ public class DefaultInfobipClient {
 			} catch (Exception e) {
 				userName = "";
 			}
-			whereToPutThem.add(new UserModel(userName, false));
+			result.add(new UserModel(userName, false));
 		}
-		
+		return result;
 	}
 
 	private static ArrayList<MessageModel> parseJsonMessageModel(
