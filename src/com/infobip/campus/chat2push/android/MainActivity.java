@@ -31,6 +31,7 @@ import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -45,6 +46,15 @@ import android.widget.Toast;
 public class MainActivity extends ActionBarActivity {
 	
 	public String m_Text;
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if (keyCode == KeyEvent.KEYCODE_BACK) {
+	        moveTaskToBack(true);
+	        return true;
+	    }
+	    return super.onKeyDown(keyCode, event);
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -126,12 +136,12 @@ public class MainActivity extends ActionBarActivity {
 			public void onClick(View v) {
 				// REGISTRUJ USERA
 				
-				Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+				Intent registerIntent = new Intent(MainActivity.this, RegistrationActivity.class);
 				if (userNameEditText.getText().toString() != null && passwordEditText.getText().toString() != null) {
-					intent.putExtra("userName", userNameEditText.getText().toString());
-					intent.putExtra("password", passwordEditText.getText().toString());
+					registerIntent.putExtra("userName", userNameEditText.getText().toString());
+					registerIntent.putExtra("password", passwordEditText.getText().toString());
 				}
-				startActivity(intent);
+				startActivity(registerIntent);
 			}
 		});
 		

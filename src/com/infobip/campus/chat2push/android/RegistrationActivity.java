@@ -33,24 +33,7 @@ public class RegistrationActivity extends Activity {
 		final EditText confirmPasswordEditText = (EditText) findViewById(R.id.editTextRegisterConfirmPassword);
 		final EditText phoneNumberEditText = (EditText) findViewById(R.id.editTextRegisterPhoneNumber);
 		final Button buttonSendConfirmationNumber = (Button) findViewById(R.id.buttonSendConfirmationNumber);
-		
-		TelephonyManager telephonyManager;
-		telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-		
-		Intent intent = getIntent();
-		
-		if (telephonyManager != null && intent.getStringExtra("userName") != null && intent.getStringExtra("password") != null) {
-		
-//			Log.i("BROJ_TELEFONA", telephonyManager.getLine1Number());
-		
-			userNameEditText.setText(intent.getStringExtra("userName"));
-			passwordEditText.setText(intent.getStringExtra("password"));
-			phoneNumberEditText.setText(telephonyManager.getLine1Number().toString());
-		
-		} else 
-			Log.e("nesto ne valja sa brojem telefona", "  ");
-		
-		
+
 		buttonSendConfirmationNumber.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
