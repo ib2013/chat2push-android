@@ -30,8 +30,7 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 	private Context context;
 
 	public ChannelArrayAdapter(Activity context, int davaViewResourceId, List<ChannelModel> data) {
-		super(context, davaViewResourceId, data);
-		
+		super(context, davaViewResourceId, data);		
 		this.context = context;
 		this.channelList = new ArrayList<ChannelModel>();
 		this.channelList.addAll(data);		
@@ -46,11 +45,7 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-
 		ViewHolder viewHolder = null;
-		
-		//Log.v("ConvertView", String.valueOf(position));
-
 		if (convertView == null) {
 			LayoutInflater viewInflater = ((Activity) context).getLayoutInflater();
 			convertView = viewInflater.inflate(R.layout.list_channel_item, null);
@@ -85,20 +80,14 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 			});
 			
 			viewHolder.linearLayoutClickable.setOnClickListener(new OnClickListener() {
-				
 				public void onClick(View v) {
-					
 					Log.i("iTAG", "KLIKNUTO NA LIST_ELEMENT");
 					LinearLayout linear = (LinearLayout) v;
 					TextView tv = (TextView) linear.getChildAt(0);
-					
 					String ime = tv.getText().toString();
-					
 					new SubscribeToChannel().execute(ime);
-					
 					SessionManager.subscribeToChannelByName(ime);
 					Log.d("Background od SubscribeToChannel", "SessionManager.subscribeToChannelByName je prosao");
-					
 					Intent intent = new Intent(getContext(), ChannelActivity.class);
 					intent.putExtra("channelName", tv.getText().toString());
 					Log.i("channelName = ", tv.getText().toString());
@@ -118,7 +107,6 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 		viewHolder.textViewChannelDescription.setText(channelItem.getDescription());
 		viewHolder.checkboxChannelStatus.setChecked(channelItem.getStatus());
 		viewHolder.checkboxChannelStatus.setTag(channelItem);
-		
 		return convertView;
 	}
 	
@@ -131,15 +119,11 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 	class SubscribeToChannel extends AsyncTask<String, String, String> {
 		int errorCode = 0;
 		String textView = "";
-
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-		
 		}
-
 		protected String doInBackground(String... args) {
-			
 			Log.d("Background od SubscribeToChannel", "username je: " + SessionManager.getCurrentUserName() + " ime kanala za dodati: " + args[0]);
 			DefaultInfobipClient.registerUserToChannel(SessionManager.getCurrentUserName(), args[0]);
 			Log.d("Background od SubscribeToChannel", "Prošao mi je DefaultInfobipClient.registerUserToChannel");
@@ -149,7 +133,6 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 		protected void onPostExecute(String file_url) {
 			super.onPostExecute(file_url);
 		}
-
 	}
 	
 	class UnsubscribeFromChannel extends AsyncTask<String, String, String> {
@@ -159,11 +142,8 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-		
 		}
-
 		protected String doInBackground(String... args) {
-
 			Log.d("Background od UnsubscribeFromChannel", "username je: " + SessionManager.getCurrentUserName() + " ime kanala za obrisati: " + args[0]);
 			DefaultInfobipClient.unregisterUserFromChannel(SessionManager.getCurrentUserName(), args[0]);
 			Log.d("Background od UnsubscribeFromChannel", "Prošao mi je DefaultInfobipClient.unregisterUserFromChannel");
@@ -173,10 +153,5 @@ public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 		protected void onPostExecute(String file_url) {
 			super.onPostExecute(file_url);
 		}
-
 	}
-	
-	
-	
-
 }

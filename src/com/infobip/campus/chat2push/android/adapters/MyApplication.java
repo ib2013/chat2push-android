@@ -4,8 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
-public class MyApplication extends Application {
-	
+public class MyApplication extends Application {	
     private static Activity mCurrentActivity = null;
     private static Context  currentApplication = null;
 	
@@ -24,6 +23,5 @@ public class MyApplication extends Application {
     
     public static Context getAppContext() {
         return currentApplication;
-    } 
-  
+    }   
 }

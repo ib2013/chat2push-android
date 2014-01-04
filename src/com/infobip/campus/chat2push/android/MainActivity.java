@@ -1,8 +1,5 @@
 package com.infobip.campus.chat2push.android;
 
-//import com.example.helloworld.R;
-//import com.infobip.campus.chat2push.android.R;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -57,14 +54,6 @@ public class MainActivity extends ActionBarActivity {
 			passwordEditText.setText(intent.getStringExtra("password"));
 			if(intent.getBooleanExtra("fromRegistration", false)) {
 				final EditText txtUrl = new EditText(MainActivity.this);
-				final Button resendButton = (Button) findViewById(R.id.buttonResendConfirmation);
-				resendButton.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View arg0) {
-						//DefaultInfobipClient.resendVerificationNumber(intent.getStringExtra("userName"));
-					}
-				});
-				resendButton.setVisibility(View.VISIBLE);
 				int maxLength = 4;    
 				txtUrl.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
 				txtUrl.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -103,13 +92,6 @@ public class MainActivity extends ActionBarActivity {
 						registerIntent.putExtra("password", passwordEditText.getText().toString());
 					}
 					startActivity(registerIntent);
-				}
-			});
-			Button resendButton = (Button) findViewById(R.id.buttonResendConfirmation);
-			resendButton.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					//DefaultInfobipClient.resendVerificationNumber(intent.getStringExtra("userName"));				
 				}
 			});
 		}
@@ -190,8 +172,6 @@ public class MainActivity extends ActionBarActivity {
 								})
 								.show();
 						} else {
-							final Button resendButton = (Button) findViewById(R.id.buttonResendConfirmation);
-							resendButton.setVisibility(View.VISIBLE);
 							final EditText txtUrl = new EditText(MainActivity.this);
 							int maxLength = 4;    
 							txtUrl.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});

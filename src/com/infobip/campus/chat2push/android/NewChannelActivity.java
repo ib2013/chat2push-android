@@ -60,12 +60,10 @@ public class NewChannelActivity extends ActionBarActivity {
 				}
 			}				
 		});		
-		//TODO: lista usera koji ce se automatski predplatiti na ovaj channel!
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.new_channel, menu);
 		return true;
 	}
@@ -74,34 +72,32 @@ public class NewChannelActivity extends ActionBarActivity {
 	class CreateNewRoom extends AsyncTask<String, String, String> {		
 		@Override
 		protected void onPreExecute() {
-			super.onPreExecute();
-		
+			super.onPreExecute();		
 		}
-
 		protected String doInBackground(String... args) {
 			try {
 				Log.d("Ulazne specke su mi : ", args[0] + " " + args[1] + " " + args[2]);
 				boolean isPrivate = false;
-				if (args[2].equals("true"))
+				if (args[2].equals("true")) {
 					isPrivate = true;
+				}
 				Log.d("Radimo novu sobu sa specifikacijama: ", args[0] + " " + args[1] + " " + String.valueOf(isPrivate));
 				DefaultInfobipClient.createNewRoom (args[0], args[1], isPrivate);
 				Log.d("Background od SubscribeToChannel", "username je: " + SessionManager.getCurrentUserName() + " ime kanala za dodati: " + args[0]);
 				DefaultInfobipClient.registerUserToChannel(SessionManager.getCurrentUserName(), args[0]);
 				Log.d("Background od SubscribeToChannel", "Prošao mi je DefaultInfobipClient.registerUserToChannel");
-				for (UserModel user : usersToRegister)
-					if (user.getStatus())
+				for (UserModel user : usersToRegister) {
+					if (user.getStatus()) {
 						DefaultInfobipClient.registerUserToChannel(user.getUsername(), args[0]);
-				
+					}
+				}
 				return "Subscribe to channel return value";
-
 			} catch (Exception e) {
 				Log.d("ERROR CREATING ROOM: ", e.getMessage());
 				e.printStackTrace();
 			}
 			return "LoadAllChannels return value";
 		}
-
 		protected void onPostExecute(String file_url) {
 			super.onPostExecute(file_url);
 		}
@@ -113,7 +109,6 @@ public class NewChannelActivity extends ActionBarActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();		
 		}
-
 		protected String doInBackground(String... args) {
 			try {
 				Log.d("Background od FetchKnownUsersList ima argument : ", SessionManager.getCurrentUserName());
@@ -136,12 +131,9 @@ public class NewChannelActivity extends ActionBarActivity {
 			super.onPostExecute(file_url);
 		}
 	}	
-		private void displayListView(ArrayList<UserModel> users) {
-			// kreiraj ArrayAdaptar iz String Array		
-			usersArrayAdapter = new UsersToSubscribeArrayAdapter(this, R.layout.activity_new_channel, users);
-			ListView listView = (ListView) findViewById(R.id.listViewUsers);
-			// dodeli adapter u ListView
-			listView.setAdapter(usersArrayAdapter);
-		}
-	
+	private void displayListView(ArrayList<UserModel> users) {
+		usersArrayAdapter = new UsersToSubscribeArrayAdapter(this, R.layout.activity_new_channel, users);
+		ListView listView = (ListView) findViewById(R.id.listViewUsers);
+		listView.setAdapter(usersArrayAdapter);
+	}	
 }

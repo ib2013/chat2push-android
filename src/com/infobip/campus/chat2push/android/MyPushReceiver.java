@@ -25,8 +25,6 @@ import com.infobip.push.PushNotification;
 
 public class MyPushReceiver extends AbstractPushReceiver {
 	
-	//private Context context;
-	
 	public interface CallbackInterface {
 		void addNewMessage (MessageModel newMessage);
 	}
@@ -53,19 +51,18 @@ public class MyPushReceiver extends AbstractPushReceiver {
     		
     		//Parsiranje notification messagea:
     		String payload = notification.getMessage();
-    		if (notification.getTitle().toString().equals("MESSAGE"))
+    		if (notification.getTitle().toString().equals("MESSAGE")) {
     			try {
     				JSONObject jsonObject = new JSONObject(payload);
     				newMessage = new MessageModel(jsonObject);
-//    				Toast.makeText(context, jsonObject.getString("time"), Toast.LENGTH_LONG).show();
     				channel = jsonObject.getString("channel");
     			} catch (JSONException e) {
     				Toast.makeText(context, "Error reading push message. Details: " + e.getMessage(), Toast.LENGTH_LONG).show();
     				e.printStackTrace();
     			}
-    		else
+    		} else {
     			Toast.makeText(context, "Received push notification was not a message! :/ \n I don't know what to do with it." , Toast.LENGTH_LONG).show();
-    		
+    		}    		
     		if (MyApplication.getCurrentActivity() != null) {
     			if (MyApplication.getCurrentActivity().getTitle().equals(channel)) {
     				CallbackInterface callbackInterface = (CallbackInterface) MyApplication.getCurrentActivity();
@@ -87,19 +84,15 @@ public class MyPushReceiver extends AbstractPushReceiver {
     			
     			Intent notificationIntent = new Intent(context, ChannelActivity.class);
     			notificationIntent.putExtra("channelName", channel);
-    			//notificationIntent.setData(Uri.parse("http://google.com"));
-    			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);  
+     			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);  
     			if (pendingIntent != null) {
-    				//context.startActivity(notificationIntent);
-    				mBuilder.setContentIntent(pendingIntent);
+     				mBuilder.setContentIntent(pendingIntent);
     				mBuilder.setAutoCancel(true);
-    			}
-    			else 
+    			} else { 
     				Toast.makeText(context, "Nije ti to prošlo", Toast.LENGTH_LONG).show();
-    			
+    			}
     			mNotificationManager.notify(notification.getId().toString()+d.getTime(), notification.getNotificationId(), mBuilder.build());
-    		}
-    		
+    		}    		
     }
     
    

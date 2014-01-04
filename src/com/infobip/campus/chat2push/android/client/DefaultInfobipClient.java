@@ -313,7 +313,7 @@ public class DefaultInfobipClient {
 		}
 	}
 	
-	public void resendConfirmationNumber(String username){
+	public static void resendConfirmationNumber(String username){
 		Gson gson = new Gson();
 		try {
 			JsonObject jsonObject = new JsonObject();
@@ -321,8 +321,7 @@ public class DefaultInfobipClient {
 
 			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
 			HttpClient client = new DefaultHttpClient();
-			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
-					+ "user/resendCode");
+			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION + "user/resendCode");
 			request.addHeader("content-type", "application/json");
 			request.setEntity(parms);
 			HttpResponse response = client.execute(request);

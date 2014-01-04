@@ -37,38 +37,28 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
-//		deleteFile(channelName + ".txt");
-		//TODO kasnije ovo pobrisati, sad sluzi samo za testiranje!
-		
-		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_channel);
 		
 		myApplication = (MyApplication)this.getApplicationContext();
 		context = this;
-		
 		Intent intent = getIntent();
 		channelName = intent.getStringExtra("channelName");
 		this.setTitle(channelName);
 				
-		//listener za send button:
 		ImageButton sendMessageButton = (ImageButton) findViewById(R.id.image_button_send_message);
 		final EditText editTextMessage = (EditText) findViewById(R.id.edit_text_message);
 		sendMessageButton.setOnClickListener(new OnClickListener() {
-			
 			public void onClick(View v) {
 				String messageText = new String (editTextMessage.getText().toString());
 				editTextMessage.setText("");
 				if (!messageText.replaceAll(" ", "").equals("")) {
 					new SendMessage().execute(SessionManager.getCurrentUserName(), channelName, messageText);
-//					Dodam "privremenu" poruku (to se vidi iz razmaka na pocetku username-a!)
 					messageList.add(new MessageModel(" " + SessionManager.getCurrentUserName(), messageText, new Date(0)));
 					displayListView(messageList);
 				}				
 			}
 		});
-		
 	}
 
 	
@@ -97,47 +87,47 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.channel, menu);
 		MenuItem item = menu.findItem(R.id.dont_cache);
-		if(getPreferences(MODE_PRIVATE).getBoolean(channelName + "-cach", true))
+		if(getPreferences(MODE_PRIVATE).getBoolean(channelName + "-cach", true)) {
 				item.setTitle("Don't cach");
-		else
+		} else {
 				item.setTitle("Cach");
+		}
 		return true;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO napraviti za pravi meni, trenutno je samo za gumb za testiranje ChannelActivitya.
 		switch (item.getItemId()) {
-		case R.id.dont_cache :
-			if (getPreferences(0).getBoolean(channelName + "-cach", true)) {
-				deleteFile(channelName + ".txt");
-				SharedPreferences.Editor preferenceEditor = getPreferences(MODE_PRIVATE).edit();
-				preferenceEditor.putBoolean(channelName + "-cach", false);
-				preferenceEditor.commit();
-				item.setTitle("Cach");
-			} else {
-				SharedPreferences.Editor preferenceEditor = getPreferences(MODE_PRIVATE).edit();
-				preferenceEditor.putBoolean(channelName + "-cach", true);
-				preferenceEditor.commit();
-				item.setTitle("Don't cach");
+			case R.id.dont_cache :
+				if (getPreferences(0).getBoolean(channelName + "-cach", true)) {
+					deleteFile(channelName + ".txt");
+					SharedPreferences.Editor preferenceEditor = getPreferences(MODE_PRIVATE).edit();
+					preferenceEditor.putBoolean(channelName + "-cach", false);
+					preferenceEditor.commit();
+					item.setTitle("Cach");
+				} else {
+					SharedPreferences.Editor preferenceEditor = getPreferences(MODE_PRIVATE).edit();
+					preferenceEditor.putBoolean(channelName + "-cach", true);
+					preferenceEditor.commit();
+					item.setTitle("Don't cach");
+				}
+				break;
+			case R.id.log_out :
+				SessionManager.logout();
+				Intent intent = new Intent(this, MainActivity.class);
+				startActivity(intent);
+				break;
 			}
-			break;
-		case R.id.log_out :
-			SessionManager.logout();
-			Intent intent = new Intent(this, MainActivity.class);
-			startActivity(intent);
-			break;
-		}
-		return false;
+			return false;
 	}
 	
 	private void clearReferences(){
         Activity currActivity = MyApplication.getCurrentActivity();
-        if (currActivity != null && currActivity.equals(this))
+        if (currActivity != null && currActivity.equals(this)) {
         	myApplication.setCurrentActivity(null);
+        }
     }
 	
 	public void addNewMessage (MessageModel newMessage) {
@@ -146,41 +136,37 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 		indexToReplace = messageList.indexOf(new MessageModel(" " + newMessage.getAuthor(), newMessage.getText(), new Date(0)));
 		if (indexToReplace > -1) {
 			messageList.set(indexToReplace, newMessage);
-		} else 
+		} else {
 			messageList.add(newMessage);
+		}
 		displayListView(messageList);
-	}
-	
+	}	
 	
 	private void displayListView(ArrayList<MessageModel> messageList) {
-		// kreiraj ArrayAdaptar iz String Array		
 		messageViewAdapter = new MessageArrayAdapter(this, R.layout.activity_channel_list, messageList);
 		ListView listView = (ListView) findViewById(R.id.listView);
-		// dodeli adapter u ListView
 		listView.setAdapter(messageViewAdapter);
 	}
 
 	class LoadMessages extends AsyncTask<String, String, String> {
-		
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 		}
 
 		protected String doInBackground(String... args) {
-			
-//			deleteFile(channelName + ".txt");
-			
 			Log.d("Ulazi u doInBackground, user je: ", SessionManager.getCurrentUserName());
 			Log.d("Ulazi u doInBackground, channel je: ", channelName);
 			if (getPreferences(MODE_PRIVATE).getBoolean(channelName + "-cach", true)) {
 				messageList.addAll(FileAdapter.readFromFIle(context, channelName));
 				Log.d("Procitao je file, u messageList ima ovoliko elemenata: ", "" + messageList.size());
-			} else
+			} else {
 				Log.d("Preskoèeno èitanje iz filea, idem odmah na net!", "Ludilo brale!");
+			}
 			Date  startTime = new Date(0);
-			if (messageList.size() != 0)
+			if (messageList.size() != 0) {
 				startTime = messageList.get(messageList.size()-1).getDate();
+			}
 			Log.d("startTime je inicijaliziran na: ", "" + startTime);
 			messageList.addAll(DefaultInfobipClient.fetchAllMessages(channelName, startTime, new Date(System.currentTimeMillis())));
 			Log.d("Procitao je poruke sa servera, messageList sad ima ovoliko elemenata: ", "" + messageList.size());
@@ -194,7 +180,6 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 				}
 			});
 		}
-
 	}
 	
 	class SendMessage extends AsyncTask<String, String, String> {
@@ -204,20 +189,15 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 			super.onPreExecute();
 		}
 
-		protected String doInBackground(String... args) {	
-			
+		protected String doInBackground(String... args) {				
 			Log.d("Ulazi u doInBackground, user je: ", SessionManager.getCurrentUserName());
 			DefaultInfobipClient.sendMessage(args[0], args[1], args[2]);
 			Log.d("Obavio : DefaultInfobipClient.sendMessage s argumentima: ", args[0] + " " + args[1] + " " + args[2]);
-			
 			return "doInBackgroundReturnValue";
 		}
 
 		protected void onPostExecute(String file_url) {
 			super.onPostExecute(file_url);
 		}
-
-	}
-	
-	
+	}	
 }

@@ -21,13 +21,14 @@ public class FileAdapter {
 	public static void writeToFile (Context context, String filename, ArrayList<MessageModel> messageList) {
 		JSONArray jsonArray = new JSONArray();
         try {
-        	for (MessageModel message : messageList) 
-        		if (message.areYouOK()) 
+        	for (MessageModel message : messageList) { 
+        		if (message.areYouOK())  {
         			jsonArray.put(message.getJSONObject());
+        		}
+        	}
 	        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename + ".txt", Context.MODE_PRIVATE));
 	        outputStreamWriter.write(jsonArray.toString());
 	        outputStreamWriter.close();
-	        
 	        Log.d("Writing to file"+filename + ".txt"+": ", jsonArray.toString());
 	    }
 	    catch (IOException e) {
@@ -39,7 +40,6 @@ public class FileAdapter {
 	}
 	
 	public static ArrayList<MessageModel> readFromFIle (Context context, String filename) {
-		
 		ArrayList<MessageModel> messageList = new ArrayList<MessageModel>();
 		String messageListString = "";
 		InputStream inputStream;
@@ -74,8 +74,7 @@ public class FileAdapter {
 			messageList = new ArrayList<MessageModel>();
 			Log.e("Exception","JSONException: " + e.getMessage());
 			e.printStackTrace();
-		}
-		
+		}		
         return messageList;
 	}
 	
