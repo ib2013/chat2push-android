@@ -1,48 +1,31 @@
 package com.infobip.campus.chat2push.android;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.infobip.campus.chat2push.android.MyPushReceiver.CallbackInterface;
-import com.infobip.campus.chat2push.android.adapters.FileAdapter;
-import com.infobip.campus.chat2push.android.adapters.MessageArrayAdapter;
-import com.infobip.campus.chat2push.android.adapters.MyApplication;
-import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
-import com.infobip.campus.chat2push.android.configuration.Configuration;
-import com.infobip.campus.chat2push.android.managers.SessionManager;
-import com.infobip.campus.chat2push.android.models.ChannelModel;
-import com.infobip.campus.chat2push.android.models.MessageModel;
-import com.infobip.push.ChannelRegistrationListener;
-import com.infobip.push.PushNotificationManager;
-
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import com.infobip.campus.chat2push.android.MyPushReceiver.CallbackInterface;
+import com.infobip.campus.chat2push.android.adapters.FileAdapter;
+import com.infobip.campus.chat2push.android.adapters.MessageArrayAdapter;
+import com.infobip.campus.chat2push.android.adapters.MyApplication;
+import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
+import com.infobip.campus.chat2push.android.managers.SessionManager;
+import com.infobip.campus.chat2push.android.models.MessageModel;
 
 public class ChannelActivity extends ActionBarActivity implements CallbackInterface {
 	
@@ -152,7 +135,7 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 	}
 	
 	private void clearReferences(){
-        Activity currActivity = myApplication.getCurrentActivity();
+        Activity currActivity = MyApplication.getCurrentActivity();
         if (currActivity != null && currActivity.equals(this))
         	myApplication.setCurrentActivity(null);
     }

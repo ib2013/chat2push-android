@@ -19,7 +19,7 @@ public class MyApplication extends Application {
     }
     
     public void setCurrentActivity(Activity mCurrentActivity) {
-        this.mCurrentActivity = mCurrentActivity;
+        MyApplication.mCurrentActivity = mCurrentActivity;
     }
     
     public static Context getAppContext() {

@@ -30,12 +30,9 @@ import com.infobip.campus.chat2push.android.models.UserModel;
 
 public class DefaultInfobipClient {
 
-	public static String registerUser(String userName, String password,
-			String phoneNumber) {
+	public static String registerUser(String userName, String password, String phoneNumber) {
 		Gson gson = new Gson();
-
 		try {
-
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("username", userName);
 			jsonObject.addProperty("password", password);
@@ -43,24 +40,17 @@ public class DefaultInfobipClient {
 
 			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
 			HttpClient client = new DefaultHttpClient();
-			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
-					+ "user/register");
+			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION + "user/register");
 			request.addHeader("content-type", "application/json");
 			request.setEntity(parms);
 			HttpResponse response = client.execute(request);
-
 			String responseText = getResponseText(response);
-
-			int responseCode = response.getStatusLine().getStatusCode();
-
-			
+			int responseCode = response.getStatusLine().getStatusCode();			
 			if (responseCode == 200 || responseCode == 201) {
 				return null;
 			} else if (responseCode == 476) {
 				return "MISSING_REGISTRATION";
-			}
-
-			else {
+			} else {
 				return responseText;
 			}
 		} catch (Exception e) {
@@ -70,9 +60,7 @@ public class DefaultInfobipClient {
 
 	public static String loginUser(String userName, String password) {
 		Gson gson = new Gson();
-
 		try {
-
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("username", userName);
 			jsonObject.addProperty("password", password);
@@ -80,8 +68,7 @@ public class DefaultInfobipClient {
 			Log.d("Saljem request...", userName+"|"+password);
 			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
 			HttpClient client = new DefaultHttpClient();
-			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
-					+ "user/login");
+			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION + "user/login");
 			request.addHeader("content-type", "application/json");
 			request.setEntity(parms);
 			HttpResponse response = client.execute(request);
@@ -95,9 +82,7 @@ public class DefaultInfobipClient {
 				return null;
 			} else if (responseCode == 476) {
 				return "MISSING_VERIFICATION";
-			}
-
-			else {
+			} else {
 				return responseText;
 			}
 		} catch (Exception e) {
@@ -108,9 +93,7 @@ public class DefaultInfobipClient {
 
 	public static boolean verifyUser(String userName, int registrationCode) {
 		Gson gson = new Gson();
-
 		try {
-
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("username", userName);
 			jsonObject.addProperty("registrationCode", registrationCode);
@@ -125,9 +108,7 @@ public class DefaultInfobipClient {
 			String responseText = getResponseText(response);
 			Log.i("RESPONSE_TEXT", responseText);
 			int responseCode = response.getStatusLine().getStatusCode();
-
 			if (responseCode == 200 || responseCode == 201) {
-				// Configuration.CURRENT_USER_NAME = userName;
 				return true;
 			} else {
 				return false;
@@ -138,11 +119,8 @@ public class DefaultInfobipClient {
 	}
 
 	public static ArrayList<ChannelModel> fetchAllChannels(String userName) {
-		Gson gson = new Gson();
 		ArrayList<ChannelModel> channelList;
-
 		try {
-
 			HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(Configuration.SERVER_LOCATION
 					+ "channel/fetch/" + userName);
@@ -150,26 +128,18 @@ public class DefaultInfobipClient {
 			String responseText = getResponseText(response);
 
 			Log.d("fetchAllChannels je dohvatio sljedeci popis", responseText);
-			
-			int responseCode = response.getStatusLine().getStatusCode();
-
 			channelList = parseJsonChannelModel(responseText);
-
 			return channelList;
-
 		} catch (Exception e) {
 			channelList = new ArrayList<ChannelModel>();
-
 			return channelList;
 		}
 	}
 
-	public static ArrayList<MessageModel> fetchAllMessages(String channelName,
-			Date startTime, Date endTime) {
+	public static ArrayList<MessageModel> fetchAllMessages(String channelName, Date startTime, Date endTime) {
 		Log.d("Trenutni korisnik je: ", SessionManager.getCurrentUserName());
 		Log.d("Start time ", "" + startTime.getTime());
 		Log.d("End time ", "" + endTime.getTime());
-		Gson gson = new Gson();
 		ArrayList<MessageModel> messageList;
 
 		try {
@@ -188,36 +158,22 @@ public class DefaultInfobipClient {
 
 			HttpResponse response = client.execute(request);
 			String responseText = getResponseText(response);
-
 			Log.d("responseText: ", responseText);
-
-			int responseCode = response.getStatusLine().getStatusCode();
-
 			messageList = parseJsonMessageModel(responseText);
-
 			return messageList;
-
 		} catch (Exception e) {
 			return new ArrayList<MessageModel>();
 		}
 	}
 	
 	public static ArrayList<UserModel> fetchKnownUsers ( String userName) {
-		
-		ArrayList<String> stringArray = null;
 		ArrayList<ChannelModel> channels = new ArrayList<ChannelModel>();
 		Set<UserModel> userNamesSet = new HashSet<UserModel>();
-		
 		channels.addAll(fetchAllChannels(userName));
-		
 		Log.d("fetchKnownUsers ce pokupiti usere iz sljedecih soba:", channels.toString());
-		
 		for (ChannelModel channel : channels) {
-			
 			Gson gson = new Gson();
-
 			try {
-
 				JsonObject jsonObject = new JsonObject();
 				jsonObject.addProperty("name", channel.getName());
 				jsonObject.addProperty("description", "");
@@ -235,32 +191,19 @@ public class DefaultInfobipClient {
 				String responseText = getResponseText(response);
 
 				userNamesSet.addAll(parseJsonUserNames(responseText));
-				
-				int responseCode = response.getStatusLine().getStatusCode();
-
 			} catch (Exception e) {
 				Log.e("Exception fetchKnownUsers", e.getMessage());
-//				return "Connection error!";
 			}
-			
 		}
-		
 		Log.d("client pred kraj rada ima set ovaj: ", userNamesSet.toString());
 		ArrayList<UserModel> response = new ArrayList<UserModel>(userNamesSet);
-		
 		Log.d("fetchKnownUsers mi je kao rezultat pokusao uvaliti", response.toString());
-		
 		return response;
-		
 	}
 
-	public static String sendMessage(String userName, String channelName,
-			String messageText) {
-
+	public static String sendMessage(String userName, String channelName, String messageText) {
 		Gson gson = new Gson();
-
 		try {
-
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("username", userName);
 			jsonObject.addProperty("channel", channelName);
@@ -268,15 +211,13 @@ public class DefaultInfobipClient {
 
 			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
 			HttpClient client = new DefaultHttpClient();
-			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
-					+ "message/send");
+			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION + "message/send");
 			request.addHeader("content-type", "application/json");
 			request.setEntity(parms);
 			HttpResponse response = client.execute(request);
 			String responseText = getResponseText(response);
 
 			int responseCode = response.getStatusLine().getStatusCode();
-
 			if (responseCode == 200 || responseCode == 201) {
 				Log.d("U sendMessage javio status: ", String.valueOf(responseCode));
 				return null;
@@ -292,32 +233,22 @@ public class DefaultInfobipClient {
 	}
 	
 	public static boolean registerUserToChannel(String userName, String channelName){
-		//username, chanel (za JSON); channel/addUserToRoom
-		
 		Gson gson = new Gson();
-
 		try {
-
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("username", userName);
 			jsonObject.addProperty("channel", channelName);
 
 			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
 			HttpClient client = new DefaultHttpClient();
-			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
-					+ "channel/addUserToRoom");
-			
+			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION + "channel/addUserToRoom");
 			Log.d("DefaultInfobipClient.registerUserToChannel:", request.getURI().toString());
 			Log.d("DefaultInfobipClient.registerUserToChannel:", jsonObject.get("username").getAsString() + "aha! " + jsonObject.toString());
-			
-			
 			request.addHeader("content-type", "application/json");
 			request.setEntity(parms);
 			HttpResponse response = client.execute(request);
 			String responseText = getResponseText(response);
-
 			int responseCode = response.getStatusLine().getStatusCode();
-			
 			Log.d("DefaultInfobipClient.registerUserToChannel je obavio http pricu sa odgovorom:", responseText);
 			
 			if (responseCode == 200 || responseCode == 201) {
@@ -329,16 +260,11 @@ public class DefaultInfobipClient {
 			Log.e("DefaultInfobipClient.registerUserToChannel je imao exception", e.getMessage());
 			return false;
 		}
-
 	}
 	
 	public static boolean unregisterUserFromChannel(String userName, String channelName){
-		//username, chanel (za JSON); channel/addUserToRoom
-		
 		Gson gson = new Gson();
-
 		try {
-
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("username", userName);
 			jsonObject.addProperty("channel", channelName);
@@ -350,10 +276,8 @@ public class DefaultInfobipClient {
 			request.addHeader("content-type", "application/json");
 			request.setEntity(parms);
 			HttpResponse response = client.execute(request);
-			String responseText = getResponseText(response);
 
 			int responseCode = response.getStatusLine().getStatusCode();
-
 			if (responseCode == 200 || responseCode == 201) {
 				return true;
 			} else {
@@ -362,14 +286,11 @@ public class DefaultInfobipClient {
 		} catch (Exception e) {
 			return false;
 		}
-
 	}
 	
 	public static boolean createNewRoom(String name, String description, Boolean isPrivate){
 		Gson gson = new Gson();
-
 		try {
-
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("name", name);
 			jsonObject.addProperty("description", description);
@@ -377,15 +298,11 @@ public class DefaultInfobipClient {
 
 			StringEntity parms = new StringEntity(gson.toJson(jsonObject));
 			HttpClient client = new DefaultHttpClient();
-			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION
-					+ "channel/add");
+			HttpPost request = new HttpPost(Configuration.SERVER_LOCATION + "channel/add");
 			request.addHeader("content-type", "application/json");
 			request.setEntity(parms);
 			HttpResponse response = client.execute(request);
-			String responseText = getResponseText(response);
-
 			int responseCode = response.getStatusLine().getStatusCode();
-
 			if (responseCode == 200 || responseCode == 201) {
 				return true;
 			} else {
@@ -398,9 +315,7 @@ public class DefaultInfobipClient {
 	
 	public void resendConfirmationNumber(String username){
 		Gson gson = new Gson();
-
 		try {
-
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("username", username);
 
@@ -411,31 +326,30 @@ public class DefaultInfobipClient {
 			request.addHeader("content-type", "application/json");
 			request.setEntity(parms);
 			HttpResponse response = client.execute(request);
-			String responseText = getResponseText(response);
-
 			int responseCode = response.getStatusLine().getStatusCode();
+			if (responseCode == 200 || responseCode == 201) {
+				return;
+			} else {
+				throw new Exception("Error in resending confirmation number!");
+			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
-	private static ArrayList<ChannelModel> parseJsonChannelModel(
-			String jsonResponse) {
+	private static ArrayList<ChannelModel> parseJsonChannelModel(String jsonResponse) {
 		JsonParser jsonParser = new JsonParser();
 		JsonElement jsonTree = jsonParser.parse(jsonResponse);
 		JsonArray jsonArray = jsonTree.getAsJsonArray();
-
 		ArrayList<ChannelModel> channelList = new ArrayList<ChannelModel>();
-
 		for (int i = 0; i < jsonArray.size(); i++) {
 			JsonObject jsonElement = jsonArray.get(i).getAsJsonObject();
 			String channelName;
 			String channelDescription;
 			boolean isUserSubscribedToChannel;
 			boolean isPublic;
-
 			try {
-				channelName = jsonElement.getAsJsonPrimitive("name")
-						.getAsString();
+				channelName = jsonElement.getAsJsonPrimitive("name").getAsString();
 			} catch (Exception e) {
 				channelName = "";
 			}
@@ -445,27 +359,21 @@ public class DefaultInfobipClient {
 			} catch (Exception e) {
 				channelDescription = "";
 			}
-
 			try {
 				isUserSubscribedToChannel = jsonElement.getAsJsonPrimitive(
 						"subscribed").getAsBoolean();
 			} catch (Exception e) {
 				isUserSubscribedToChannel = false;
-			}
-			
+			}			
 			try {
 				isPublic = jsonElement.getAsJsonPrimitive(
 						"public").getAsBoolean();
 			} catch (Exception e) {
 				isPublic = false;
-			}
-			
-			Log.d("Parsirani channel model: ", (new ChannelModel(channelName,
-					channelDescription, isUserSubscribedToChannel)).toString());
-			channelList.add(new ChannelModel(channelName, channelDescription,
-					isUserSubscribedToChannel, isPublic));
+			}			
+			Log.d("Parsirani channel model: ", (new ChannelModel(channelName, channelDescription, isUserSubscribedToChannel)).toString());
+			channelList.add(new ChannelModel(channelName, channelDescription, isUserSubscribedToChannel, isPublic));
 		}
-
 		return channelList;
 	}
 	
@@ -479,7 +387,6 @@ public class DefaultInfobipClient {
 		for (int i = 0; i < jsonArray.size(); i++) {
 			JsonObject jsonElement = jsonArray.get(i).getAsJsonObject();
 			String userName;
-
 			try {
 				userName = jsonElement.getAsJsonPrimitive("username").getAsString();
 			} catch (Exception e) {
@@ -491,11 +398,9 @@ public class DefaultInfobipClient {
 		}
 		Log.d("Sveckupa jason je izbacio:", result.toString());
 		return result;
-
 	}
 
-	private static ArrayList<MessageModel> parseJsonMessageModel(
-			String jsonResponse) {
+	private static ArrayList<MessageModel> parseJsonMessageModel(String jsonResponse) {
 		JsonParser jsonParser = new JsonParser();
 		JsonElement jsonTree = jsonParser.parse(jsonResponse);
 		JsonArray jsonArray = jsonTree.getAsJsonArray();
@@ -507,9 +412,6 @@ public class DefaultInfobipClient {
 			String messageText;
 			String sentBy;
 			Date time;
-
-			boolean isUserSubscribedToChannel;
-
 			try {
 				messageText = jsonElement.getAsJsonPrimitive("message")
 						.getAsString();
@@ -521,38 +423,31 @@ public class DefaultInfobipClient {
 			} catch (Exception e) {
 				sentBy = "";
 			}
-
 			try {
-				time = new Date(jsonElement.getAsJsonPrimitive(
-						"messageDate").getAsLong());
+				time = new Date(jsonElement.getAsJsonPrimitive("messageDate").getAsLong());
 			} catch (Exception e) {
 				Log.e("Jason parser u clientu je failao procitati vrijeme", "");
 				time = new Date(0);
-			}
-			
+			}			
 			MessageModel newMessageToAdd = new MessageModel(sentBy, messageText, time);
 			if (newMessageToAdd.areYouOK()) 
 				messageList.add(new MessageModel(sentBy, messageText, time));
 		}
-
 		for (MessageModel messageItem : messageList)
 			Log.d("Parsirani responseText: ", messageItem.toString());
-
 		return messageList;
 	}
 
-	private static String getResponseText(HttpResponse response)
-			throws IOException {
+	private static String getResponseText(HttpResponse response) throws IOException {
 		try {
-		BufferedReader rd = new BufferedReader(new InputStreamReader(response
-				.getEntity().getContent()));
-		String responseText = new String();
-		String line;
-		while ((line = rd.readLine()) != null) {
-			responseText += line;
-		}
-
-		return responseText;
+			BufferedReader rd = new BufferedReader(new InputStreamReader(response
+					.getEntity().getContent()));
+			String responseText = new String();
+			String line;
+			while ((line = rd.readLine()) != null) {
+				responseText += line;
+			}
+			return responseText;
 		} catch (Exception e) {
 			Log.e("On NE ÈITA!", e.getMessage());
 			return "[]";

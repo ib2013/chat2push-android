@@ -1,30 +1,24 @@
 package com.infobip.campus.chat2push.android;
 
 
-import com.infobip.campus.chat2push.android.adapters.MyApplication;
-import com.infobip.campus.chat2push.android.models.MessageModel;
 import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
+import com.infobip.campus.chat2push.android.adapters.MyApplication;
+import com.infobip.campus.chat2push.android.models.MessageModel;
 import com.infobip.push.AbstractPushReceiver;
 import com.infobip.push.PushNotification;
-import com.infobip.push.PushNotificationBuilder;
 
 
 
@@ -108,20 +102,13 @@ public class MyPushReceiver extends AbstractPushReceiver {
     		
     }
     
-    private NotificationManager getSystemService(String notificationService) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-    
+   
 	@Override
     protected void onNotificationOpened(PushNotification notification, Context context) {
         Toast.makeText(context, "Notification opened.", Toast.LENGTH_LONG).show();  
-        
         Intent notificationIntent = new Intent(Intent.ACTION_VIEW);
 		notificationIntent.setData(Uri.parse("http://google.com"));
-		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);   
 		context.startActivity(notificationIntent);
-
     }
 	
     @Override

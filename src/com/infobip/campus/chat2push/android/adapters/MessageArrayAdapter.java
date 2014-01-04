@@ -3,11 +3,6 @@ package com.infobip.campus.chat2push.android.adapters;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.infobip.campus.chat2push.android.R;
-import com.infobip.campus.chat2push.android.configuration.Configuration;
-import com.infobip.campus.chat2push.android.managers.SessionManager;
-import com.infobip.campus.chat2push.android.models.MessageModel;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -18,6 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.infobip.campus.chat2push.android.R;
+import com.infobip.campus.chat2push.android.managers.SessionManager;
+import com.infobip.campus.chat2push.android.models.MessageModel;
 
 public class MessageArrayAdapter extends ArrayAdapter<MessageModel>{
 

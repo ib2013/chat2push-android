@@ -2,16 +2,8 @@ package com.infobip.campus.chat2push.android;
 
 import java.util.ArrayList;
 
-import com.infobip.campus.chat2push.android.adapters.MessageArrayAdapter;
-import com.infobip.campus.chat2push.android.adapters.UsersToSubscribeArrayAdapter;
-import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
-import com.infobip.campus.chat2push.android.managers.SessionManager;
-import com.infobip.campus.chat2push.android.models.MessageModel;
-import com.infobip.campus.chat2push.android.models.UserModel;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -21,6 +13,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.infobip.campus.chat2push.android.adapters.UsersToSubscribeArrayAdapter;
+import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
+import com.infobip.campus.chat2push.android.managers.SessionManager;
+import com.infobip.campus.chat2push.android.models.UserModel;
 
 public class NewChannelActivity extends ActionBarActivity {
 	
@@ -51,22 +48,18 @@ public class NewChannelActivity extends ActionBarActivity {
 			}
 		});
 
-		checkBoxIsChannelPrivate.setOnClickListener(new OnClickListener() {
-			
+		checkBoxIsChannelPrivate.setOnClickListener(new OnClickListener() {			
 			@Override
-			public void onClick(View v) {
-				
+			public void onClick(View v) {				
 				if (listViewUsers.getVisibility() == View.GONE) {
 					listViewUsers.setVisibility(View.VISIBLE);
 					usersToRegister.clear();
 					new FetchKnownUsersList().execute();
-				} else 
+				} else {
 					listViewUsers.setVisibility(View.GONE);
-				
-			}
-				
-		});
-		
+				}
+			}				
+		});		
 		//TODO: lista usera koji ce se automatski predplatiti na ovaj channel!
 	}
 
@@ -78,8 +71,7 @@ public class NewChannelActivity extends ActionBarActivity {
 	}
 	
 	
-	class CreateNewRoom extends AsyncTask<String, String, String> {
-		
+	class CreateNewRoom extends AsyncTask<String, String, String> {		
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -87,7 +79,6 @@ public class NewChannelActivity extends ActionBarActivity {
 		}
 
 		protected String doInBackground(String... args) {
-
 			try {
 				Log.d("Ulazne specke su mi : ", args[0] + " " + args[1] + " " + args[2]);
 				boolean isPrivate = false;
@@ -107,64 +98,44 @@ public class NewChannelActivity extends ActionBarActivity {
 			} catch (Exception e) {
 				Log.d("ERROR CREATING ROOM: ", e.getMessage());
 				e.printStackTrace();
-
 			}
 			return "LoadAllChannels return value";
 		}
 
 		protected void onPostExecute(String file_url) {
-
 			super.onPostExecute(file_url);
-
 		}
-
 	}
 	
 	
-	class FetchKnownUsersList extends AsyncTask<String, String, String> {
-		
+	class FetchKnownUsersList extends AsyncTask<String, String, String> {		
 		@Override
 		protected void onPreExecute() {
-			super.onPreExecute();
-		
+			super.onPreExecute();		
 		}
 
 		protected String doInBackground(String... args) {
-
 			try {
 				Log.d("Background od FetchKnownUsersList ima argument : ", SessionManager.getCurrentUserName());
 				usersToRegister.addAll(DefaultInfobipClient.fetchKnownUsers(SessionManager.getCurrentUserName()));
-				
-//				//mokani podatci:
-//				usersToRegister.clear();
-//				usersToRegister.add("Ljudna");
-//				usersToRegister.add("Jaran");
-//				
 				Log.d("Background od FetchKnownUsersList ", "Prošlo je, dobio sam: " + usersToRegister.toString());
 				return "Subscribe to channel return value";
-
 			} catch (Exception e) {
 				Log.d("ERROR FETCHING KNOWN USERS: ", e.getMessage());
 				e.printStackTrace();
-
 			}
 			return "LoadAllChannels return value";
 		}
 
-		protected void onPostExecute(String file_url) {
-			
+		protected void onPostExecute(String file_url) {			
 			runOnUiThread(new Runnable() {
 				public void run() {
 					displayListView(usersToRegister);
 				}
 			});
 			super.onPostExecute(file_url);
-
 		}
-
-	}
-		
-		
+	}	
 		private void displayListView(ArrayList<UserModel> users) {
 			// kreiraj ArrayAdaptar iz String Array		
 			usersArrayAdapter = new UsersToSubscribeArrayAdapter(this, R.layout.activity_new_channel, users);

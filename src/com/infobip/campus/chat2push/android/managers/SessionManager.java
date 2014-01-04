@@ -3,14 +3,11 @@ package com.infobip.campus.chat2push.android.managers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.infobip.campus.chat2push.android.adapters.MyApplication;
 import com.infobip.campus.chat2push.android.configuration.Configuration;
@@ -19,14 +16,11 @@ import com.infobip.push.ChannelObtainListener;
 import com.infobip.push.ChannelRegistrationListener;
 import com.infobip.push.PushNotificationManager;
 
-public class SessionManager {
-	
-	static PushNotificationManager manager;
-	
+public class SessionManager {	
+	static PushNotificationManager manager;	
 	static SharedPreferences sharedPreferences; 
 		
-	private static void initialize () {
-		
+	private static void initialize () {		
 		if (manager == null) {
 			//popuni initializira manager:
 			manager = new PushNotificationManager(MyApplication.getAppContext());
@@ -44,12 +38,10 @@ public class SessionManager {
 		if(sharedPreferences == null) {
 			//dobavi sharedPreferences:
 			sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
-		}
-			
+		}			
 	}
 	
-	public static void loginUser (String username, String password) throws JSONException {
-		
+	public static void loginUser (String username, String password) throws JSONException {		
 		initialize();
 		String oldUsername = sharedPreferences.getString("currentUserName", " ");
 		if ( !oldUsername.equals(username)) {
@@ -60,65 +52,54 @@ public class SessionManager {
 			//TODO za kasnije sve dovrsiti
 //			JSONArray jsonAllUsenames = new JSONArray(sharedPreferences.getString("allUsersData", " "));
 //			jsonAllUsenames.
-		}
-		
+		}		
 	}
 	
-	public static void logout () {
-		
+	public static void logout () {		
 		initialize();
 		SharedPreferences.Editor editor = sharedPreferences.edit();
 		editor.putString("currentUserName", " ");
 		editor.commit();
 		//izbrise pretplatu na kanale:
 		ChannelRegistrationListener channelRegistrationListener = null;
-		manager.registerToChannels(new ArrayList<String>(), true, channelRegistrationListener);
-		
+		manager.registerToChannels(new ArrayList<String>(), true, channelRegistrationListener);		
 	}
 	
 	public static boolean isAnyUserLogedIn () {
-		
 		initialize();
 		String oldUsername = sharedPreferences.getString("currentUserName", " ");
-		if (oldUsername.equals(" "))
+		if (oldUsername.equals(" ")) {
 			return false;
-		return true;
-		
+		}
+		return true;		
 	}
 	
-	public static void subscribeToChannels (ArrayList<ChannelModel> channelList) {
-		
+	public static void subscribeToChannels (ArrayList<ChannelModel> channelList) {		
 		initialize();		
 		ArrayList<String> channelNames = new ArrayList<String>();
-		for (ChannelModel channelItem : channelList)
-			if (channelItem.getStatus())
+		for (ChannelModel channelItem : channelList) {
+			if (channelItem.getStatus()) {
 				channelNames.add(channelItem.getName());
+			}
+		}
 		ChannelRegistrationListener channelRegistrationListener = null;
 		manager.registerToChannels(channelNames, false, channelRegistrationListener);
-		Log.d("Pretplatio sam se na: ", channelNames.toString());
-		
+		Log.d("Pretplatio sam se na: ", channelNames.toString());		
 	}
 	
-	public static void subscribeToChannelByName (String channelName) {
-		
-		initialize();
-		
+	public static void subscribeToChannelByName (String channelName) {		
+		initialize();		
 		List<String> channelNames = new ArrayList<String>();
 		channelNames.add(channelName);
 		Log.d("U SessionMenager.subscribeToChannelByName", "Poslat cu mu da se pretplatim na: " + channelNames.toString());
 		ChannelRegistrationListener channelRegistrationListener = null;
 		manager.registerToChannels(channelNames, false, channelRegistrationListener);
-		Log.d("U SessionMenager.subscribeToChannelByName", "Sve je proslo bez greske!");
-		
+		Log.d("U SessionMenager.subscribeToChannelByName", "Sve je proslo bez greske!");		
 	}
 	
-	public static void unsubscribeFromChannelByName (String channelName) {
-		
+	public static void unsubscribeFromChannelByName (String channelName) {		
 		initialize();
-		ArrayList<String> channelNames = new ArrayList<String>();
-		
-		class DefaultChannelObtainListener implements ChannelObtainListener {
-			
+		class DefaultChannelObtainListener implements ChannelObtainListener {			
 			ArrayList<String> obtainedChannelNames;
 			String channelToUnsubscribeFrom = "";
 			
@@ -129,44 +110,31 @@ public class SessionManager {
 			}
 
 			@Override
-			public void onChannelsObtained(String[] channels) {
-				
-				for (String channelName : channels)
+			public void onChannelsObtained(String[] channels) {				
+				for (String channelName : channels) {
 					obtainedChannelNames.add(channelName);
-				
+				}
 				obtainedChannelNames.remove(channelToUnsubscribeFrom);
 				ChannelRegistrationListener channelRegistrationListener = null;
-				manager.registerToChannels(obtainedChannelNames, true, channelRegistrationListener);
-				
+				manager.registerToChannels(obtainedChannelNames, true, channelRegistrationListener);			
 			}
-
 			@Override
 			public void onChannelObtainFailed(int reason) {
 				// TODO Auto-generated method stub
 				
-			}
-			
-		}
-		
+			}			
+		}		
 		ChannelObtainListener channelObtainListener = new DefaultChannelObtainListener(channelName);
 		manager.getRegisteredChannels(channelObtainListener);
-
 	}
 
 	public static String getCurrentUserName () {
-		
 		initialize();
 		return sharedPreferences.getString("currentUserName", " ");
-		
 	}
 	
-	public static String getCurrentUserPassword () {
-		
+	public static String getCurrentUserPassword () {		
 		initialize();
-		return sharedPreferences.getString("currentUserPassword", " ");
-		
+		return sharedPreferences.getString("currentUserPassword", " ");		
 	}
-	
-//	public static nešto nešto
-	
 }

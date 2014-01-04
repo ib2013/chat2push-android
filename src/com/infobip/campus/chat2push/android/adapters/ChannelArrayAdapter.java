@@ -3,31 +3,26 @@ package com.infobip.campus.chat2push.android.adapters;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.infobip.campus.chat2push.android.ChannelActivity;
-import com.infobip.campus.chat2push.android.R;
-import com.infobip.campus.chat2push.android.R.id;
-import com.infobip.campus.chat2push.android.R.layout;
-import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
-import com.infobip.campus.chat2push.android.managers.SessionManager;
-import com.infobip.campus.chat2push.android.models.ChannelModel;
-import com.infobip.campus.chat2push.android.client.*;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.service.textservice.SpellCheckerService.Session;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.infobip.campus.chat2push.android.ChannelActivity;
+import com.infobip.campus.chat2push.android.R;
+import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
+import com.infobip.campus.chat2push.android.managers.SessionManager;
+import com.infobip.campus.chat2push.android.models.ChannelModel;
 
 public class ChannelArrayAdapter extends ArrayAdapter<ChannelModel>{
 
