@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
  
-    <PreferenceCategory android:title="USER PROFILE" >
-        <EditTextPreference
-                android:title="Forgot password?"
-                android:summary="Insert username to resend password via SMS"
-                android:key="prefResendPassword"/>
-	</PreferenceCategory>
-     
     <PreferenceCategory android:title="NOTIFICATION" >
         <SwitchPreference
-            android:enabled="false"
+            android:enabled="true"
             android:defaultValue="true"
             android:key="prefSound"
             android:title="Sounds" >
+        </SwitchPreference>
+        
+        <SwitchPreference
+            android:enabled="true"
+            android:defaultValue="true"
+            android:key="prefVibration"
+            android:title="Vibration" >
         </SwitchPreference>
     </PreferenceCategory>
  

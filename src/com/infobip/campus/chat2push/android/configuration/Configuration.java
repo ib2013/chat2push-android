@@ -3,7 +3,7 @@ package com.infobip.campus.chat2push.android.configuration;
 public class Configuration {
 	public static final String APPLICATION_ID = "";
 	public static final String AUTHORIZATION_INFO = "";
-	public static final String SERVER_LOCATION = "http://chatpushclient.appspot.com/";
+	public static final String SERVER_LOCATION = "http://chat-to-push.appspot.com/";
 
 	
 //	public static String CURRENT_USER_NAME = "korisnik1";

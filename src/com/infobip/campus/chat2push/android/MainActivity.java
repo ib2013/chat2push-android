@@ -108,9 +108,8 @@ public class MainActivity extends ActionBarActivity {
 		switch (item.getItemId()) {
 			case R.id.settings :
 				Intent intent = new Intent(this, SettingsActivity.class);
-				final AutoCompleteTextView userNameEditText = (AutoCompleteTextView) findViewById(R.id.editTextUserName);
-				intent.putExtra("userName", userNameEditText.getText().toString());
 				this.startActivity(intent);
+				break;
 		}
 		return false;
 	}

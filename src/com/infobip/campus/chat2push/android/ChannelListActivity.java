@@ -115,6 +115,10 @@ public class ChannelListActivity extends ActionBarActivity implements OnNavigati
 				Intent intent = new Intent(this, MainActivity.class);
 				startActivity(intent);
 				break;
+			case R.id.settings :
+				Intent settingsIntent = new Intent(this, SettingsActivity.class);
+				this.startActivity(settingsIntent);
+				break;
 			case R.id.add_new_room :				
 				Intent intent1 = new Intent(this, NewChannelActivity.class);
 				startActivity(intent1);		

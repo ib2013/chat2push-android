@@ -10,8 +10,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
@@ -76,9 +78,16 @@ public class MyPushReceiver extends AbstractPushReceiver {
                 	.setWhen(newMessage.getDate().getTime());
     			
     			Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-    			mBuilder.setSound(soundUri);
-    			long[] vibraPattern = {0, 500, 250, 500 };
-    			mBuilder.setVibrate(vibraPattern);
+    			SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+                boolean soundToggle = pref.getBoolean("prefSound", true);
+                boolean vibrateToggle = pref.getBoolean("prefVibration", true);
+                if (soundToggle) {
+                	mBuilder.setSound(soundUri);
+                }
+                if (vibrateToggle) {
+                	long[] vibraPattern = {0, 500, 250, 500 };
+                	mBuilder.setVibrate(vibraPattern);
+                }
     			NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     			Date d = new Date();
     			

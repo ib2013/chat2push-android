@@ -1,13 +1,8 @@
 package com.infobip.campus.chat2push.android;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
-import android.util.Log;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -40,10 +35,10 @@ public class SettingsActivity extends PreferenceActivity {
 		
 		addPreferencesFromResource(R.xml.settings);
 		
-		Intent intent = getIntent();
+		//Intent intent = getIntent();
 		
-		EditTextPreference etp = (EditTextPreference) findPreference("prefResendPassword");
-		etp.setText(intent.getStringExtra("userName"));
+	//	EditTextPreference etp = (EditTextPreference) findPreference("prefResendPassword");
+	//	etp.setText(intent.getStringExtra("userName"));
 //		SwitchPreference switchSound = (SwitchPreference) findPreference("prefSound");
 //		boolean switchValue = sharedPrefs.getBoolean("prefSound", true);
 //
@@ -80,7 +75,7 @@ public class SettingsActivity extends PreferenceActivity {
 //			}
 //		});
 		
-		etp.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+		/*etp.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			
 			@Override
 			public boolean onPreferenceChange(Preference arg0, Object arg1) {
@@ -88,7 +83,7 @@ public class SettingsActivity extends PreferenceActivity {
 				Log.i("PORUKA IZ SETTINGSA", arg1.toString());
 				return false;
 			}
-		});
+		});*/
 		
 		
 

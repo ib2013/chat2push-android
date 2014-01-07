@@ -87,32 +87,16 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.channel, menu);
-		/*MenuItem item = menu.findItem(R.id.dont_cache);
-		if(getPreferences(MODE_PRIVATE).getBoolean(channelName + "-cach", true)) {
-				item.setTitle("Don't cach");
-		} else {
-				item.setTitle("Cach");
-		}*/
 		return true;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			/*case R.id.dont_cache :
-				if (getPreferences(0).getBoolean(channelName + "-cach", true)) {
-					deleteFile(channelName + ".txt");
-					SharedPreferences.Editor preferenceEditor = getPreferences(MODE_PRIVATE).edit();
-					preferenceEditor.putBoolean(channelName + "-cach", false);
-					preferenceEditor.commit();
-					item.setTitle("Cach");
-				} else {
-					SharedPreferences.Editor preferenceEditor = getPreferences(MODE_PRIVATE).edit();
-					preferenceEditor.putBoolean(channelName + "-cach", true);
-					preferenceEditor.commit();
-					item.setTitle("Don't cach");
-				}
-				break;*/
+			case R.id.settings :
+				Intent settingsIntent = new Intent(this, SettingsActivity.class);
+				this.startActivity(settingsIntent);
+				break;
 			case R.id.log_out :
 				SessionManager.logout();
 				Intent intent = new Intent(this, MainActivity.class);

@@ -328,7 +328,7 @@ int id action_menu_divider 0x7f060016
 int id action_menu_presenter 0x7f060017
 int id action_mode_close_button 0x7f060024
 int id action_search 0x7f060065
-int id action_settings 0x7f060063
+int id action_settings 0x7f060067
 int id activity_chooser_view_content 0x7f060025
 int id add_new_room 0x7f060066
 int id always 0x7f06000b
@@ -394,7 +394,7 @@ int id search_mag_icon 0x7f060035
 int id search_plate 0x7f060036
 int id search_src_text 0x7f060037
 int id search_voice_btn 0x7f06003b
-int id settings 0x7f060067
+int id settings 0x7f060063
 int id shortcut 0x7f06002e
 int id showCustom 0x7f060007
 int id showHome 0x7f060004
