@@ -6,7 +6,6 @@ import java.util.Date;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -88,19 +87,19 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.channel, menu);
-		MenuItem item = menu.findItem(R.id.dont_cache);
+		/*MenuItem item = menu.findItem(R.id.dont_cache);
 		if(getPreferences(MODE_PRIVATE).getBoolean(channelName + "-cach", true)) {
 				item.setTitle("Don't cach");
 		} else {
 				item.setTitle("Cach");
-		}
+		}*/
 		return true;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.dont_cache :
+			/*case R.id.dont_cache :
 				if (getPreferences(0).getBoolean(channelName + "-cach", true)) {
 					deleteFile(channelName + ".txt");
 					SharedPreferences.Editor preferenceEditor = getPreferences(MODE_PRIVATE).edit();
@@ -113,7 +112,7 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 					preferenceEditor.commit();
 					item.setTitle("Don't cach");
 				}
-				break;
+				break;*/
 			case R.id.log_out :
 				SessionManager.logout();
 				Intent intent = new Intent(this, MainActivity.class);
@@ -157,12 +156,12 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 		protected String doInBackground(String... args) {
 			Log.d("Ulazi u doInBackground, user je: ", SessionManager.getCurrentUserName());
 			Log.d("Ulazi u doInBackground, channel je: ", channelName);
-			if (getPreferences(MODE_PRIVATE).getBoolean(channelName + "-cach", true)) {
+			/*if (getPreferences(MODE_PRIVATE).getBoolean(channelName + "-cach", true)) {
 				messageList.addAll(FileAdapter.readFromFIle(context, channelName));
 				Log.d("Procitao je file, u messageList ima ovoliko elemenata: ", "" + messageList.size());
 			} else {
 				Log.d("Preskoèeno èitanje iz filea, idem odmah na net!", "Ludilo brale!");
-			}
+			}*/
 			Date  startTime = new Date(0);
 			if (messageList.size() != 0) {
 				startTime = messageList.get(messageList.size()-1).getDate();

@@ -327,10 +327,10 @@ int id action_context_bar 0x7f06001d
 int id action_menu_divider 0x7f060016
 int id action_menu_presenter 0x7f060017
 int id action_mode_close_button 0x7f060024
-int id action_search 0x7f060066
-int id action_settings 0x7f060064
+int id action_search 0x7f060065
+int id action_settings 0x7f060063
 int id activity_chooser_view_content 0x7f060025
-int id add_new_room 0x7f060067
+int id add_new_room 0x7f060066
 int id always 0x7f06000b
 int id beginning 0x7f060011
 int id buttonAddNewChannel 0x7f06004c
@@ -346,7 +346,6 @@ int id collapseActionView 0x7f06000d
 int id default_activity_button 0x7f060028
 int id dialog 0x7f06000e
 int id disableHome 0x7f060008
-int id dont_cache 0x7f060062
 int id dropdown 0x7f06000f
 int id editTextChannelDescription 0x7f060049
 int id editTextChannelName 0x7f060047
@@ -375,7 +374,7 @@ int id listMode 0x7f060001
 int id listView 0x7f06003c
 int id listViewUsers 0x7f06004b
 int id list_item 0x7f060029
-int id log_out 0x7f060063
+int id log_out 0x7f060062
 int id middle 0x7f060012
 int id never 0x7f060009
 int id none 0x7f060010
@@ -384,7 +383,7 @@ int id privateImageView 0x7f06005a
 int id progress_circular 0x7f060018
 int id progress_horizontal 0x7f060019
 int id radio 0x7f06002f
-int id refresh 0x7f060065
+int id refresh 0x7f060064
 int id search_badge 0x7f060032
 int id search_bar 0x7f060031
 int id search_button 0x7f060033
@@ -395,7 +394,7 @@ int id search_mag_icon 0x7f060035
 int id search_plate 0x7f060036
 int id search_src_text 0x7f060037
 int id search_voice_btn 0x7f06003b
-int id settings 0x7f060068
+int id settings 0x7f060067
 int id shortcut 0x7f06002e
 int id showCustom 0x7f060007
 int id showHome 0x7f060004
@@ -403,7 +402,7 @@ int id showTitle 0x7f060006
 int id split_action_bar 0x7f06001e
 int id submit_area 0x7f060039
 int id tabMode 0x7f060002
-int id test_activity 0x7f060069
+int id test_activity 0x7f060068
 int id textView2 0x7f060048
 int id textView3 0x7f06004f
 int id textView4 0x7f060051
@@ -728,7 +727,7 @@ int styleable MenuItem_android_title 7
 int styleable MenuItem_android_titleCondensed 8
 int styleable MenuItem_android_visible 4
 int styleable MenuItem_showAsAction 13
-int[] styleable MenuView { 0x010100ae, 0x0101012c, 0x0101012d, 0x0101012e, 0x0101012f, 0x01010130, 0x01010131, 0x0101041a }
+int[] styleable MenuView { 0x010100ae, 0x0101012c, 0x0101012d, 0x0101012e, 0x0101012f, 0x01010130, 0x01010131, 0x01010435 }
 int styleable MenuView_android_headerBackground 4
 int styleable MenuView_android_horizontalDivider 2
 int styleable MenuView_android_itemBackground 5
