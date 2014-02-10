@@ -25,7 +25,11 @@ import com.infobip.campus.chat2push.android.adapters.MyApplication;
 import com.infobip.campus.chat2push.android.client.DefaultInfobipClient;
 import com.infobip.campus.chat2push.android.managers.SessionManager;
 import com.infobip.campus.chat2push.android.models.MessageModel;
-
+/**
+ * 
+ * @author infobip
+ *
+ */
 public class ChannelActivity extends ActionBarActivity implements CallbackInterface {
 	
 	protected MyApplication myApplication;
