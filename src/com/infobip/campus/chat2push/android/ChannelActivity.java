@@ -33,8 +33,8 @@ public class ChannelActivity extends ActionBarActivity implements CallbackInterf
 	MessageArrayAdapter messageViewAdapter = null;
 	ArrayList<MessageModel> messageList = new ArrayList<MessageModel>();
 	Context context;
-	
-	@Override
+	d
+	@Overrisde
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_channel);
